@@ -1,0 +1,10 @@
+{
+  "editor.defaultFormatter": "remimarsal.prettier-now",
+  "editor.formatOnSave": true,
+  "prettier.alignObjectProperties": true,
+  "prettier.jsxSingleQuote": true,
+  "prettier.tabWidth": 2,
+  "prettier.openOutput": false,
+  "prettier.printWidth": 100,
+  "prettier.useTabs": false,
+}
