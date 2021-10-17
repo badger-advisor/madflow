@@ -3,6 +3,7 @@ import { Button, Typography } from '@mui/material';
 const Landing = () => {
   return (
     <div>
+      hello
       <Typography>Welcome to </Typography>
       <Typography color='red'>Mad</Typography>
       <Typography>Flow</Typography>
