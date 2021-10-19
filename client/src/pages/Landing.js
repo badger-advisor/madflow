@@ -1,7 +1,7 @@
-import React from 'react';
+import SidePanel from '../components/LandingPage/SidePanel';
 
 const Landing = () => {
-  return <div />;
+  return <SidePanel />;
 };
 
 export default Landing;
