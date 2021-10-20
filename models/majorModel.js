@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const majorSchema = new mongoose.Schema({
-  name     : {
+  name    : {
     type     : String,
     required : [ true, 'A major must have a name' ],
     unique   : true
