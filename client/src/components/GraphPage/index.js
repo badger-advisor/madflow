@@ -59,9 +59,10 @@ const DnDFlow = () => {
   };
 
   return (
-    <div className="dndflow" style={{ height: 1080 }}>
+    <div className="dndflow" style={{height: 1080}}>
       <ReactFlowProvider>
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
+
           <ReactFlow
             elements={elements}
             onConnect={onConnect}
@@ -70,10 +71,12 @@ const DnDFlow = () => {
             onDrop={onDrop}
             onDragOver={onDragOver}
           >
-            <Background />
-            <Controls />
+
+            <Background  />
+
           </ReactFlow>
         </div>
+        <Controls />
         <Sidebar />
       </ReactFlowProvider>
     </div>

@@ -8,7 +8,7 @@
   border-right: 1px solid #eee;
   padding: 15px 10px;
   font-size: 12px;
-  background: #fcfcfc;
+  background: #a33d3d;
 }
 
 .dndflow aside > * {
@@ -23,6 +23,7 @@
 .dndflow .reactflow-wrapper {
   flex-grow: 1;
   height: 100%;
+  background: #57636F
 }
 
 @media screen and (min-width: 768px) {
