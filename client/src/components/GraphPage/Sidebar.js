@@ -1,5 +1,9 @@
 import React from 'react';
-//import Drawer from '@mui/material/Drawer'
+import {List, ListItem} from '@mui/material'
+
+
+import './dnd.css'
+
 
 export default () => {
   const onDragStart = (event, nodeType) => {
@@ -8,17 +12,26 @@ export default () => {
   };
 
   return (
-    <aside>
-      <div className="description">Suggested Courses</div>
+    <List>
+      <ListItem button >
       <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'input')} draggable>
         Input Node
       </div>
+      </ListItem>
+      <ListItem button >
+
       <div className="dndnode" onDragStart={(event) => onDragStart(event, 'default')} draggable>
         Default Node
       </div>
+      </ListItem>
+      <ListItem button >
+
       <div className="dndnode output" onDragStart={(event) => onDragStart(event, 'output')} draggable>
         Output Node
       </div>
-    </aside>
+      </ListItem>
+      </List>
   );
 };
+
+
