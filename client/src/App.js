@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Landing, Dashboard, Profile, Graph } from './pages';
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Switch>
@@ -13,6 +12,6 @@ function App() {
       </Switch>
     </Router>
   );
-}
+};
 
 export default App;
