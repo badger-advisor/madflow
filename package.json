@@ -1,0 +1,39 @@
+{
+  "name": "madflow",
+  "version": "1.0.0",
+  "description": "Helping students pick out the most optimal courses",
+  "main": "server.js",
+  "scripts": {
+    "client-install": "cd client && npm install",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/badger-advisor/MadFlow.git"
+  },
+  "author": "James",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/badger-advisor/MadFlow/issues"
+  },
+  "homepage": "https://github.com/badger-advisor/MadFlow#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "concurrently": "^6.3.0",
+    "config": "^3.3.6",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.11"
+  },
+  "devDependencies": {
+    "chokidar": "^3.5.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.14"
+  }
+}
