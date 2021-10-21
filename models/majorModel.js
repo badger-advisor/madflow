@@ -12,4 +12,4 @@ const majorSchema = new mongoose.Schema({
 
 const Major = mongoose.model('Major', majorSchema);
 
-module.exports(Major);
+module.exports = Major;
