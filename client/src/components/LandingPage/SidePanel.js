@@ -1,30 +1,35 @@
-import { Button, Typography, Box, alpha } from '@mui/material';
+import { Button, Typography, Box, alpha, Drawer } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(() => {
   return {
-    sidePane : {
-      //display         : 'flex',
-      backgroundColor : alpha('#000000', 0.17),
-      width           : '40%',
-      height          : '100%'
+    sidePanel   : {
+      //backgroundColor : alpha('#000000', 0.17),
+      display : 'flex'
     },
-    guest    : {
-      //backgroundColor : '#AE2012',
+    drawerPaper : {
+      backgrounColor : alpha('#000000', 0.17), // color not working, change later
+      justifyContent : 'center',
+      width          : '30%' // potentially change later
+    },
+    button      : {
       pb : '20px',
       pt : '20px'
-      //color2          : '0A9396'
     }
   };
 });
 
 const SidePanel = () => {
   const classes = useStyles();
-  //className={classes.sidePane}
 
   return (
-    <div className={classes.sidePane}>
+    <Drawer
+      className={classes.sidePanel}
+      anchor='left'
+      variant='permanent'
+      classes={{ paper: classes.drawerPaper }}
+    >
       <Typography variant='h3' align='center'>
         Welcome to Mad Flow
       </Typography>
@@ -36,13 +41,13 @@ const SidePanel = () => {
       </div>
 
       <div align='center'>
-        <Box className={classes.guest}>
+        <Box sx={{ pb: '20px' }}>
           <Button component={Link} to='/flow' variant='outlined'>
             Continue as Guest
           </Button>
         </Box>
       </div>
-    </div>
+    </Drawer>
   );
 };
 
