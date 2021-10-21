@@ -1,12 +1,12 @@
-const db = require('../models');
+// const db = require('../models');
 const router = require('express').Router();
 const passport = require('passport');
 
-const User = db.User;
+// const User = db.User;
 
 // auth login
 router.get('/login', (req, res) => {
-  res.render('login', { user: req.user });
+  res.json({ user: req.user });
 });
 
 // auth logout
@@ -39,7 +39,7 @@ const authCheck = (req, res, next) => {
 };
 
 router.get('/', authCheck, (req, res) => {
-  res.render('profile', { user: req.User });
+  res.json({ user: req.User });
 });
 
 module.exports = router;
