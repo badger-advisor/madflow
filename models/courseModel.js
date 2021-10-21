@@ -9,6 +9,6 @@ const courseSchema = new mongoose.Schema({
   prerequisites : Array
 });
 
-const Course = mongoose.model('user', courseSchema);
+const Course = mongoose.model('Course', courseSchema);
 
 module.exports(Course);

@@ -15,6 +15,6 @@ const flowSchema = new mongoose.Schema({
   }
 });
 
-const Flow = mongoose.model('flow', flowSchema);
+const Flow = mongoose.model('Flow', flowSchema);
 
 module.exports(Flow);
