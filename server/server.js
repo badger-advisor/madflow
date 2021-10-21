@@ -3,6 +3,7 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const authRoutes = require('./routes/authRoutes');
 const profileRoutes = require('./routes/profileRoutes');
+const insertUserRoutes = require('./routes/insertUserRoute');
 const passportSetup = require('./config/passport-setup');
 const mongoose = require('mongoose');
 const keys = require('./config/keys');
@@ -31,6 +32,7 @@ mongoose.connect(keys.mongodb.dbURI, () => {
 // set up routes
 app.use('/auth', authRoutes);
 app.use('/profile', profileRoutes);
+app.use('/insertUser', insertUserRoutes);
 
 // create home route
 app.get('/', (req, res) => {
