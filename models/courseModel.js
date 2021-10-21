@@ -1,11 +1,18 @@
 const mongoose = require('mongoose');
 
 const courseSchema = new mongoose.Schema({
-  courseInfo    : {
-    type     : String,
-    required : [ true, 'A course must have info' ],
-    unique   : true
+  courseNumber  : String,
+
+  info          : {
+    courseName  : { type: String },
+    description : { type: String },
+    credits     : { type: String },
+    lastTaught  : { type: String },
+    repeatable  : { type: Boolean },
+    designation : { type: Object },
+    standing    : { type: String }
   },
+
   prerequisites : Array
 });
 
