@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Landing, Dashboard, Profile, Graph } from './pages';
 
+
 const App = () => {
   return (
     <Router>
