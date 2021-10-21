@@ -10,6 +10,6 @@ const majorSchema = new mongoose.Schema({
   courses : Array
 });
 
-const Major = mongoose.model('user', majorSchema);
+const Major = mongoose.model('major', majorSchema);
 
-module.exports(Major);
+module.exports = Major;

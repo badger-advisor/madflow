@@ -1,0 +1,22 @@
+{
+  "name": "MadFlow",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/badger-advisor/mad-renters.git"
+  },
+  "author": "MadFlow",
+  "license": "MIT",
+  "dependencies": {
+    "cookie-session": "^1.3.2",
+    "ejs": "^2.5.7",
+    "express": "^4.16.1",
+    "mongoose": "^4.12.0",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^1.0.0"
+  }
+}
