@@ -4,10 +4,11 @@
   "description": "Helping students pick out the most optimal courses",
   "main": "server.js",
   "scripts": {
-    "client-install": "npm install --prefix client",
+    "client-install": "cd client && npm install",
+    "dev-install": "npm install && npm run client-install",
     "start": "node server.js",
-    "server": "nodemon server.js --exec babel-node --presets babel-preset-env",
-    "client": "npm start --prefix client",
+    "server": "nodemon server.js",
+    "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "repository": {
@@ -23,17 +24,20 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
-    "concurrently": "^3.6.0",
-    "config": "^3.0.1",
+    "concurrently": "^6.3.0",
+    "config": "^3.3.6",
+    "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.16.3",
-    "jsonwebtoken": "^8.5.0",
-    "mongoose": "^5.1.6"
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.11",
+    "passport": "^0.5.0",
+    "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
     "chokidar": "^3.5.2",
-    "morgan": "^1.9.1",
-    "nodemon": "^2.0.13"
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.14"
   }
 }
