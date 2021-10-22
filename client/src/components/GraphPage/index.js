@@ -99,6 +99,7 @@ export default function Graph() {
     setOpen(false);
   };
 
+  //State related to React Flow
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [elements, setElements] = useState(initialElements);
@@ -136,7 +137,7 @@ export default function Graph() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} style={{ background: '#c5050c' }}>
         <Toolbar>
           <Typography variant="h6" noWrap sx={{ marginRight: 4 }} component="div">
             MadFlow
@@ -145,22 +146,25 @@ export default function Graph() {
           <Box sx={{ flexGrow: 1}} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           <IconButton
+          sx={{ marginRight: 2, marginLeft: 2 }}
           color="inherit"
           edge="end"
           >
-          <UndoIcon fontSize='mid' sx={{ marginRight: 2, marginLeft: 2 }}/>
+          <UndoIcon fontSize='mid'/>
           </IconButton >
           <IconButton
+          sx={{ marginRight: 2, marginLeft: 2 }}
           color="inherit"
           edge="end"
           >
-          <RedoIcon fontSize='mid' sx={{ marginRight: 2, marginLeft: 2 }}/>
+          <RedoIcon fontSize='mid'/>
           </IconButton >
           <IconButton
+          sx={{ marginRight: 2, marginLeft: 2 }}
           color="inherit"
           edge="end"
           >
-          <AccountCircleRoundedIcon fontSize='large' sx={{ marginRight: 2, marginLeft: 2 }}/>
+          <AccountCircleRoundedIcon fontSize='large'/>
           </IconButton >
           <IconButton
             color="inherit"
