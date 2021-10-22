@@ -1,6 +1,7 @@
 import React from 'react'
 import GraphPage from '../components/GraphPage'
-import SearchBar from '../components/Searchbar'
+
+
 
 import '../components/GraphPage/dnd.css'
 
