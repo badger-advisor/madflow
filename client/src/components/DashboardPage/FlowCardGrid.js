@@ -1,4 +1,5 @@
 import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
+import FlowCard from './FlowCard';
 
 const TempFlows = [
   {
@@ -21,19 +22,11 @@ const TempFlows = [
 
 const FlowCardGrid = () => {
   return (
-    <Box sx={{ flexGrow: 1, pt: '30px' }}>
-      <Grid container spacing={2}>
+    <Box sx={{ flexGrow: 1, margin: '30px' }}>
+      <Grid container spacing={4}>
         {TempFlows.map((flow) => (
-          <Grid item xs={2} sm={4} md={4} key={flow.id}>
-            <Card
-              sx={{
-                width  : 1,
-                height : 1,
-                margin : '10px'
-              }}
-            >
-              <Typography>{flow.flowName}</Typography>
-            </Card>
+          <Grid item xs={6} sm={3} md={3} key={flow.id}>
+            <FlowCard flowID={flow.id} flowName={flow.flowName} />
           </Grid>
         ))}
       </Grid>

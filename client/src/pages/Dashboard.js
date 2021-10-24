@@ -5,9 +5,7 @@ const Dashboard = () => {
   return (
     <div>
       <NavBar />
-      <div>
         <FlowCardGrid />
-      </div>
     </div>
   );
 };
