@@ -1,11 +1,13 @@
 import NavBar from '../components/DashboardPage/NavBar';
-import FlowCard from '../components/DashboardPage/FlowCard';
+import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
 
 const Dashboard = () => {
   return (
     <div>
       <NavBar />
-      <FlowCard />
+      <div>
+        <FlowCardGrid />
+      </div>
     </div>
   );
 };
