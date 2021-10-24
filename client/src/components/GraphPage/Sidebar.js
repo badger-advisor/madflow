@@ -1,11 +1,9 @@
 import React from 'react';
 import {List, ListItem} from '@mui/material'
 
-
 import './dnd.css'
 
-
-export default () => {
+const Sidebar = () => {
   const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData('application/reactflow', nodeType);
     event.dataTransfer.effectAllowed = 'move';
@@ -30,8 +28,9 @@ export default () => {
         Output Node
       </div>
       </ListItem>
-      </List>
+    </List>
   );
 };
 
+export default Sidebar
 
