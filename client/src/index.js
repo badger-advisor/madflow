@@ -1,16 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import axios from 'axios';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const API = axios.create({ baseURL: 'http://localhost:8080' });
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// API.interceptors.request.use((req) => {
+//   if (localStorage.getItem('profile')) {
+//     req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
+//   }
+//   return req;
+// }); // ???
+
+export const signIn = (formData) => API.post('/user/signin', formData);
+export const signUp = (formData) => API.post('/user/signup', formData);
+
+export const getAllUserFlows = (userID) => API.get(`/flow/${userID}`);
+export const getUserFlow = (userID, flowID) => API.get(`/flow/${userID}/${flowID}`);
+export const deleteUserFlow = (userID, flowID) => API.delete(`/flow/${userID}/${flowID}`);
+export const createUserFlow = (userID, flowID, flow) => API.post(`/flow/${userID}/${flowID}`, flow);
+export const updateUserFlow = (userID, flowID, updatedUserFlow) =>
+  API.patch(`/flow/${userID}/${flowID}`, updatedUserFlow);
+export const getPrefilledFlow = (majorID) => API.get(`/flow/prefilled/${majorID}`);
+
+export const deleteUser = (userID) => API.delete(`/user/${userID}`);
+
+export const getCourse = (courseID) => API.get(`/course/${courseID}`);
