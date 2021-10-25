@@ -22,4 +22,4 @@ export const getPrefilledFlow = (majorID) => API.get(`/flow/prefilled/${majorID}
 
 export const deleteUser = (userID) => API.delete(`/user/${userID}`);
 
-export const getCourse = (courseID) => API.get(`/course/${courseID}`);
+export const getCourse = (courseNumber) => API.get(`/course/${courseNumber}`);
