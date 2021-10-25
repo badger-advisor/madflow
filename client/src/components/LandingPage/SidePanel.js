@@ -1,6 +1,7 @@
 import { Button, Typography, Box, alpha, Drawer } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
+import {signIn} from '../../api/authAPI';
 
 const useStyles = makeStyles(() => {
   return {
@@ -36,7 +37,7 @@ const SidePanel = () => {
 
       <div align='center'>
         <Box sx={{ pt: '20px', pb: '20px' }}>
-          <Button variant='outlined'>Sign in with Google</Button>
+          <Button onClick={() => signIn({headers: {'Access-Control-Allow-Origin': '*',"Content-Type": "aplication/json"}})}  variant='outlined'>Sign in with Google</Button>
         </Box>
       </div>
 

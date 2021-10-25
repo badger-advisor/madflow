@@ -5,9 +5,9 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const authRoutes = require('./routes/authRoutes');
 const userRoute = require('./routes/userRoute');
-// const profileRoutes = require('./routes/profileRoutes');
+const profileRoutes = require('./routes/profileRoutes');
 // const insertUserRoutes = require('./routes/insertUserRoute');
-const passportSetup = require('./config/passport-setup');
+const passportSetup = require('./controllers/passport-setup');
 
 // set up enviromental variables
 require('dotenv').config();
@@ -15,7 +15,13 @@ require('dotenv').config();
 const app = express();
 
 //! Don't know what this does either
-// app.use(cors());
+app.use(cors());
+app.options('*', cors())
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 // set up session cookies
 app.use(
@@ -46,7 +52,7 @@ try {
 // set up routes
 app.use('/auth', authRoutes);
 app.use('/user', userRoute);
-// app.use('/profile', profileRoutes);
+app.use('/profile', profileRoutes);
 // app.use('/insertUser', insertUserRoutes);
 
 // create home route
