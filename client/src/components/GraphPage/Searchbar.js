@@ -13,8 +13,8 @@ const courseOptions = [
 ];
 
 const SearchBar = () => {
-	const closedLocation = { pointerEvents: 'auto', position: 'fixed', top: 70, left: 140 };
-	const openLocation = { pointerEvents: 'auto', position: 'fixed', top: 70, left: 445 };
+	const closedLocation = { pointerEvents: 'auto', position: 'fixed', top: 70, left: 140, zIndex: 100 };
+	const openLocation = { pointerEvents: 'auto', position: 'fixed', top: 70, left: 445, zIndex: 100 };
 	const [ currentCourse, setCurrentCourse ] = useState('');
 	const [ open, setOpen ] = useState(false);
 	const [ location, setLocation ] = useState(closedLocation);
@@ -42,6 +42,7 @@ const SearchBar = () => {
 
 	//Determines the behavior of the course addition popup whenever the course search box closes
 	const openPopupHandler = () => {
+		console.log('opened');
 		if (currentCourse !== '') {
 			setOpen(true);
 		}
@@ -65,13 +66,11 @@ const SearchBar = () => {
 				sx={{ width: 300 }}
 				renderInput={(params) => <TextField {...params} label="Search to add a course..." />}
 			/>
-			<Popper id={id} open={open} style={location}>
+			<Popper disablePortal={false} id={id} open={open} style={location}>
 				<Box sx={{ border: 1, p: 1, bgcolor: 'background.paper' }}>
 					<div>{currentCourse.label}</div>
 					<div>{currentCourse.courseInfo}</div>
-					<Button variant="contained" onClick={console.log('BUTTON TEST')}>
-						Have Taken
-					</Button>
+					<Button variant="contained">Have Taken</Button>
 				</Box>
 			</Popper>
 		</div>
