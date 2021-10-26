@@ -1,7 +1,6 @@
 import React from 'react';
 import { TextField, Autocomplete, Popper, Box } from '@mui/material/';
 import { useState } from 'react';
-import AddCourse from './AddCourse';
 import Button from '@mui/material/Button';
 
 //Later a list of courses will be fetched from the DB
@@ -14,35 +13,46 @@ const courseOptions = [
 ];
 
 const SearchBar = () => {
-	const closedLocation = { pointerEvents: 'auto', position: 'fixed', top: 70, left: 445 };
+	const closedLocation = { pointerEvents: 'auto', position: 'fixed', top: 70, left: 140 };
 	const openLocation = { pointerEvents: 'auto', position: 'fixed', top: 70, left: 445 };
 	const [ currentCourse, setCurrentCourse ] = useState('');
-	const [ currentCourseLabel, setCurrentCourseLabel ] = useState('');
-	const [ anchorEl, setAnchorEl ] = useState(null);
 	const [ open, setOpen ] = useState(false);
 	const [ location, setLocation ] = useState(closedLocation);
+
+	//Create an event listener that causes the course addition popup to close when
+	//the user clicks the 'clear' button on the searchbar
+	setTimeout(async () => {
+		const close = await document.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
+		if (close) {
+			close.addEventListener('click', () => {
+				setOpen(false);
+				setCurrentCourse('');
+			});
+		}
+	}, 100);
 
 	//Determines the course information that appears in the popup
 	const courseChangeHandler = (event, option, reason) => {
 		if (option !== null && event != undefined) {
-			//setAnchorEl(event.currentTarget);
-			setLocation(closedLocation);
+			setLocation(openLocation);
 			setOpen(true);
-			console.log(option);
-			console.log(event);
-			setAnchorEl(event.currentTarget);
-			console.log(option);
 			setCurrentCourse(option);
-			setCurrentCourseLabel(option.label);
 		}
 	};
 
 	//Determines the behavior of the course addition popup whenever the course search box closes
-	const closePopupHandler = () => {
-		setOpen(false);
+	const openPopupHandler = () => {
+		if (currentCourse !== '') {
+			setOpen(true);
+		}
+		setLocation(openLocation);
 	};
 
-	//const open = Boolean(anchorEl);
+	//Determines the behavior of the course addition popup whenever the course search box closes
+	const closePopupHandler = () => {
+		setLocation(closedLocation);
+	};
+
 	const id = open ? 'simple-popper' : undefined;
 
 	return (
@@ -50,6 +60,7 @@ const SearchBar = () => {
 			<Autocomplete
 				options={courseOptions}
 				onHighlightChange={(event, T) => courseChangeHandler(event, T, 'mouse')}
+				onOpen={() => openPopupHandler()}
 				onClose={() => closePopupHandler()}
 				sx={{ width: 300 }}
 				renderInput={(params) => <TextField {...params} label="Search to add a course..." />}
