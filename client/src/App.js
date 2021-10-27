@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Landing, Dashboard, Profile, Graph } from './pages';
-
+import ApiTests from './components/ApiTests';
 
 const App = () => {
   return (
@@ -10,6 +10,7 @@ const App = () => {
         <Route exact path='/dashboard' render={Dashboard} />
         <Route exact path='/profile' render={Profile} />
         <Route exact path='/flow' render={Graph} />
+        <Route exact path='/test' render={ApiTests} />
       </Switch>
     </Router>
   );
