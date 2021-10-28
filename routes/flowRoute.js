@@ -3,6 +3,6 @@ const router = express.Router();
 
 const { getFlowInfo } = require('../controllers/flowController');
 
-router.get('/:flowName', getFlowInfo);
+router.get('/:id', getFlowInfo);
 
 module.exports = router;
