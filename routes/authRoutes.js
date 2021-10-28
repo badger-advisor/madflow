@@ -2,6 +2,7 @@
 const router = require('express').Router();
 const passport = require('passport');
 
+
 // const User = db.User;
 
 // auth login
@@ -21,7 +22,7 @@ router.get(
   passport.authenticate('google', {
     scope : [ 'profile' ,'email']
   }),
-  (req,res)=>{res.header("Access-Control-Allow-Origin", "*");}
+  (req,res)=>{res.header("Access-Control-Allow-Origin", "http://localhost:3000/");}
 
 );
 
