@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Landing, Dashboard, Profile, Graph } from './pages';
+import ApiTests from './components/ApiTests';
 
 const App = () => {
   return (

@@ -1,4 +1,4 @@
-import { getCourse } from '../pages/index';
+import { getCourse } from '../api';
 
 const handleGetCourse = async () => {
   await getCourse('CS506');
