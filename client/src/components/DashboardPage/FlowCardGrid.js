@@ -25,7 +25,7 @@ const FlowCardGrid = () => {
     <Box sx={{ flexGrow: 1, margin: '30px' }}>
       <Grid container spacing={4}>
         {TempFlows.map((flow) => (
-          <Grid item xs={6} sm={3} md={3} key={flow.id}>
+          <Grid item xs={6} sm={5} md={3} key={flow.id}>
             <FlowCard flowID={flow.id} flowName={flow.flowName} />
           </Grid>
         ))}
