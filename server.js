@@ -6,6 +6,7 @@ const passport = require('passport');
 const authRoutes = require('./routes/authRoutes');
 const userRoute = require('./routes/userRoute');
 const courseRoute = require('./routes/courseRoute');
+const flowRoute = require('./routes/flowRoute');
 // const profileRoutes = require('./routes/profileRoutes');
 // const insertUserRoutes = require('./routes/insertUserRoute');
 const passportSetup = require('./config/passport-setup');
@@ -48,6 +49,7 @@ try {
 app.use('/auth', authRoutes);
 app.use('/user', userRoute);
 app.use('/course', courseRoute);
+app.use('/flow', flowRoute);
 // app.use('/profile', profileRoutes);
 // app.use('/insertUser', insertUserRoutes);
 
