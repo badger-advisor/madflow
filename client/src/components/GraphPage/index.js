@@ -14,12 +14,12 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
-
 import Sidebar from './Sidebar';
 import Searchbar from './Searchbar';
 import Flow from './Flow';
 
 import './dnd.css';
+
 
 const drawerWidth = 240;
 

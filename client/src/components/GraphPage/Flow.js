@@ -81,7 +81,7 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const Flow = () => {
-	const styles = useState(CourseNodeStyles);
+  const styles = useState(CourseNodeStyles);
 	const reactFlowWrapper = useRef(null);
 	const [ reactFlowInstance, setReactFlowInstance ] = useState(null);
 	const [ elements, setElements ] = useState(initialElements);
