@@ -21,7 +21,6 @@ const NavBar = () => {
     console.log('new flow clicked!');
   };
 
-  // TODO: function to handle opening the profile menu
   const openProfileMenu = (e) => {
     console.log('profile clicked!');
     setShowProfileMenu(e.currentTarget);
@@ -37,10 +36,14 @@ const NavBar = () => {
             justifyContent : 'space-between'
           }}
         >
+          {/* logo button */}
           <IconButton sx={{ mr: 2 }}>
             <img src={tempIcon} height='45px' />
           </IconButton>
+
+          {/* right side of nav bar */}
           <div style={{ display: 'flex', flexDirection: 'row' }}>
+            {/* add new flow button */}
             <Button
               variant='outlined'
               startIcon={<AddIcon />}
@@ -49,9 +52,13 @@ const NavBar = () => {
             >
               New Flow
             </Button>
+
+            {/* profile icon and button */}
             <Avatar sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }} onClick={openProfileMenu}>
               G
             </Avatar>
+
+            {/* profile menu */}
             <ProfileMenu showMenu={showProfileMenu} setShowMenu={setShowProfileMenu} />
           </div>
         </Toolbar>

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 // material-ui
 import { Menu, MenuItem } from '@mui/material';
 
@@ -13,16 +15,10 @@ const ProfileMenu = ({ showMenu, setShowMenu }) => {
     setShowMenu(null);
   };
 
-  // TODO: function to navigate user to the Profile page
-  const moveToProfile = (e) => {
-    e.stopPropagation();
-    console.log('rename flow');
-  };
-
   // TODO: function to sign current user out of the application
   const signOut = (e) => {
     e.stopPropagation();
-    console.log('copy flow');
+    console.log('sign out clicked :(');
   };
 
   return (
@@ -42,7 +38,7 @@ const ProfileMenu = ({ showMenu, setShowMenu }) => {
         horizontal : 'right'
       }}
     >
-      <MenuItem onClick={moveToProfile}>
+      <MenuItem component={Link} to='/profile'>
         <PersonOutlineIcon sx={{ mr: 1.75 }} />
         View Profile
       </MenuItem>
