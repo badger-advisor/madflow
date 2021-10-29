@@ -13,8 +13,9 @@ import Sidebar from './Sidebar';
 import Flow from './Flow';
 import SearchNavBar from './SearchNavBar/SearchNavBar';
 import './dnd.css';
+import DrawerHeader from './HeaderSpacer';
 
-const drawerWidth = 240;
+export const RECOMMEND_BAR_WIDTH = 240;
 
 const Main = styled('main', { shouldForwardProp: prop => prop !== 'open' })(({ theme, open }) => ({
   flexGrow    : 1,
@@ -23,7 +24,7 @@ const Main = styled('main', { shouldForwardProp: prop => prop !== 'open' })(({ t
     easing   : theme.transitions.easing.sharp,
     duration : theme.transitions.duration.leavingScreen
   }),
-  marginRight : -drawerWidth,
+  marginRight : -RECOMMEND_BAR_WIDTH,
   ...(open && {
     transition  : theme.transitions.create('margin', {
       easing   : theme.transitions.easing.easeOut,
@@ -31,15 +32,6 @@ const Main = styled('main', { shouldForwardProp: prop => prop !== 'open' })(({ t
     }),
     marginRight : 0
   })
-}));
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display        : 'flex',
-  alignItems     : 'center',
-  padding        : theme.spacing(0, 1),
-  // necessary for ReactFlow view to be below the app bar
-  ...theme.mixins.toolbar,
-  justifyContent : 'flex-start'
 }));
 
 export default function Graph() {
@@ -62,10 +54,10 @@ export default function Graph() {
       </Main>
       <Drawer
         sx={{
-          width                : drawerWidth,
+          width                : RECOMMEND_BAR_WIDTH,
           flexShrink           : 0,
           '& .MuiDrawer-paper' : {
-            width : drawerWidth
+            width : RECOMMEND_BAR_WIDTH
           }
         }}
         variant='persistent'
