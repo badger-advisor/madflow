@@ -12,18 +12,18 @@ const Sidebar = () => {
 	return (
 		<List>
 			<ListItem button>
-				<div className="dndnode input" onDragStart={(event) => onDragStart(event, 'input')} draggable>
-					Input Node
+				<div className="dndnode input" onDragStart={(event) => onDragStart(event, 'courseTaken')} draggable>
+					Taken
 				</div>
 			</ListItem>
 			<ListItem button>
-				<div className="dndnode" onDragStart={(event) => onDragStart(event, 'default')} draggable>
-					Default Node
+				<div className="dndnode" onDragStart={(event) => onDragStart(event, 'courseCannotTake')} draggable>
+					Cannot Take
 				</div>
 			</ListItem>
 			<ListItem button>
-				<div className="dndnode output" onDragStart={(event) => onDragStart(event, 'output')} draggable>
-					Output Node
+				<div className="dndnode output" onDragStart={(event) => onDragStart(event, 'courseCanTake')} draggable>
+					Can Take
 				</div>
 			</ListItem>
 		</List>
