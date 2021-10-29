@@ -32,7 +32,9 @@ const App = () => {
         <Route exact path='/landing' render={Landing} />
         <Route exact path='/dashboard' render={Dashboard} />
         <Route exact path='/profile' render={Profile} />
-        <Route exact path='/flow' render={Graph} />
+        <Route exact path='/flow'>
+          <Graph />
+        </Route>
         <Route exact path='/test' render={ApiTests} />
       </Switch>
     </Router>

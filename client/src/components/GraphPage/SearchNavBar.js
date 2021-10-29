@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Searchbar from '../Searchbar';
+import Searchbar from './Searchbar';
 
 import MuiAppBar from '@mui/material/AppBar';
 import { styled, useTheme } from '@mui/material/styles';
