@@ -117,7 +117,7 @@ const SearchBar = ({ elements, setElements }) => {
     // Removes spaces from current course
     const courseNum = currentCourse.label.split(' ').join('');
 
-    // Determiens what type of node to add 
+    // Determiens what type of node to add
     const type = taken ? 'courseTaken' : 'courseCannotTake';
 
     try {
