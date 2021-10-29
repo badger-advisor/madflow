@@ -16,8 +16,8 @@ require('dotenv').config();
 
 const app = express();
 
-//! Don't know what this does either
-// app.use(cors());
+// Preventing cors error
+app.use(cors());
 
 // set up session cookies
 app.use(
