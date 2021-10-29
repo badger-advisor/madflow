@@ -5,6 +5,7 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const authRoutes = require('./routes/authRoutes');
 const userRoute = require('./routes/userRoute');
+const courseRoute = require('./routes/courseRoute');
 const flowRoute = require('./routes/flowRoute');
 // const profileRoutes = require('./routes/profileRoutes');
 // const insertUserRoutes = require('./routes/insertUserRoute');
@@ -15,8 +16,8 @@ require('dotenv').config();
 
 const app = express();
 
-//! Don't know what this does either
-// app.use(cors());
+// Preventing cors error
+app.use(cors());
 
 // set up session cookies
 app.use(
@@ -47,6 +48,7 @@ try {
 // set up routes
 app.use('/auth', authRoutes);
 app.use('/user', userRoute);
+app.use('/course', courseRoute);
 app.use('/flow', flowRoute);
 // app.use('/profile', profileRoutes);
 // app.use('/insertUser', insertUserRoutes);
