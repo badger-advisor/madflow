@@ -17,6 +17,8 @@ import Sidebar from '../components/GraphPage/Sidebar';
 
 import RecommendBar from '../components/GraphPage/RecommendBar';
 
+import { initialElements } from './initialElements';
+
 export const RECOMMEND_BAR_WIDTH = 240;
 
 const Main = styled('main', { shouldForwardProp: prop => prop !== 'open' })(({ theme, open }) => ({
@@ -38,6 +40,7 @@ const Main = styled('main', { shouldForwardProp: prop => prop !== 'open' })(({ t
 
 const Graph = () => {
   const [ openRec, setOpenRec ] = useState(false);
+  const [ elements, setElements ] = useState(initialElements);
   const theme = useTheme();
 
   const handleDrawer = () => {
@@ -47,12 +50,17 @@ const Graph = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <SearchNavBar handleDrawer={handleDrawer} open={openRec} />
+      <SearchNavBar
+        handleDrawer={handleDrawer}
+        open={openRec}
+        elements={elements}
+        setElements={setElements}
+      />
       {/* Currently, all of the objects within the Main view are related to showing the ReactFlow elements */}
       <Main open={openRec}>
         <DrawerHeader />
         {/*REACT FLOW VIEW*/}
-        <Flow />
+        <Flow elements={elements} setElements={setElements} />
       </Main>
       <RecommendBar handleDrawer={handleDrawer} open={openRec} />
     </Box>

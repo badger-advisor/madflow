@@ -33,14 +33,16 @@ export const AppBar = styled(MuiAppBar, {
   })
 }));
 
-const SearchNavBar = ({ handleDrawer, open }) => {
+const SearchNavBar = ({ handleDrawer, open, elements, setElements }) => {
   return (
     <AppBar position='fixed' open={open} style={{ background: '#c5050c' }}>
       <Toolbar>
         <Typography variant='h6' noWrap sx={{ marginRight: 4 }} component='div'>
           MadFlow
         </Typography>
-        <Searchbar />
+
+        {/* The actual search element */}
+        <Searchbar elements={elements} setElements={setElements} />
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           <IconButton sx={{ marginRight: 2, marginLeft: 2 }} color='inherit' edge='end'>

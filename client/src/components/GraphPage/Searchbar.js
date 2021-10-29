@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import ShowMoreText from 'react-show-more-text';
 
+import { generateNode } from '../../utils';
+
 import './dnd.css';
 
 //Later a list of courses will be fetched from the DB
@@ -37,10 +39,15 @@ const courseOptions = [
     label      : 'CS 577',
     courseInfo :
       'Basic paradigms for the design and analysis of efficient algorithms: greed, divide-and-conquer, dynamic programming, reductions, and the use of randomness. Computational intractability including typical NP-complete problems and ways to deal with them. Enroll Info: None'
+  },
+  {
+    courseID   : 6,
+    label      : 'CS 506',
+    courseInfo : 'testing adding node function'
   }
 ];
 
-const SearchBar = () => {
+const SearchBar = ({ elements, setElements }) => {
   const closedLocation = {
     pointerEvents : 'auto',
     position      : 'fixed',
@@ -72,25 +79,6 @@ const SearchBar = () => {
     [ inputValue ]
   );
 
-  const addCourse = () => {
-    console.log(`Add ${taken ? 'Taken' : 'Not Taken'}: ${currentCourse.label}`);
-    setInputValue('');
-    setDropDown(false);
-    setDisplayPop(false);
-  };
-
-  //Create an event listener that causes the course addition popup to close when
-  //the user clicks the 'clear' button on the searchbar
-  // setTimeout(async () => {
-  //   const close = await document.getElementsByClassName('MuiAutocomplete-clearIndicator')[0];
-  //   if (close) {
-  //     close.addEventListener('click', () => {
-  //       setOpen(false);
-  //       setCurrentCourse('');
-  //     });
-  //   }
-  // }, 100);
-
   //Determines the course information that appears in the popup
   const courseChangeHandler = (event, option) => {
     if (option !== null && event != undefined) {
@@ -100,21 +88,6 @@ const SearchBar = () => {
       setDisplayPop(true);
     }
   };
-
-  //Determines the behavior of the course addition popup whenever the course search box closes
-  // const openPopupHandler = () => {
-  //   if (currentCourse !== '') {
-  //     setOpen(true);
-  //   }
-  //   setLocation(openLocation);
-  // };
-
-  //Determines the behavior of the course addition popup whenever the course search box closes
-  // const closePopupHandler = () => {
-  //   setDisplayPop(false);
-  //// taken ? console.log('Add taken') : console.log('Add not taken');
-  //   setLocation(closedLocation);
-  // };
 
   const handleInputChange = (event, newInputValue) => {
     setInputValue(newInputValue);
@@ -131,6 +104,33 @@ const SearchBar = () => {
       setDropDown(false);
       setDisplayPop(false);
       console.log(e);
+    }
+  };
+
+  /**
+   * Able to add most as taken and not taken
+   * TODO: implement logic to determine if can take or cannor take
+   */
+  const addCourse = async () => {
+    console.log(`Add ${taken ? 'Taken' : 'Not Taken'}: ${currentCourse.label}`);
+
+    // Removes spaces from current course
+    const courseNum = currentCourse.label.split(' ').join('');
+
+    // Determiens what type of node to add 
+    const type = taken ? 'courseTaken' : 'courseCannotTake';
+
+    try {
+      const newCourse = await generateNode(courseNum, { type });
+      console.log(newCourse);
+      setElements([ ...elements, newCourse ]);
+    } catch (e) {
+      // TODO: Error pop up maybe
+      console.error(e.name, e.message);
+    } finally {
+      setInputValue('');
+      setDropDown(false);
+      setDisplayPop(false);
     }
   };
 
