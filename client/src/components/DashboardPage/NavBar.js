@@ -1,51 +1,40 @@
-import { Button, Typography, Box, alpha, AppBar, Drawer } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+// material-ui
+import { Button, IconButton, alpha, AppBar, Toolbar, Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(() => {
-  return {
-    navBar      : {
-      backgroundColor : alpha('#000000', 0.17)
-      //display : 'flex'
-    },
-    drawerPaper : {
-      //backgroundColor : alpha('#000000', 0.17), // color not working, change later
-      backgroundColor : 'gray',
-      justifyContent  : 'left',
-      width           : '100%',
-      height          : '50px'
-    },
-    button      : {
-      pb : '20px',
-      pt : '20px'
-    }
-  };
-});
+// icons
+import tempIcon from './tempIcon.png'; // TODO: replace with logo
+import AddIcon from '@mui/icons-material/Add';
 
-const MyDrawer = styled(Drawer)({
-  backgroundColor : alpha('#000000', 0.17),
-  width           : '100%',
-  height          : '50px'
-});
+const NavBarOffset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 const NavBar = () => {
-  const classes = useStyles();
-
   return (
     <div>
-      <AppBar position='static'>
-        <Typography>hello</Typography>
+      <AppBar position='fixed' sx={{ backgroundColor: '#7C7C7C', height: '60px' }}>
+        <Toolbar
+          variant='dense'
+          sx={{
+            height         : '60px',
+            justifyContent : 'space-between'
+          }}
+        >
+          <IconButton sx={{ mr: 2 }}>
+            <img src={tempIcon} height='45px' />
+          </IconButton>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <Button
+              variant='outlined'
+              startIcon={<AddIcon />}
+              sx={{ color: 'white', border: '1px solid white' }}
+            >
+              New Flow
+            </Button>
+            <Avatar sx={{ ml: 2, bgcolor: '#AE2012' }}>G</Avatar>
+          </div>
+        </Toolbar>
       </AppBar>
-      {/* <Drawer
-        className={classes.navBar}
-        anchor='top'
-        variant='permanent'
-        classes={{ paper: classes.drawerPaper }}
-      >
-        <Typography variant='h2' align='center'>
-          testing
-        </Typography>
-      </Drawer> */}
+      <NavBarOffset />
     </div>
   );
 };

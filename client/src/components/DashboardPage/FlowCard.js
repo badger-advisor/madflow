@@ -8,9 +8,6 @@ import { Card, CardMedia, Typography, Avatar, alpha, Menu, MenuItem } from '@mui
 
 // icons and images
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
-import FileCopyTwoToneIcon from '@mui/icons-material/FileCopyOutlined';
-import DeleteIcon from '@mui/icons-material/Delete';
 import testImg from './test.jpg';
 
 const FlowCard = ({ flowID, flowName }) => {
