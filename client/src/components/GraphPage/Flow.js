@@ -1,4 +1,3 @@
-import { red } from '@mui/material/colors';
 import React from 'react';
 import { useState, useRef } from 'react';
 import ReactFlow, {
@@ -11,6 +10,7 @@ import ReactFlow, {
 } from 'react-flow-renderer';
 
 import './dnd.css';
+import CourseNodeStyles from './CourseNodeStyles';
 
 const initialElements = [
 	{
@@ -81,6 +81,7 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const Flow = () => {
+	const styles = useState(CourseNodeStyles);
 	const reactFlowWrapper = useRef(null);
 	const [ reactFlowInstance, setReactFlowInstance ] = useState(null);
 	const [ elements, setElements ] = useState(initialElements);
@@ -88,56 +89,10 @@ const Flow = () => {
 	const onElementsRemove = (elementsToRemove) => setElements((els) => removeElements(elementsToRemove, els));
 	const onLoad = (_reactFlowInstance) => setReactFlowInstance(_reactFlowInstance);
 
-	//Set styling for each type of node
-	const courseNodeStyles = {
-		taken: {
-			display: 'flex',
-			justifyContent: 'center',
-			alignItems: 'center',
-			background: '#FFFFFF',
-			color: '#000000',
-			border: '2px solid #484848',
-			borderRadius: 5,
-			fontSize: 12,
-			width: 105,
-			height: 45,
-			textAlign: 'center',
-			targetPosition: 'top',
-			sourcePosition: 'bottom'
-		},
-		cannotTake: {
-			display: 'flex',
-			justifyContent: 'center',
-			alignItems: 'center',
-			background: '#FFFFFF',
-			color: '#000000',
-			border: '2px solid #a33d3d',
-			borderRadius: 5,
-			fontSize: 12,
-			width: 105,
-			height: 45,
-			textAlign: 'center'
-		},
-		canTake: {
-			display: 'flex',
-			justifyContent: 'center',
-			alignItems: 'center',
-			background: '#FFFFFF',
-			color: '#000000',
-			padding: 1,
-			border: '2px solid #008000',
-			borderRadius: 5,
-			fontSize: 12,
-			width: 105,
-			height: 45,
-			textAlign: 'center'
-		}
-	};
-
 	//Node element for a taken course
 	const CourseTaken = ({ data }) => {
 		return (
-			<div style={courseNodeStyles.taken}>
+			<div style={styles[0].taken}>
 				<Handle type="source" position="bottom" style={{ visibility: 'hidden' }} />
 				<div>{data.label}</div>
 				<Handle type="target" position="top" style={{ visibility: 'hidden' }} />
@@ -148,7 +103,7 @@ const Flow = () => {
 	//Node element for a course that cannot be taken yet
 	const CourseCannotTake = ({ data }) => {
 		return (
-			<div style={courseNodeStyles.cannotTake}>
+			<div style={styles[0].cannotTake}>
 				<Handle type="source" position="bottom" style={{ visibility: 'hidden' }} />
 				<div>{data.label}</div>
 				<Handle type="target" position="top" style={{ visibility: 'hidden' }} />
@@ -159,7 +114,7 @@ const Flow = () => {
 	//Node element for a course that has not been taken, but can be
 	const CourseCanTake = ({ data }) => {
 		return (
-			<div style={courseNodeStyles.canTake}>
+			<div style={styles[0].canTake}>
 				<Handle type="source" position="bottom" style={{ visibility: 'hidden' }} />
 				<div>{data.label}</div>
 				<Handle type="target" position="top" style={{ visibility: 'hidden' }} />
