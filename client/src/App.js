@@ -27,8 +27,8 @@ const TempNav = () => {
 const App = () => {
   return (
     <Router>
-      <TempNav />
       <Switch>
+        <Route exact path='/' render={TempNav} />
         <Route exact path='/landing' render={Landing} />
         <Route exact path='/dashboard' render={Dashboard} />
         <Route exact path='/profile' render={Profile} />
