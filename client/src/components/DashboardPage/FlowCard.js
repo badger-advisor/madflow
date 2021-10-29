@@ -4,7 +4,7 @@ import { useState } from 'react';
 import FlowCardMenu from './FlowCardMenu';
 
 // material-ui
-import { Card, CardMedia, Typography, Avatar, alpha, Menu, MenuItem } from '@mui/material';
+import { Card, CardMedia, Typography, Avatar, alpha, Box } from '@mui/material';
 
 // icons and images
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -27,27 +27,38 @@ const FlowCard = ({ flowID, flowName }) => {
   return (
     <Card
       sx={{
+        display         : 'flex',
+        flexDirection   : 'column',
+        justifyContent  : 'space-between',
+        //alignItems      : 'flex-end',
         width           : '100%',
         height          : '100%',
         borderRadius    : '16px',
         backgroundColor : '#0A9396',
+        boxShadow       : '0 8px 40px -12px rgba(0,0,0,0.3)',
         cursor          : 'pointer'
       }}
       variant='outlined'
-      borderradius={16}
-      block='flex'
       onClick={openFlow}
     >
       {/* FlowCard '...' menu icon */}
       <Avatar // TODO: Move to top right corner of Card
         variant='rounded'
         sx={{
+          //display         : 'flex',
+          //flexGrow        : 1,
+          //width           : '25%',
+          //justifyContent  : 'center',
+          //alignItems      : 'right',
           position        : 'absolute',
-          backgroundColor : alpha('#7C7C7C', 0.2),
-          zIndex          : 1
+          //right           : 5,
+          //top             : 5,
+          backgroundColor : alpha('#7C7C7C', 0)
+          //ml              : '20%'
         }}
         onClick={openMenu}
       >
+        {/* <Typography> hello </Typography> */}
         <MoreHorizIcon sx={{ color: 'gray', cursor: 'pointer' }} />
       </Avatar>
 
