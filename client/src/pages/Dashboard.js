@@ -1,4 +1,4 @@
-import NavBar from '../components/DashboardPage/NavBar';
+import NavBar from '../components/NavBar/NavBar';
 import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
 
 import { Button, Typography, Box, alpha, AppBar, Drawer } from '@mui/material';

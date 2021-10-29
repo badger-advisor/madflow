@@ -1,3 +1,8 @@
+import { useState } from 'react';
+
+// components
+import ProfileMenu from './ProfileMenu';
+
 // material-ui
 import { Button, IconButton, alpha, AppBar, Toolbar, Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -9,6 +14,8 @@ import AddIcon from '@mui/icons-material/Add';
 const NavBarOffset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 const NavBar = () => {
+  const [ showProfileMenu, setShowProfileMenu ] = useState(null);
+
   // TODO: function to handle opening the NewFlow component
   const newFlow = (e) => {
     console.log('new flow clicked!');
@@ -17,7 +24,7 @@ const NavBar = () => {
   // TODO: function to handle opening the profile menu
   const openProfileMenu = (e) => {
     console.log('profile clicked!');
-    //setShowMenu(e.currentTarget);
+    setShowProfileMenu(e.currentTarget);
   };
 
   return (
@@ -45,6 +52,7 @@ const NavBar = () => {
             <Avatar sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }} onClick={openProfileMenu}>
               G
             </Avatar>
+            <ProfileMenu showMenu={showProfileMenu} setShowMenu={setShowProfileMenu} />
           </div>
         </Toolbar>
       </AppBar>
