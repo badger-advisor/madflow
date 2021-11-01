@@ -7,4 +7,5 @@
   "prettier.openOutput": false,
   "prettier.printWidth": 100,
   "prettier.useTabs": false,
+  "prettier.arrowParens": false,
 }
