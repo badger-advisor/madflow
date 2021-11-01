@@ -15,18 +15,18 @@ import CourseNodeStyles from './CourseNodeStyles';
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-const Flow = ({ setElements, setCurElm, setNextElm, curElm, nextElm }) => {
-  let elements = JSON.parse(localStorage.getItem('elements'));
+const Flow = ({ elements, setElements, saveForUndo, setCurElm, setNextElm, curElm, nextElm }) => {
+  // let elements = JSON.parse(localStorage.getItem('elements'));
 
-  useEffect(() => {
-    const eventListenerFun = e => {
-      console.log('update recieved');
-      elements = JSON.parse(localStorage.getItem('elements'));
-    };
-    window.addEventListener('storage', eventListenerFun);
+  // useEffect(() => {
+  //   const eventListenerFun = e => {
+  //     console.log('update recieved');
+  //     elements = JSON.parse(localStorage.getItem('elements'));
+  //   };
+  //   window.addEventListener('storage', eventListenerFun);
 
-    return () => window.removeEventListener('storage', eventListenerFun);
-  }, []);
+  //   return () => window.removeEventListener('storage', eventListenerFun);
+  // }, []);
 
   const styles = useState(CourseNodeStyles);
   const reactFlowWrapper = useRef(null);
@@ -35,7 +35,7 @@ const Flow = ({ setElements, setCurElm, setNextElm, curElm, nextElm }) => {
   const onConnect = params => setElements(els => addEdge(params, els));
   const onElementsRemove = elementsToRemove => {
     setElements(els => removeElements(elementsToRemove, els));
-    setNextElm([ ...nextElm, elementsToRemove ]);
+    // setNextElm([ ...nextElm, elementsToRemove ]);
   };
   const onLoad = _reactFlowInstance => setReactFlowInstance(_reactFlowInstance);
 
@@ -101,12 +101,35 @@ const Flow = ({ setElements, setCurElm, setNextElm, curElm, nextElm }) => {
       position,
       data     : { label: 'Course Node' }
     };
-    let t = [ ...curElm, newNode ];
-    console.log(t);
-    setCurElm(t);
+    // let t = [ ...curElm, newNode ];
+    // console.log(t);
+    // setCurElm(t);
 
     setElements(es => es.concat(newNode));
     console.log(elements);
+  };
+
+  const handleMoveNode = (e, node) => {
+    console.log(e);
+    console.log(node);
+    console.log(elements);
+    const newElements = elements.map((ele, idx) => {
+      const { id } = ele;
+
+      // Find the node that was just updated from the elements array
+      if (id === node.id) {
+        return {
+          ...ele,
+          position : node.position
+        };
+      } else {
+        // else return the node/edge as is
+        return ele;
+      }
+    });
+    console.log(newElements);
+    setElements(newElements);
+    saveForUndo(newElements);
   };
 
   return (
@@ -114,10 +137,11 @@ const Flow = ({ setElements, setCurElm, setNextElm, curElm, nextElm }) => {
       <ReactFlowProvider>
         <div className='reactflow-wrapper' ref={reactFlowWrapper}>
           <ReactFlow
-            elements={JSON.parse(localStorage.getItem('elements'))}
+            elements={elements}
             nodeTypes={nodeTypes}
             onConnect={onConnect}
             onElementsRemove={onElementsRemove}
+            onNodeDragStop={handleMoveNode}
             onLoad={onLoad}
             onDrop={onDrop}
             onDragOver={onDragOver}

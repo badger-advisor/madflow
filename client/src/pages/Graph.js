@@ -3,11 +3,6 @@ import { styled, useTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 
 import SearchNavBar from '../components/GraphPage/SearchNavBar';
 import '../components/GraphPage/dnd.css';
@@ -43,40 +38,46 @@ const Main = styled('main', { shouldForwardProp: prop => prop !== 'open' })(({ t
 const Graph = () => {
   const [ openRec, setOpenRec ] = useState(false);
   const [ elements, setElements ] = useState(initialElements);
-  const [ curElm, setCurElm ] = useState([]);
-  const [ nextElm, setNextElm ] = useState([]);
 
-  localStorage.setItem('elements', JSON.stringify(elements));
+  // Undo stack consists of a list of all element states
+  const [ undo, setUndo ] = useState([ initialElements ]);
+  // Each time before the undo stack is popped, the current state added to the redo stack
+  const [ redo, setRedo ] = useState([]);
 
-  useEffect(
-    () => {
-      localStorage.setItem('elements', JSON.stringify(elements));
-    },
-    [ elements ]
-  );
+  // localStorage.setItem('elements', JSON.stringify(elements));
 
-  const onRedo = () => {
-    if (nextElm.length > 0) {
-      setElements(es => es.concat(nextElm.pop()));
+  // useEffect(
+  //   () => {
+  //     localStorage.setItem('elements', JSON.stringify(elements));
+  //   },
+  //   [ elements ]
+  // );
+
+  const handleRedo = () => {
+    if (redo.length > 0) {
+      setElements(es => es.concat(redo.pop()));
     }
   };
-  const onUndo = () => {
-    if (curElm.length > 0) {
-      console.log(elements);
-      let temp = elements;
-      let comp = curElm.pop().id;
-      elements.forEach((item, index) => {
-        if (item.id == comp) {
-          temp.splice(index, 1);
-        }
-      });
-      console.log(temp);
+  const handleUndo = () => {
+    // undo stack empty
+    if (!undo) return;
 
-      localStorage.setItem('elements', JSON.stringify(temp));
-      const event = new Event('storage');
-      document.dispatchEvent(event);
-      //return () => setElements(temp);
-    }
+    // First save the current state
+    setRedo(prev => prev.concat([ ...elements ]));
+
+    // Then apply the previous state to the current elements
+    let temp = [ ...undo ];
+    const newState = [ ...undo ].pop();
+    setUndo(temp);
+    setElements(newState);
+  };
+
+  /**
+   * Saves the current snap shor of the elements array into the undo stack
+   * @param {Array} newEle The elementes array
+   */
+  const saveForUndo = newEle => {
+    setUndo(prev => undo.concat([ newEle ]));
   };
 
   const theme = useTheme();
@@ -93,8 +94,8 @@ const Graph = () => {
         open={openRec}
         elements={elements}
         setElements={setElements}
-        undo={onUndo}
-        redo={onRedo}
+        undo={handleUndo}
+        redo={handleRedo}
       />
       {/* Currently, all of the objects within the Main view are related to showing the ReactFlow elements */}
       <Main open={openRec}>
@@ -103,10 +104,11 @@ const Graph = () => {
         <Flow
           elements={elements}
           setElements={setElements}
-          setCurElm={setCurElm}
-          setNextElm={setNextElm}
-          curElm={curElm}
-          nextElm={nextElm}
+          saveForUndo={saveForUndo}
+          // setCurElm={setUndo}
+          // setNextElm={setRedo}
+          // curElm={undo}
+          // nextElm={redo}
         />
       </Main>
       <RecommendBar handleDrawer={handleDrawer} open={openRec} />
