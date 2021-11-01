@@ -38,6 +38,16 @@
 	padding: 7px;
 }
 
+.switch {
+	display: flex;
+	justify-content: space-between;
+	padding: 2px;
+}
+
+.box {
+	max-width: 20px;
+}
+
 @media screen and (min-width: 768px) {
 	.dndflow {
 		flex-direction: row;

@@ -1,6 +1,7 @@
 const CourseNodeStyles = () => {
 	return {
 		taken: {
+			margin: 'auto',
 			display: 'flex',
 			justifyContent: 'center',
 			alignItems: 'center',
@@ -16,6 +17,7 @@ const CourseNodeStyles = () => {
 			sourcePosition: 'bottom'
 		},
 		cannotTake: {
+			align: 'center',
 			display: 'flex',
 			justifyContent: 'center',
 			alignItems: 'center',
@@ -29,6 +31,7 @@ const CourseNodeStyles = () => {
 			textAlign: 'center'
 		},
 		canTake: {
+			align: 'center',
 			display: 'flex',
 			justifyContent: 'center',
 			alignItems: 'center',
