@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const authRoutes = require('./routes/authRoutes');
@@ -12,6 +11,14 @@ const passportSetup = require('./config/passport-setup');
 
 // set up enviromental variables
 require('dotenv').config();
+var cors = require('cors');
+const corsOptions = {
+  origin                             : 'http://localhost:8080',
+  'Access-Control-Allow-Credentials' : true, //access-control-allow-credentials:true
+  'Access-Control-Allow-Origin'      : '*', // update to match the domain you will make the request from
+  'Access-Control-Allow-Headers'     : 'Origin, X-Requested-With, Content-Type, Accept',
+  optionSuccessStatus                : 200
+};
 
 const app = express();
 
@@ -48,6 +55,7 @@ try {
 app.use('/auth', authRoutes);
 app.use('/user', userRoute);
 app.use('/flow', flowRoute);
+app.use(cors());
 // app.use('/profile', profileRoutes);
 // app.use('/insertUser', insertUserRoutes);
 
