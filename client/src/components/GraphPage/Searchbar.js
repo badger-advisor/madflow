@@ -123,6 +123,7 @@ const SearchBar = ({ elements, setElements }) => {
     try {
       const newCourse = await generateNode(courseNum, { type });
       console.log(newCourse);
+      console.log(elements);
       setElements([ ...elements, newCourse ]);
     } catch (e) {
       // TODO: Error pop up maybe

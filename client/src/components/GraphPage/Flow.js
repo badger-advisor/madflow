@@ -18,29 +18,26 @@ const getId = () => `dndnode_${id++}`;
 const Flow = ({ setElements, setCurElm, setNextElm, curElm, nextElm }) => {
   let elements = JSON.parse(localStorage.getItem('elements'));
 
-    
   useEffect(() => {
     const eventListenerFun = e => {
       console.log('update recieved');
       elements = JSON.parse(localStorage.getItem('elements'));
     };
-    window.addEventListener("storage", eventListenerFun);
+    window.addEventListener('storage', eventListenerFun);
 
-    return () => window.removeEventListener("storage", eventListenerFun);
+    return () => window.removeEventListener('storage', eventListenerFun);
   }, []);
 
   const styles = useState(CourseNodeStyles);
   const reactFlowWrapper = useRef(null);
   const [ reactFlowInstance, setReactFlowInstance ] = useState(null);
-  
+
   const onConnect = params => setElements(els => addEdge(params, els));
-  const onElementsRemove = elementsToRemove =>{
+  const onElementsRemove = elementsToRemove => {
     setElements(els => removeElements(elementsToRemove, els));
-    setNextElm([...nextElm,elementsToRemove]);
-  }
+    setNextElm([ ...nextElm, elementsToRemove ]);
+  };
   const onLoad = _reactFlowInstance => setReactFlowInstance(_reactFlowInstance);
-
-
 
   //Node element for a taken course
   const CourseTaken = ({ data }) => {
@@ -104,7 +101,7 @@ const Flow = ({ setElements, setCurElm, setNextElm, curElm, nextElm }) => {
       position,
       data     : { label: 'Course Node' }
     };
-    let t = [...curElm,newNode];
+    let t = [ ...curElm, newNode ];
     console.log(t);
     setCurElm(t);
 
@@ -131,7 +128,6 @@ const Flow = ({ setElements, setCurElm, setNextElm, curElm, nextElm }) => {
           <Background gap={15} />
           <Controls />
         </div>
-        
       </ReactFlowProvider>
     </div>
   );

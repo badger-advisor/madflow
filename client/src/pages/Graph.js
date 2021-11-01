@@ -19,9 +19,7 @@ import RecommendBar from '../components/GraphPage/RecommendBar';
 
 import { initialElements } from './initialElements';
 
-import {
-  removeElements,
-} from 'react-flow-renderer';
+import { removeElements } from 'react-flow-renderer';
 
 export const RECOMMEND_BAR_WIDTH = 240;
 
@@ -50,34 +48,36 @@ const Graph = () => {
 
   localStorage.setItem('elements', JSON.stringify(elements));
 
-  useEffect(() => {
-    localStorage.setItem('elements', JSON.stringify(elements));
-  }, [elements]);
+  useEffect(
+    () => {
+      localStorage.setItem('elements', JSON.stringify(elements));
+    },
+    [ elements ]
+  );
 
-  const onRedo= () => {
-    if(nextElm.length > 0){
+  const onRedo = () => {
+    if (nextElm.length > 0) {
       setElements(es => es.concat(nextElm.pop()));
     }
-  }
+  };
   const onUndo = () => {
-    if(curElm.length > 0){
+    if (curElm.length > 0) {
       console.log(elements);
       let temp = elements;
       let comp = curElm.pop().id;
       elements.forEach((item, index) => {
-        if(item.id == comp){
+        if (item.id == comp) {
           temp.splice(index, 1);
-        } 
+        }
       });
       console.log(temp);
-      
+
       localStorage.setItem('elements', JSON.stringify(temp));
       const event = new Event('storage');
       document.dispatchEvent(event);
       //return () => setElements(temp);
     }
-    
-  }
+  };
 
   const theme = useTheme();
 
@@ -91,6 +91,7 @@ const Graph = () => {
       <SearchNavBar
         handleDrawer={handleDrawer}
         open={openRec}
+        elements={elements}
         setElements={setElements}
         undo={onUndo}
         redo={onRedo}
@@ -99,7 +100,14 @@ const Graph = () => {
       <Main open={openRec}>
         <DrawerHeader />
         {/*REACT FLOW VIEW*/}
-        <Flow elements={elements} setElements={setElements} setCurElm={setCurElm} setNextElm={setNextElm} curElm = {curElm} nextElm = {nextElm}/>
+        <Flow
+          elements={elements}
+          setElements={setElements}
+          setCurElm={setCurElm}
+          setNextElm={setNextElm}
+          curElm={curElm}
+          nextElm={nextElm}
+        />
       </Main>
       <RecommendBar handleDrawer={handleDrawer} open={openRec} />
     </Box>

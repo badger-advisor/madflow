@@ -34,14 +34,13 @@ export const AppBar = styled(MuiAppBar, {
 }));
 
 const SearchNavBar = ({ handleDrawer, open, elements, setElements, undo, redo }) => {
-
-  function undot(){
+  function undot() {
     return () => undo();
-  };
+  }
 
-  function redot(){
+  function redot() {
     return () => redo();
-  };
+  }
 
   return (
     <AppBar position='fixed' open={open} style={{ background: '#c5050c' }}>
@@ -54,12 +53,11 @@ const SearchNavBar = ({ handleDrawer, open, elements, setElements, undo, redo })
         <Searchbar elements={elements} setElements={setElements} />
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-
           <IconButton sx={{ marginRight: 2, marginLeft: 2 }} color='inherit' edge='end'>
-            <UndoIcon fontSize='mid' onClick={undot()}/>
+            <UndoIcon fontSize='mid' onClick={undot()} />
           </IconButton>
           <IconButton sx={{ marginRight: 2, marginLeft: 2 }} color='inherit' edge='end'>
-            <RedoIcon fontSize='mid' onClick={redot()}/>
+            <RedoIcon fontSize='mid' onClick={redot()} />
           </IconButton>
 
           <IconButton sx={{ marginRight: 2, marginLeft: 2 }} color='inherit' edge='end'>
