@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -15,15 +15,32 @@ import CourseNodeStyles from './CourseNodeStyles';
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-const Flow = ({ elements, setElements }) => {
+const Flow = ({ setElements, setCurElm, setNextElm, curElm, nextElm }) => {
+  let elements = JSON.parse(localStorage.getItem('elements'));
+
+    
+  useEffect(() => {
+    const eventListenerFun = e => {
+      console.log('update recieved');
+      elements = JSON.parse(localStorage.getItem('elements'));
+    };
+    window.addEventListener("storage", eventListenerFun);
+
+    return () => window.removeEventListener("storage", eventListenerFun);
+  }, []);
+
   const styles = useState(CourseNodeStyles);
   const reactFlowWrapper = useRef(null);
   const [ reactFlowInstance, setReactFlowInstance ] = useState(null);
-
+  
   const onConnect = params => setElements(els => addEdge(params, els));
-  const onElementsRemove = elementsToRemove =>
+  const onElementsRemove = elementsToRemove =>{
     setElements(els => removeElements(elementsToRemove, els));
+    setNextElm([...nextElm,elementsToRemove]);
+  }
   const onLoad = _reactFlowInstance => setReactFlowInstance(_reactFlowInstance);
+
+
 
   //Node element for a taken course
   const CourseTaken = ({ data }) => {
@@ -87,8 +104,12 @@ const Flow = ({ elements, setElements }) => {
       position,
       data     : { label: 'Course Node' }
     };
+    let t = [...curElm,newNode];
+    console.log(t);
+    setCurElm(t);
 
     setElements(es => es.concat(newNode));
+    console.log(elements);
   };
 
   return (
@@ -96,7 +117,7 @@ const Flow = ({ elements, setElements }) => {
       <ReactFlowProvider>
         <div className='reactflow-wrapper' ref={reactFlowWrapper}>
           <ReactFlow
-            elements={elements}
+            elements={JSON.parse(localStorage.getItem('elements'))}
             nodeTypes={nodeTypes}
             onConnect={onConnect}
             onElementsRemove={onElementsRemove}
@@ -110,6 +131,7 @@ const Flow = ({ elements, setElements }) => {
           <Background gap={15} />
           <Controls />
         </div>
+        
       </ReactFlowProvider>
     </div>
   );
