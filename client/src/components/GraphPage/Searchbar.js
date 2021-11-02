@@ -47,7 +47,7 @@ const courseOptions = [
   }
 ];
 
-const SearchBar = ({ elements, setElements, saveForUndo }) => {
+const SearchBar = ({ elements, saveForUndo }) => {
   const closedLocation = {
     pointerEvents : 'auto',
     position      : 'fixed',

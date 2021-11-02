@@ -33,7 +33,7 @@ export const AppBar = styled(MuiAppBar, {
   })
 }));
 
-const SearchNavBar = ({ handleDrawer, open, elements, setElements, undo, redo, saveForUndo }) => {
+const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo }) => {
   return (
     <AppBar position='fixed' open={open} style={{ background: '#c5050c' }}>
       <Toolbar>
@@ -42,7 +42,7 @@ const SearchNavBar = ({ handleDrawer, open, elements, setElements, undo, redo, s
         </Typography>
 
         {/* The actual search element */}
-        <Searchbar elements={elements} setElements={setElements} saveForUndo={saveForUndo} />
+        <Searchbar elements={elements} saveForUndo={saveForUndo} />
 
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

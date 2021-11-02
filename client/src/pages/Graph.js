@@ -33,14 +33,11 @@ const Main = styled('main', { shouldForwardProp: prop => prop !== 'open' })(({ t
 
 const Graph = () => {
   const [ openRec, setOpenRec ] = useState(false);
-  // All of the data for the Flow
-  // TODO initialElements to be replaced with fetched elements from DB
-  const [ elements, setElements ] = useState(initialElements);
 
-  // Undo stack consists of a list of all element states
-  const [ undo, setUndo ] = useState([ initialElements ]);
-  // Each time before the undo stack is popped, the current state added to the redo stack
-  const [ redo, setRedo ] = useState([]);
+  // TODO initialElements to be replaced with fetched elements from DB
+  const [ elements, setElements ] = useState(initialElements); // All of the data for the Flow
+  const [ undo, setUndo ] = useState([ initialElements ]); // Undo stack consists of a list of all element states
+  const [ redo, setRedo ] = useState([]); // the current state added to the redo stack before redo is called
 
   // for making sure the elements array update each time undo or redo is applied
   useEffect(
@@ -49,6 +46,21 @@ const Graph = () => {
     },
     [ undo ]
   );
+
+  // Keyboard shortcuts for undo and redo
+  useEffect(() => {
+    const onUndoRedo = e => {
+      if (e.ctrlKey) {
+        if (e.key === 'z') handleUndo();
+        if (e.key === 'y') handleRedo();
+      }
+    };
+
+    document.addEventListener('keydown', onUndoRedo);
+
+    // removes the event listener on component dismount
+    return () => document.removeEventListener('keydown', onUndoRedo);
+  });
 
   /**
    * Set function called each time redo is applied
@@ -69,8 +81,8 @@ const Graph = () => {
    * Actions that are tracked for redo:
    ** 1. Moving node
    ** 2. Adding node (search)
-   *  3. Adding node (D&D)
-   *  4. Removing node
+   ** 3. Adding node (D&D)
+   ** 4. Removing node
    *  5. generate prereq
    */
   const handleUndo = () => {
@@ -92,7 +104,6 @@ const Graph = () => {
    * @param {Array} newEle The elementes array
    */
   const saveForUndo = newEle => {
-    console.log('set redo empty');
     setRedo([]);
     setUndo(prev => prev.concat([ newEle ]));
   };
@@ -104,8 +115,6 @@ const Graph = () => {
   const saveForRedo = newEle => {
     setRedo(prev => prev.concat([ newEle ]));
   };
-
-  const theme = useTheme();
 
   const handleDrawer = () => {
     setOpenRec(!openRec);
@@ -123,19 +132,10 @@ const Graph = () => {
         undo={handleUndo}
         redo={handleRedo}
       />
-      {/* Currently, all of the objects within the Main view are related to showing the ReactFlow elements */}
       <Main open={openRec}>
         <DrawerHeader />
         {/*REACT FLOW VIEW*/}
-        <Flow
-          elements={elements}
-          setElements={setElements}
-          saveForUndo={saveForUndo}
-          // setCurElm={setUndo}
-          // setNextElm={setRedo}
-          // curElm={undo}
-          // nextElm={redo}
-        />
+        <Flow elements={elements} setElements={setElements} saveForUndo={saveForUndo} />
       </Main>
       <RecommendBar handleDrawer={handleDrawer} open={openRec} />
     </Box>

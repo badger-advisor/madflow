@@ -15,27 +15,14 @@ import CourseNodeStyles from './CourseNodeStyles';
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-const Flow = ({ elements, setElements, saveForUndo, setCurElm, setNextElm, curElm, nextElm }) => {
-  // let elements = JSON.parse(localStorage.getItem('elements'));
-
-  // useEffect(() => {
-  //   const eventListenerFun = e => {
-  //     console.log('update recieved');
-  //     elements = JSON.parse(localStorage.getItem('elements'));
-  //   };
-  //   window.addEventListener('storage', eventListenerFun);
-
-  //   return () => window.removeEventListener('storage', eventListenerFun);
-  // }, []);
-
+const Flow = ({ elements, setElements, saveForUndo }) => {
   const styles = useState(CourseNodeStyles);
   const reactFlowWrapper = useRef(null);
   const [ reactFlowInstance, setReactFlowInstance ] = useState(null);
 
   const onConnect = params => setElements(els => addEdge(params, els));
   const onElementsRemove = elementsToRemove => {
-    setElements(els => removeElements(elementsToRemove, els));
-    // setNextElm([ ...nextElm, elementsToRemove ]);
+    saveForUndo(removeElements(elementsToRemove, elements));
   };
   const onLoad = _reactFlowInstance => setReactFlowInstance(_reactFlowInstance);
 
@@ -101,16 +88,13 @@ const Flow = ({ elements, setElements, saveForUndo, setCurElm, setNextElm, curEl
       position,
       data     : { label: 'Course Node' }
     };
-    // let t = [ ...curElm, newNode ];
-    // console.log(t);
-    // setCurElm(t);
 
-    setElements(es => es.concat(newNode));
-    console.log(elements);
+    const newElements = [ ...elements, newNode ];
+    saveForUndo(newElements);
   };
 
   const handleMoveNode = (e, node) => {
-    console.log(node);
+    // console.log(node);
     const newElements = elements.map((ele, idx) => {
       const { id } = ele;
 
