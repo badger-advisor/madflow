@@ -68,9 +68,10 @@ const Graph = () => {
   /**
    * Actions that are tracked for redo:
    ** 1. Moving node
-   *  2. Adding node
-   *  3. Removing node
-   *  4. generate prereq
+   ** 2. Adding node (search)
+   *  3. Adding node (D&D)
+   *  4. Removing node
+   *  5. generate prereq
    */
   const handleUndo = () => {
     // undo base is 1 because it should initialize with the default state in there
@@ -118,6 +119,7 @@ const Graph = () => {
         open={openRec}
         elements={elements}
         setElements={setElements}
+        saveForUndo={saveForUndo}
         undo={handleUndo}
         redo={handleRedo}
       />

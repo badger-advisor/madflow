@@ -47,7 +47,7 @@ const courseOptions = [
   }
 ];
 
-const SearchBar = ({ elements, setElements }) => {
+const SearchBar = ({ elements, setElements, saveForUndo }) => {
   const closedLocation = {
     pointerEvents : 'auto',
     position      : 'fixed',
@@ -123,7 +123,8 @@ const SearchBar = ({ elements, setElements }) => {
     try {
       const newCourse = await generateNode(courseNum, { type });
       console.log(newCourse);
-      setElements([ ...elements, newCourse ]);
+      const newElements = [ ...elements, newCourse ];
+      saveForUndo(newElements);
     } catch (e) {
       // TODO: Error pop up maybe
       console.error(e.name, e.message);
