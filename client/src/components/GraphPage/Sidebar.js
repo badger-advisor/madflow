@@ -3,7 +3,7 @@ import { List, ListItem } from '@mui/material';
 import { useState } from 'react';
 
 import './dnd.css';
-import CourseNodeStyles from './CourseNodeStyles';
+import CourseNodeStyles from './customNodes/CourseNodeStyles';
 
 const Sidebar = () => {
 	const styles = useState(CourseNodeStyles);
