@@ -110,9 +110,7 @@ const Flow = ({ elements, setElements, saveForUndo, setCurElm, setNextElm, curEl
   };
 
   const handleMoveNode = (e, node) => {
-    console.log(e);
     console.log(node);
-    console.log(elements);
     const newElements = elements.map((ele, idx) => {
       const { id } = ele;
 
@@ -127,7 +125,6 @@ const Flow = ({ elements, setElements, saveForUndo, setCurElm, setNextElm, curEl
         return ele;
       }
     });
-    console.log(newElements);
     setElements(newElements);
     saveForUndo(newElements);
   };

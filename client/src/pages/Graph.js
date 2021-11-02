@@ -54,22 +54,28 @@ const Graph = () => {
   // );
 
   const handleRedo = () => {
-    if (redo.length > 0) {
-      setElements(es => es.concat(redo.pop()));
-    }
+    // Redo base is 0 because there should be nothing in there until user undos
+    if (redo.length === 0) return;
   };
-  const handleUndo = () => {
-    // undo stack empty
-    if (!undo) return;
 
-    // First save the current state
-    setRedo(prev => prev.concat([ ...elements ]));
+  const handleUndo = () => {
+    // undo base is 1 because it should initialize with the default state in there
+    if (undo.length === 1) return;
 
     // Then apply the previous state to the current elements
     let temp = [ ...undo ];
-    const newState = [ ...undo ].pop();
+    console.log('temp');
+    console.log(temp);
+
+    const currState = temp.pop();
+    console.log('curr state');
+    console.log(currState);
+
+    // First save the current state
+    saveForRedo(currState);
+
     setUndo(temp);
-    setElements(newState);
+    setElements(temp[temp.length - 1]);
   };
 
   /**
@@ -77,7 +83,15 @@ const Graph = () => {
    * @param {Array} newEle The elementes array
    */
   const saveForUndo = newEle => {
-    setUndo(prev => undo.concat([ newEle ]));
+    setUndo(prev => prev.concat([ newEle ]));
+  };
+
+  /**
+   * Saves the current snap shor of the elements array into the redo stack
+   * @param {Array} newEle The elementes array
+   */
+  const saveForRedo = newEle => {
+    setRedo(prev => prev.concat([ newEle ]));
   };
 
   const theme = useTheme();
