@@ -37,7 +37,7 @@ const SidePanel = () => {
 
       <div align='center'>
         <Box sx={{ pt: '20px', pb: '20px' }}>
-          <Button onClick={() => signIn({headers: {'Access-Control-Allow-Origin': 'http://localhost:8080/',"Content-Type": "aplication/json"}})}  variant='outlined'>Sign in with Google</Button>
+          <Button href='http://localhost:8080/auth/google'  variant='outlined'>Sign in with Google</Button>
         </Box>
       </div>
 

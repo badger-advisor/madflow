@@ -21,17 +21,17 @@ router.get(
   '/google',
   passport.authenticate('google', {
     scope : [ 'profile' ,'email']
-  }),
-  (req,res)=>{res.header("Access-Control-Allow-Origin", "http://localhost:3000/");}
+  })
 
 );
 
 // callback route for google to redirect to
 // hand control to passport to use code to grab profile info
-router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
-  // res.send(req.user);
-  res.header("Access-Control-Allow-Origin", "*");
-  res.redirect('/profile');
+router.get('/google/redirect', passport.authenticate('google', {
+        failureRedirect: "/",
+        successRedirect: "http://localhost:3000/dashboard",
+    }), (req, res) => {
+      res.json({ user: req.user });
 });
 
 const authCheck = (req, res, next) => {

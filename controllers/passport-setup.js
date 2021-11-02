@@ -10,7 +10,8 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  User.findById(id).then((user) => {
+  console.log(id);
+  User.findOne({ googleId: id }).then((user) => {
     done(null, user);
   });
 });
@@ -19,7 +20,7 @@ passport.use(
   new GoogleStrategy(
     {
       // options for google strategy
-      callbackURL  : '/auth/google/redirect',
+      callbackURL  : 'http://localhost:8080/auth/google/redirect',
       clientID     : process.env.GOOGLE_CLIENT_ID,
       clientSecret : process.env.GOOGLE_CLIENT_SECRET
     },

@@ -14,16 +14,21 @@ const passportSetup = require('./controllers/passport-setup');
 require('dotenv').config();
 
 const app = express();
+const whitelist = ["http://localhost:3000"];
 
-//! Don't know what this does either
-app.use(cors());
-app.options('*', cors())
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000/');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error("Not allowed by CORS"))
+    }
+  },
 
+  credentials: true,
+}
+
+app.use(cors())
 // set up session cookies
 app.use(
   cookieSession({
