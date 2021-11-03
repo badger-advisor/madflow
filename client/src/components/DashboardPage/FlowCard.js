@@ -21,7 +21,7 @@ const FlowCard = ({ flowID, flowName }) => {
 
   // TODO: function to handle opening a Flow when the FlowCard is clicked
   const openFlow = e => {
-    console.log('FlowCard clicked');
+    console.log(`${flowName} opened`);
     // pass flowID to open the correct FLow
   };
 
@@ -31,7 +31,6 @@ const FlowCard = ({ flowID, flowName }) => {
         display         : 'flex',
         flexDirection   : 'column',
         justifyContent  : 'space-between',
-        //alignItems      : 'flex-end',
         width           : '100%',
         height          : '100%',
         borderRadius    : '16px',
