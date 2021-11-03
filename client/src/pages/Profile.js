@@ -1,16 +1,7 @@
-import React from 'react'
+import ProfileMainView from '../components/ProfilePage/ProfileMainView';
 
 const Profile = () => {
-  return (
-    <div>
+	return <ProfileMainView />;
+};
 
-    </div>
-  )
-}
-
-export default Profile
-
-
-
-
-
+export default Profile;
