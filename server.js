@@ -6,27 +6,17 @@ const passport = require('passport');
 const authRoutes = require('./routes/authRoutes');
 const userRoute = require('./routes/userRoute');
 const profileRoutes = require('./routes/profileRoutes');
-// const insertUserRoutes = require('./routes/insertUserRoute');
+const courseRoute = require('./routes/courseRoute');
+const flowRoute = require('./routes/flowRoute');
 const passportSetup = require('./controllers/passport-setup');
-
 
 // set up enviromental variables
 require('dotenv').config();
 
 const app = express();
-const whitelist = ["http://localhost:3000"];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error("Not allowed by CORS"))
-    }
-  },
-
-  credentials: true,
-}
+// Preventing cors error
+app.use(cors());
 
 app.use(cors())
 // set up session cookies
@@ -34,7 +24,6 @@ app.use(
   cookieSession({
     maxAge : 24 * 60 * 60 * 1000,
     keys   : [ 'key1' ] //! no idea how this works
-    // keys   : [ keys.session.cookieKey ]
   })
 );
 
@@ -59,7 +48,8 @@ try {
 app.use('/auth', authRoutes);
 app.use('/user', userRoute);
 app.use('/profile', profileRoutes);
-// app.use('/insertUser', insertUserRoutes);
+app.use('/course', courseRoute);
+app.use('/flow', flowRoute);
 
 // create home route
 app.get('/', (req, res) => {

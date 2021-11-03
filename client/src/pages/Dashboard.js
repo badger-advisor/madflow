@@ -1,8 +1,10 @@
+import NavBar from '../components/NavBar/NavBar';
+import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
 import {signIn} from '../api/authAPI';
-import axios from 'axios';
+
+import { Button, Typography, Box, alpha, AppBar, Drawer } from '@mui/material';
 
 const Dashboard = () => {
-  
 
   const curUser = async () =>{
       const data = localStorage.getItem('google_id');
@@ -11,8 +13,15 @@ const Dashboard = () => {
       console.log(cur_user);
   }
 
-  console.log(curUser());
-  return <div />;
+  curUser();
+
+  return (
+    <div>
+      {/* <AppBar position='top' /> */}
+      <NavBar />
+      <FlowCardGrid />
+    </div>
+  );
 };
 
 export default Dashboard;
