@@ -1,14 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({
-  baseURL         : 'http://localhost:8080',
-  withCredentials : false,
-  headers         : {
-    'Access-Control-Allow-Origin'  : '*',
-    'Access-Control-Allow-Methods' : 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-    'Content-Type'                 : 'application/x-www-form-urlencoded'
-  }
-});
+const API = axios.create({ baseURL : 'http://localhost:8080' });
 
 // API.interceptors.request.use((req) => {
 //   if (localStorage.getItem('profile')) {
