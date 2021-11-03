@@ -22,6 +22,7 @@ const FlowCard = ({ flowID, flowName }) => {
   // TODO: function to handle opening a Flow when the FlowCard is clicked
   const openFlow = e => {
     console.log('FlowCard clicked');
+    // pass flowID to open the correct FLow
   };
 
   return (
