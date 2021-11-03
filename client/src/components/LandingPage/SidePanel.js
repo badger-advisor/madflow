@@ -1,7 +1,9 @@
 import { Button, Typography, Box, alpha, Drawer } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
-import {signIn} from '../../api/authAPI';
+import {signIn, signUp} from '../../api/authAPI';
+import Cookie from 'js-cookie';
+import { GoogleLogin } from 'react-google-login';
 
 const useStyles = makeStyles(() => {
   return {
@@ -24,6 +26,27 @@ const useStyles = makeStyles(() => {
 const SidePanel = () => {
   const classes = useStyles();
 
+  const onGoogleSuccess = async (response) => {
+    const google_id = response.googleId;
+    console.log(response);
+    const cur_user = await signIn(google_id);
+    console.log('current user:');
+    console.log(cur_user);
+    if(cur_user == ''){
+      const new_user = await signUp(response.profileObj);
+      console.log('created new user');
+      console.log(new_user);
+      if(new_user != ''){
+        window.location.href = '/dashboard';
+      }
+    }else{
+      window.location.href = '/dashboard';
+    }
+  }
+
+  const onGoogleFailure = (error) => {console.log('error');console.log(error);}
+
+
   return (
     <Drawer
       className={classes.sidePanel}
@@ -37,8 +60,13 @@ const SidePanel = () => {
 
       <div align='center'>
         <Box sx={{ pt: '20px', pb: '20px' }}>
-          <Button href='http://localhost:8080/auth/google'  variant='outlined'>Sign in with Google</Button>
-        </Box>
+          <GoogleLogin 
+            clientId={'496579389191-tq2slttd9a2qq0n3cp022g5u5laav8mk.apps.googleusercontent.com'}
+            buttonText="Sign in with Google"
+            onSuccess={onGoogleSuccess}
+            onFailure={onGoogleFailure}
+            className="google-login-button" />
+            </Box>
       </div>
 
       <div align='center'>

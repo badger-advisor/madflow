@@ -1,15 +1,15 @@
 const User = require('../models/userModel');
 
 const signIn = async (req, res) => {
-  User.findOne({ googleId: req.id }).then((currentUser) => {
+  User.findOne({ googleId: req.query.id }).then((currentUser) => {
     if (currentUser) {
       // already have this user
       console.log('user is: ', currentUser);
-      return( currentUser);
+      res.json({ user: currentUser });
     } else {
       // if not, create user in our db
       console.log('user does not exist');
-      return(null);
+      res.json({ user: '' });
     }
   });
 };
@@ -21,9 +21,10 @@ const signOut = async (req, res) => {
 const signUp = async (req, res) => {
   // signUp logic
   new User({
-    googleId : req.id,
-    name   : req.displayName,
-    email  : req.email,
+    googleId : req.query.id,
+    name   : req.query.displayName,
+    email  : req.query.email,
+    profilePicture: req.query.profilePicture,
     flows  : [],
     majors : []
     // thumbnail : profile._json.image.url
@@ -31,11 +32,11 @@ const signUp = async (req, res) => {
     .save()
     .then((newUser) => {
       console.log('created new user: ', newUser);
-      return( newUser);
+      res.json({ user: newUser });
     })
     .catch((error) => {
       console.log('cannot create user', error);
-      return(null);
+      res.json({ user: '' });
     });
 };
 
