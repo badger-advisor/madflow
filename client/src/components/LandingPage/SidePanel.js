@@ -61,7 +61,7 @@ const SidePanel = () => {
       <div align='center'>
         <Box sx={{ pt: '20px', pb: '20px' }}>
           <GoogleLogin 
-            clientId={'496579389191-tq2slttd9a2qq0n3cp022g5u5laav8mk.apps.googleusercontent.com'}
+            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
             buttonText="Sign in with Google"
             onSuccess={onGoogleSuccess}
             onFailure={onGoogleFailure}
