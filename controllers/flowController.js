@@ -12,27 +12,21 @@ const getFlowInfo = async (req, res) => {
 };
 
 const createNewFlow = async (req, res) => {
-  userID = req.params.userGoogleID;
-  flowName = req.params.name;
-  newElements = req.params.elements;
-  newMajor = req.params.major;
   const newFlow = new Flow({
-    name         : flowName,
-    elements     : newElements,
-    userGoogleID : userID,
-    major        : newMajor
-  });
-
-  try {
-    const flow = await newFlow.save();
-
-    res.status(201).json({
-      status : 'success',
-      data   : flow
+    name         : req.query.name,
+    elements     : req.query.elements,
+    userGoogleID : req.query.googleId,
+    major        : req.query.major
+  })
+    .save()
+    .then(newFlow => {
+      console.log('created new flow: ', newFlow);
+      res.json({ flow: newFlow });
+    })
+    .catch(error => {
+      console.log('cannot create flow', error);
+      res.json({ flow: '' });
     });
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
 };
 
 module.exports = { getFlowInfo, createNewFlow };
