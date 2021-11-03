@@ -1,6 +1,6 @@
 import NavBar from '../components/NavBar/NavBar';
 import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
-import {currentUser} from '../api/authAPI';
+import {currentUser} from '../api/index';
 
 import { Button, Typography, Box, alpha, AppBar, Drawer } from '@mui/material';
 

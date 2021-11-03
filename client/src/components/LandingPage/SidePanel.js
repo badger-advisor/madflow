@@ -1,7 +1,7 @@
 import { Button, Typography, Box, alpha, Drawer } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
-import {signIn, signUp} from '../../api/authAPI';
+import {signIn, signUp} from '../../api/index';
 import Cookie from 'js-cookie';
 import { GoogleLogin } from 'react-google-login';
 
