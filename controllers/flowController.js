@@ -12,15 +12,15 @@ const getFlowInfo = async (req, res) => {
 };
 
 const createNewFlow = async (req, res) => {
-  userID = req.params.userID;
-  flowName = req.params.flowName;
-  elements = req.params.elements;
-  major = req.params.major;
+  userID = req.params.userGoogleID;
+  flowName = req.params.name;
+  newElements = req.params.elements;
+  newMajor = req.params.major;
   const newFlow = new Flow({
     name         : flowName,
-    elements     : elements,
+    elements     : newElements,
     userGoogleID : userID,
-    major        : major
+    major        : newMajor
   });
 
   try {
