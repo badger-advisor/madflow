@@ -5,11 +5,10 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const authRoutes = require('./routes/authRoutes');
 const userRoute = require('./routes/userRoute');
+const profileRoutes = require('./routes/profileRoutes');
 const courseRoute = require('./routes/courseRoute');
 const flowRoute = require('./routes/flowRoute');
-// const profileRoutes = require('./routes/profileRoutes');
-// const insertUserRoutes = require('./routes/insertUserRoute');
-const passportSetup = require('./config/passport-setup');
+const passportSetup = require('./controllers/passport-setup');
 
 // set up enviromental variables
 require('dotenv').config();
@@ -19,12 +18,12 @@ const app = express();
 // Preventing cors error
 app.use(cors());
 
+app.use(cors())
 // set up session cookies
 app.use(
   cookieSession({
     maxAge : 24 * 60 * 60 * 1000,
     keys   : [ 'key1' ] //! no idea how this works
-    // keys   : [ keys.session.cookieKey ]
   })
 );
 
@@ -48,10 +47,9 @@ try {
 // set up routes
 app.use('/auth', authRoutes);
 app.use('/user', userRoute);
+app.use('/profile', profileRoutes);
 app.use('/course', courseRoute);
 app.use('/flow', flowRoute);
-// app.use('/profile', profileRoutes);
-// app.use('/insertUser', insertUserRoutes);
 
 // create home route
 app.get('/', (req, res) => {

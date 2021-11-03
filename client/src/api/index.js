@@ -2,16 +2,47 @@ import axios from 'axios';
 
 const API = axios.create({ baseURL: 'http://localhost:8080' });
 
-// API.interceptors.request.use((req) => {
-//   if (localStorage.getItem('profile')) {
-//     req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
-//   }
-//   return req;
-// }); // ???
-
 // User
-const signIn = formData => API.post('/user/signin', formData);
-const signUp = formData => API.post('/user/signup', formData);
+const signIn = id =>
+  axios({ method: 'post', url: `http://localhost:8080/user/signIn?id=${id}`, header: {} })
+    .then(res => {
+      const { user } = res.data;
+      localStorage.setItem('google_id', id);
+      return user;
+    })
+    .catch(error => {
+      console.log(error);
+      return '';
+    });
+
+const signUp = userObject =>
+  axios({
+    method: 'post',
+    url: `http://localhost:8080/user/signup?id=${userObject.googleId}&displayName=${userObject.name}&email=${userObject.email}&profilePicture=${userObject.imageUrl}`,
+    header: {}
+  })
+    .then(res => {
+      const { user } = res.data;
+      localStorage.setItem('google_id', userObject.googleId);
+      return user;
+    })
+    .catch(error => {
+      console.log(error);
+      return null;
+    });
+
+const currentUser = id =>
+  axios({ method: 'post', url: `http://localhost:8080/user/signIn?id=${id}`, header: {} })
+    .then(res => {
+      const { user } = res.data;
+      localStorage.setItem('google_id', id);
+      return user;
+    })
+    .catch(error => {
+      console.log(error);
+      return '';
+    });
+
 const deleteUser = userID => API.delete(`/user/${userID}`);
 
 // Flow
@@ -30,6 +61,7 @@ const getCourse = courseNumber => API.get(`/course/${courseNumber}`);
 export {
   signIn,
   signUp,
+  currentUser,
   deleteUser,
   getAllUserFlows,
   getUserFlow,
