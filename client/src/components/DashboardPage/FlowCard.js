@@ -36,25 +36,20 @@ const FlowCard = ({ flowID, flowName }) => {
         borderRadius    : '16px',
         backgroundColor : '#0A9396',
         boxShadow       : '0 8px 40px -12px rgba(0,0,0,0.3)',
-        cursor          : 'pointer'
+        cursor          : 'pointer',
+        position        : 'relative'
       }}
       variant='outlined'
       onClick={openFlow}
     >
       {/* FlowCard '...' menu icon */}
-      <Avatar // TODO: Move to top right corner of Card
+      <Avatar
         variant='rounded'
         sx={{
-          //display         : 'flex',
-          //flexGrow        : 1,
-          //width           : '25%',
-          //justifyContent  : 'center',
-          //alignItems      : 'right',
           position        : 'absolute',
-          //right           : 5,
-          //top             : 5,
+          right           : '1%',
+          top             : '1%',
           backgroundColor : alpha('#7C7C7C', 0)
-          //ml              : '20%'
         }}
         onClick={openMenu}
       >
