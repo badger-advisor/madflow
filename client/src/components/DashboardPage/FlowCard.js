@@ -4,7 +4,7 @@ import { useState } from 'react';
 import FlowCardMenu from './FlowCardMenu';
 
 // material-ui
-import { Card, CardMedia, Typography, Avatar, alpha, Box } from '@mui/material';
+import { Card, CardMedia, Typography, Avatar, alpha } from '@mui/material';
 
 // icons and images
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -13,14 +13,14 @@ import testImg from './test.jpg';
 const FlowCard = ({ flowID, flowName }) => {
   const [ showMenu, setShowMenu ] = useState(null);
 
-  const openMenu = (e) => {
+  const openMenu = e => {
     e.stopPropagation(); // stop openFlow() from being called when menu icon is clicked
     console.log('menu clicked!');
     setShowMenu(e.currentTarget);
   };
 
   // TODO: function to handle opening a Flow when the FlowCard is clicked
-  const openFlow = (e) => {
+  const openFlow = e => {
     console.log('FlowCard clicked');
   };
 
