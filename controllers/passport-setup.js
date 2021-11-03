@@ -10,7 +10,8 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  User.findById(id).then((user) => {
+  console.log(id);
+  User.findOne({ googleId: id }).then((user) => {
     done(null, user);
   });
 });
@@ -19,7 +20,7 @@ passport.use(
   new GoogleStrategy(
     {
       // options for google strategy
-      callbackURL  : '/auth/google/redirect',
+      callbackURL  : 'http://localhost:8080/auth/google/redirect',
       clientID     : process.env.GOOGLE_CLIENT_ID,
       clientSecret : process.env.GOOGLE_CLIENT_SECRET
     },
@@ -32,9 +33,14 @@ passport.use(
           done(null, currentUser);
         } else {
           // if not, create user in our db
+          console.log('user is: ', profile);
           new User({
             googleId : profile.id,
-            username : profile.displayName
+            name   : profile.displayName,
+            email : profile.emails[0].value,
+            profilePicture : profile.photos[0].value,
+            flows  : [],
+            majors : []
             // thumbnail : profile._json.image.url
           })
             .save()
