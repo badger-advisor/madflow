@@ -11,4 +11,16 @@ const getFlowInfo = async (req, res) => {
   }
 };
 
-module.exports = { getFlowInfo };
+const updateFlowElements = async (req,res) => {
+  console.log(req.query.elements);
+    Flow.updateOne({_ids:req.query.id},{$set:{elements:JSON.parse(req.query.elements)}}).then((result) => {
+      console.log(result);
+      res.json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err);
+    });
+}
+
+module.exports = { getFlowInfo, updateFlowElements };
