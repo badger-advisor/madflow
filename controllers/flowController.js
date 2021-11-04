@@ -27,10 +27,10 @@ const updateFlowElements = async (req, res) => {
 
 const createNewFlow = async (req, res) => {
   const newFlow = new Flow({
-    name         : req.query.name,
-    elements     : req.query.elements,
-    userGoogleID : req.query.googleId,
-    major        : req.query.major
+    name         : req.body.name,
+    elements     : req.body.elements,
+    userGoogleID : req.body.googleId,
+    major        : req.body.major
   })
     .save()
     .then(newFlow => {
@@ -54,5 +54,5 @@ const updateFlow = async (req, res) => {
       console.log('updateFlow broke');
     });
   };
-  
+
 module.exports = { getFlowInfo, createNewFlow, updateFlowElements, updateFlow };

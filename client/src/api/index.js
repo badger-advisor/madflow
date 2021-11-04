@@ -49,7 +49,10 @@ const deleteUser = userID => API.delete(`/user/${userID}`);
 const getAllUserFlows = userID => API.get(`/flow/${userID}`);
 const getUserFlow = (userID, flowID) => API.get(`/flow/${userID}/${flowID}`);
 const deleteUserFlow = (userID, flowID) => API.delete(`/flow/${userID}/${flowID}`);
-const createUserFlow = (userID, flowID, flow) => API.post(`/flow/${userID}/${flowID}`, flow);
+const createUserFlow = (userID, flowID, flow) => 
+  API.post(`/flow/newFlow`, {googleId:userID,elements:[],name:flow.name,major:flow.major}).then(res => {
+    console.log(res);
+  });
 const updateUserFlowElements = (flowID, updatedUserFlow) =>
   API.post(`/flow/updateElements`, {
     id       : flowID,
