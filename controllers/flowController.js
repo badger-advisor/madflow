@@ -11,6 +11,20 @@ const getFlowInfo = async (req, res) => {
   }
 };
 
+const updateFlowElements = async (req, res) => {
+  const { id, elements } = req.body;
+
+  Flow.updateOne({ _ids: id }, { $set: { elements } })
+    .then(result => {
+      res.json(result);
+      console.log(result);
+    })
+    .catch(err => {
+      res.status(404).json({ message: err.message });
+      console.log('updateFlowElements broke');
+    });
+};
+
 const createNewFlow = async (req, res) => {
   const newFlow = new Flow({
     name         : req.query.name,
@@ -30,12 +44,15 @@ const createNewFlow = async (req, res) => {
 };
 
 const updateFlow = async (req, res) => {
-  Flow.updateOne({_id:req.query.id},{$set:JSON.parse(req.query.changes)}).then((result) => {
+  const {id, changes} = req.body;
+  Flow.updateOne({_id:id},{$set:changes}).then((result) => {
       res.json(result);
+      console.log(result);
     })
     .catch((err) => {
       res.json(err);
+      console.log('updateFlow broke');
     });
-};
-
-module.exports = { getFlowInfo, createNewFlow, updateFlow };
+  };
+  
+module.exports = { getFlowInfo, createNewFlow, updateFlowElements, updateFlow };
