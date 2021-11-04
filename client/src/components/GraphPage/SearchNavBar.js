@@ -33,7 +33,7 @@ export const AppBar = styled(MuiAppBar, {
   })
 }));
 
-const SearchNavBar = ({ handleDrawer, open, elements, setElements }) => {
+const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo }) => {
   return (
     <AppBar position='fixed' open={open} style={{ background: '#c5050c' }}>
       <Toolbar>
@@ -42,15 +42,27 @@ const SearchNavBar = ({ handleDrawer, open, elements, setElements }) => {
         </Typography>
 
         {/* The actual search element */}
-        <Searchbar elements={elements} setElements={setElements} />
+        <Searchbar elements={elements} saveForUndo={saveForUndo} />
+
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-          <IconButton sx={{ marginRight: 2, marginLeft: 2 }} color='inherit' edge='end'>
+          <IconButton
+            sx={{ marginRight: 2, marginLeft: 2 }}
+            color='inherit'
+            edge='end'
+            onClick={undo}
+          >
             <UndoIcon fontSize='mid' />
           </IconButton>
-          <IconButton sx={{ marginRight: 2, marginLeft: 2 }} color='inherit' edge='end'>
+          <IconButton
+            sx={{ marginRight: 2, marginLeft: 2 }}
+            color='inherit'
+            edge='end'
+            onClick={redo}
+          >
             <RedoIcon fontSize='mid' />
           </IconButton>
+
           <IconButton sx={{ marginRight: 2, marginLeft: 2 }} color='inherit' edge='end'>
             <AccountCircleRoundedIcon fontSize='large' />
           </IconButton>

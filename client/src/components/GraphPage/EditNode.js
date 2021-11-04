@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { Stack, Box, Divider } from '@mui/material';
 import Switch from '@mui/material/Switch';
-import CourseNodeStyles from './CourseNodeStyles';
+import CourseNodeStyles from './customNodes/CourseNodeStyles';
 import { makeStyles } from '@mui/styles';
 
 import './dnd.css';
