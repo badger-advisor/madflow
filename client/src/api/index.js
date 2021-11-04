@@ -50,10 +50,22 @@ const getAllUserFlows = userID => API.get(`/flow/${userID}`);
 const getUserFlow = (userID, flowID) => API.get(`/flow/${userID}/${flowID}`);
 const deleteUserFlow = (userID, flowID) => API.delete(`/flow/${userID}/${flowID}`);
 const createUserFlow = (userID, flowID, flow) => API.post(`/flow/${userID}/${flowID}`, flow);
-const updateUserFlow = (userID, flowID, updatedUserFlow) => {
-  API.patch(`/flow/${userID}/${flowID}`, updatedUserFlow);
-};
+
 const getPrefilledFlow = majorID => API.get(`/flow/prefilled/${majorID}`);
+
+const updateUserFlow = (flowID, updatedUserFlow) => {
+  let url =  'http://localhost:8080/flow/update?id=' + flowID + '&changes=' + JSON.stringify(updatedUserFlow);
+  axios({ method: 'post', url:'http://localhost:8080/flow/updateElements', params: {id:flowID,elements:updatedUserFlow} })
+    .then(res => {
+      console.log(JSON.stringify(res.data));
+      return '';
+    })
+    .catch(error => {
+      console.log(error);
+      return '';
+    });
+
+};
 
 // Course
 const getCourse = courseNumber => API.get(`/course/${courseNumber}`);
@@ -67,7 +79,7 @@ export {
   getUserFlow,
   deleteUserFlow,
   createUserFlow,
-  updateUserFlow,
   getPrefilledFlow,
   getCourse
+  updateUserFlow,
 };

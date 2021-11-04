@@ -29,4 +29,13 @@ const createNewFlow = async (req, res) => {
     });
 };
 
-module.exports = { getFlowInfo, createNewFlow };
+const updateFlow = async (req, res) => {
+  Flow.updateOne({_id:req.query.id},{$set:JSON.parse(req.query.changes)}).then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+};
+
+module.exports = { getFlowInfo, createNewFlow, updateFlow };
