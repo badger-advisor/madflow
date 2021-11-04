@@ -11,7 +11,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   console.log(id);
-  User.findOne({ googleId: id }).then((user) => {
+  User.findOne({ googleId: id }).then(user => {
     done(null, user);
   });
 });
@@ -26,7 +26,7 @@ passport.use(
     },
     (accessToken, refreshToken, profile, done) => {
       // check if user already exists in our own db
-      User.findOne({ googleId: profile.id }).then((currentUser) => {
+      User.findOne({ googleId: profile.id }).then(currentUser => {
         if (currentUser) {
           // already have this user
           console.log('user is: ', currentUser);
@@ -35,20 +35,20 @@ passport.use(
           // if not, create user in our db
           console.log('user is: ', profile);
           new User({
-            googleId : profile.id,
-            name   : profile.displayName,
-            email : profile.emails[0].value,
+            googleId       : profile.id,
+            name           : profile.displayName,
+            email          : profile.emails[0].value,
             profilePicture : profile.photos[0].value,
-            flows  : [],
-            majors : []
+            flows          : [],
+            majors         : []
             // thumbnail : profile._json.image.url
           })
             .save()
-            .then((newUser) => {
+            .then(newUser => {
               console.log('created new user: ', newUser);
               done(null, newUser);
             })
-            .catch((error) => {
+            .catch(error => {
               console.log('cannot create user', error);
             });
         }

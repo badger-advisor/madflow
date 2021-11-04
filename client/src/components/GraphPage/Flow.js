@@ -12,6 +12,7 @@ import ReactFlow, {
 import customNodes from './customNodes';
 
 import './dnd.css';
+import EditNode from './EditNode';
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
@@ -20,6 +21,8 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
   // Flow library stuff
   const reactFlowWrapper = useRef(null);
   const [ reactFlowInstance, setReactFlowInstance ] = useState(null);
+  const [ openEditNode, setOpenEditNode ] = useState(false);
+  const [ currentNode, setCurrentNode ] = useState('');
   const onConnect = params => setElements(els => addEdge(params, els));
   const onLoad = _reactFlowInstance => setReactFlowInstance(_reactFlowInstance);
 
@@ -34,7 +37,7 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
     event.dataTransfer.dropEffect = 'move';
   };
 
-  //Handle dropping the node from the sidebar adds the new node to the graph
+  //Handle dropping the node from the sidebar and adding the new node to the graph
   const onDrop = event => {
     event.preventDefault();
 
@@ -75,6 +78,16 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
     saveForUndo(newElements);
   };
 
+  const onNodeDoubleClick = (e, node) => {
+    e.preventDefault();
+    setCurrentNode(node);
+    setOpenEditNode(!openEditNode);
+  };
+
+  const handleClose = () => {
+    setOpenEditNode(false);
+  };
+
   return (
     <div className='dndflow' style={{ height: 1080 }}>
       <ReactFlowProvider>
@@ -91,7 +104,9 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
             snapToGrid={true}
             snapGrid={[ 15, 15 ]}
             deleteKeyCode={46}
+            onNodeDoubleClick={(event, node) => onNodeDoubleClick(event, node)}
           />
+          <EditNode open={openEditNode} node={currentNode} handleClose={handleClose} />
           <Background gap={15} />
           <Controls />
         </div>
