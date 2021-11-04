@@ -14,11 +14,9 @@ const getFlowInfo = async (req, res) => {
 const updateFlowElements = async (req,res) => {
   console.log(req.query.elements);
     Flow.updateOne({_ids:req.query.id},{$set:{elements:JSON.parse(req.query.elements)}}).then((result) => {
-      console.log(result);
       res.json(result);
     })
     .catch((err) => {
-      console.log(err);
       res.json(err);
     });
 }
