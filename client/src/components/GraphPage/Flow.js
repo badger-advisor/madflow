@@ -8,6 +8,8 @@ import ReactFlow, {
   Background
 } from 'react-flow-renderer';
 
+import { autosave } from '../../utils';
+
 // The 3 types of custom nodes that can appear in the Flow
 import customNodes from './customNodes';
 
@@ -30,6 +32,16 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
   const onElementsRemove = elementsToRemove => {
     saveForUndo(removeElements(elementsToRemove, elements));
   };
+
+  useEffect(
+    () => {
+      // Update the document title using the browser API
+
+      //call the save endpoint, for testing I have provided a flow id since functionality is not ready yet.
+      autosave('6171c42fdcb0c9cba954978c', elements);
+    },
+    [ elements ]
+  );
 
   //Handle dragging a node from the Sidebar
   const onDragOver = event => {
