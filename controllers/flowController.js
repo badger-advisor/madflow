@@ -1,7 +1,7 @@
 const Flow = require('../models/flowModel');
 
 const getFlowInfo = async (req, res) => {
-  const flowID = req.params.flowID;
+  const flowID = req.params.id;
 
   try {
     const flow = await Flow.findById(flowID);
@@ -43,4 +43,15 @@ const createNewFlow = async (req, res) => {
     });
 };
 
-module.exports = { getFlowInfo, createNewFlow, updateFlowElements };
+const removeFlow = async (req, res) => {
+  Flow.findOneAndDelete({ _id: req.params.id })
+    .then(result => {
+      res.json(result);
+      console.log(result);
+    })
+    .catch(err => {
+      res.status(404).json({ message: err.message });
+      console.log('removeflow broke');
+    });
+};
+module.exports = { getFlowInfo, createNewFlow, updateFlowElements, removeFlow };
