@@ -44,3 +44,32 @@ export const autosave = async (flowID, elements) => {
   // TODO: need to check valid input
   await updateUserFlowElements(flowID, elements);
 };
+
+/**
+ * Adds edges between a course node and its prereqs (if they exist in the graph)
+ * @param {object} node A node that represents a course in the graph
+ * @param {[Object]} elements Elements array containing all nodes and edges
+ */
+export const connectPrereqs = (node, elements) => {
+  //TODO: create different edge types depending on the status of the node
+  //Get id and prereqs for the course that is being added
+  const newId = node.id;
+  const prereqs = node['data'].prerequisites;
+
+  //Naive approach: check each element in the graph to see if its id matches the prereq ids
+  elements.map(el => {
+    //If there is a match, create a new edge between these elements and push it to the elements list
+    if (prereqs.includes(el.id)) {
+      const newEdge = {
+        id            : el.id + '-' + newId,
+        source        : el.id,
+        target        : newId,
+        type          : 'smoothstep',
+        animated      : 'true',
+        arrowHeadType : 'arrowclosed'
+      };
+      elements.push(newEdge); //Add the new edge to the list
+    }
+  });
+  return elements;
+};

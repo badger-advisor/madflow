@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import ShowMoreText from 'react-show-more-text';
 
-import { generateNode } from '../../utils';
+import { connectPrereqs, generateNode } from '../../utils';
 
 import './dnd.css';
 
@@ -125,29 +125,9 @@ const SearchBar = ({ elements, saveForUndo }) => {
       console.log(newCourse);
       const newElements = [ ...elements, newCourse ];
 
-      //TODO: create different edge types depending on the status of the node
-      //Get prereqs and the id for the course that is being added
-      const prereqs = newCourse['data'].prerequisites;
-      const newId = newCourse.id;
-
-      //Naive approach: check each element in the graph to see if its id matches the prereq ids
-      newElements.map(el => {
-        //If there is a match, create a new edge between these elements and push it to the elements list
-        if (prereqs.includes(el.id)) {
-          const newEdge = {
-            id            : el.id + '-' + newId,
-            source        : el.id,
-            target        : newId,
-            type          : 'smoothstep',
-            animated      : 'true',
-            arrowHeadType : 'arrowclosed'
-          };
-          console.log(newEdge);
-          newElements.push(newEdge); //Add the new edge to the list
-        }
-      });
-
-      saveForUndo(newElements);
+      //Connect the new course to its prereqs
+      const connectedElements = connectPrereqs(newCourse, newElements);
+      saveForUndo(connectedElements);
     } catch (e) {
       // TODO: Error pop up maybe
       console.error(e.name, e.message);
