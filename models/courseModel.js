@@ -16,7 +16,6 @@ const courseSchema = new mongoose.Schema({
   prerequisites : Array
 });
 
-
 const Course = mongoose.model('Course', courseSchema);
 
 module.exports = Course;
