@@ -1,43 +1,43 @@
 .main {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	background-color: #f7f7f7;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #f7f7f7;
 }
 
 .header-img {
-	width: 100%;
-	height: 200px;
-	background: url('./campus_temp.jpg');
-	background-size: cover;
+  width: 100%;
+  height: 200px;
+  background: url('./campus_temp.jpg');
+  background-size: cover;
 }
 
 .profile-box {
-	width: 15%;
-	height: 60px;
-	position: relative;
-	bottom: 75px;
-	left: 15%;
-	background: transparent;
+  width: 15%;
+  height: 60px;
+  position: relative;
+  bottom: 75px;
+  left: 15%;
+  background: transparent;
 }
 
 .profile-box-inner {
-	min-height: 300px;
-	min-width: 200px;
-	background-color: #dadfe1;
-	border-color: black;
-	border-radius: 2px;
-	border-width: 2px;
-	border-style: solid;
+  min-height: 300px;
+  min-width: 200px;
+  background-color: #dadfe1;
+  border-color: black;
+  border-radius: 2px;
+  border-width: 2px;
+  border-style: solid;
 }
 
 .profile-details {
-	width: 15%;
-	height: 60px;
-	position: relative;
-	bottom: 75px;
-	left: 50%;
-	background: transparent;
+  width: 15%;
+  height: 60px;
+  position: relative;
+  bottom: 75px;
+  left: 50%;
+  background: transparent;
 }

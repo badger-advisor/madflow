@@ -1,7 +1,7 @@
 import ProfileMainView from '../components/ProfilePage/ProfileMainView';
 
 const Profile = () => {
-	return <ProfileMainView />;
+  return <ProfileMainView />;
 };
 
 export default Profile;
