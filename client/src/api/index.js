@@ -17,9 +17,9 @@ const signIn = id =>
 
 const signUp = userObject =>
   axios({
-    method: 'post',
-    url: `http://localhost:8080/user/signup?id=${userObject.googleId}&displayName=${userObject.name}&email=${userObject.email}&profilePicture=${userObject.imageUrl}`,
-    header: {}
+    method : 'post',
+    url    : `http://localhost:8080/user/signup?id=${userObject.googleId}&displayName=${userObject.name}&email=${userObject.email}&profilePicture=${userObject.imageUrl}`,
+    header : {}
   })
     .then(res => {
       const { user } = res.data;
@@ -50,19 +50,14 @@ const getAllUserFlows = userID => API.get(`/flow/${userID}`);
 const getUserFlow = (userID, flowID) => API.get(`/flow/${userID}/${flowID}`);
 const deleteUserFlow = (userID, flowID) => API.delete(`/flow/${userID}/${flowID}`);
 const createUserFlow = (userID, flowID, flow) => API.post(`/flow/${userID}/${flowID}`, flow);
-const updateUserFlowElements = (flowID, updatedUserFlow) => {
-  let url =  'http://localhost:8080/flow/updateElements?id=' + flowID + '&elements=' + updatedUserFlow;
-  axios({ method: 'post', url:'http://localhost:8080/flow/updateElements', params: {id:flowID,elements:updatedUserFlow} })
-    .then(res => {
-      console.log(JSON.stringify(res.data));
-      return '';
-    })
-    .catch(error => {
-      console.log(error);
-      return '';
-    });
+const updateUserFlowElements = (flowID, updatedUserFlow) =>
+  API.post(`/flow/updateElements`, {
+    id       : flowID,
+    elements : updatedUserFlow
+  }).then(res => {
+    console.log(res);
+  });
 
-};
 const getPrefilledFlow = majorID => API.get(`/flow/prefilled/${majorID}`);
 
 // Course

@@ -11,17 +11,20 @@ const getFlowInfo = async (req, res) => {
   }
 };
 
-const updateFlowElements = async (req,res) => {
-  console.log(req.query.elements);
-    Flow.updateOne({_ids:req.query.id},{$set:{elements:JSON.parse(req.query.elements)}}).then((result) => {
-      res.json(result);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
-}
+const updateFlowElements = async (req, res) => {
+  const id = req.body.id;
+  const elements = JSON.parse(req.body.elements);
 
-module.exports = { getFlowInfo,  };
+  Flow.updateOne({ _ids: id }, { $set: { elements } })
+    .then(result => {
+      res.json(result);
+      console.log(result);
+    })
+    .catch(err => {
+      res.status(404).json({ message: err.message });
+      console.log('updateFlowElements broke');
+    });
+};
 
 const createNewFlow = async (req, res) => {
   const newFlow = new Flow({
