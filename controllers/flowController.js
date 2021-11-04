@@ -12,8 +12,7 @@ const getFlowInfo = async (req, res) => {
 };
 
 const updateFlowElements = async (req, res) => {
-  const id = req.body.id;
-  const elements = JSON.parse(req.body.elements);
+  const { id, elements } = req.body;
 
   Flow.updateOne({ _ids: id }, { $set: { elements } })
     .then(result => {
