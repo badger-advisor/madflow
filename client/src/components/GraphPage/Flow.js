@@ -1,69 +1,47 @@
 import React from 'react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
   removeElements,
   Controls,
-  Background,
-  Handle
+  Background
 } from 'react-flow-renderer';
 
+import { autosave } from '../../utils';
+
+// The 3 types of custom nodes that can appear in the Flow
+import customNodes from './customNodes';
+
 import './dnd.css';
-import CourseNodeStyles from './CourseNodeStyles';
+import EditNode from './EditNode';
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-const Flow = ({ elements, setElements }) => {
-  const styles = useState(CourseNodeStyles);
+const Flow = ({ elements, setElements, saveForUndo }) => {
+  // Flow library stuff
   const reactFlowWrapper = useRef(null);
   const [ reactFlowInstance, setReactFlowInstance ] = useState(null);
-
+  const [ openEditNode, setOpenEditNode ] = useState(false);
+  const [ currentNode, setCurrentNode ] = useState('');
   const onConnect = params => setElements(els => addEdge(params, els));
-  const onElementsRemove = elementsToRemove =>
-    setElements(els => removeElements(elementsToRemove, els));
   const onLoad = _reactFlowInstance => setReactFlowInstance(_reactFlowInstance);
 
-  //Node element for a taken course
-  const CourseTaken = ({ data }) => {
-    return (
-      <div style={styles[0].taken}>
-        <Handle type='source' position='bottom' style={{ visibility: 'hidden' }} />
-        <div>{data.label}</div>
-        <Handle type='target' position='top' style={{ visibility: 'hidden' }} />
-      </div>
-    );
+  // Event listener to handle removing elements and undoing
+  const onElementsRemove = elementsToRemove => {
+    saveForUndo(removeElements(elementsToRemove, elements));
   };
 
-  //Node element for a course that cannot be taken yet
-  const CourseCannotTake = ({ data }) => {
-    return (
-      <div style={styles[0].cannotTake}>
-        <Handle type='source' position='bottom' style={{ visibility: 'hidden' }} />
-        <div>{data.label}</div>
-        <Handle type='target' position='top' style={{ visibility: 'hidden' }} />
-      </div>
-    );
-  };
+  useEffect(
+    () => {
+      // Update the document title using the browser API
 
-  //Node element for a course that has not been taken, but can be
-  const CourseCanTake = ({ data }) => {
-    return (
-      <div style={styles[0].canTake}>
-        <Handle type='source' position='bottom' style={{ visibility: 'hidden' }} />
-        <div>{data.label}</div>
-        <Handle type='target' position='top' style={{ visibility: 'hidden' }} />
-      </div>
-    );
-  };
-
-  // The 3 types of nodes that can appear in the Flow
-  const nodeTypes = {
-    courseTaken      : CourseTaken,
-    courseCannotTake : CourseCannotTake,
-    courseCanTake    : CourseCanTake
-  };
+      //call the save endpoint, for testing I have provided a flow id since functionality is not ready yet.
+      autosave('6171c42fdcb0c9cba954978c', elements);
+    },
+    [ elements ]
+  );
 
   //Handle dragging a node from the Sidebar
   const onDragOver = event => {
@@ -71,7 +49,7 @@ const Flow = ({ elements, setElements }) => {
     event.dataTransfer.dropEffect = 'move';
   };
 
-  //Handle dropping the node from the sidebar adds the new node to the graph
+  //Handle dropping the node from the sidebar and adding the new node to the graph
   const onDrop = event => {
     event.preventDefault();
 
@@ -88,7 +66,38 @@ const Flow = ({ elements, setElements }) => {
       data     : { label: 'Course Node' }
     };
 
-    setElements(es => es.concat(newNode));
+    const newElements = [ ...elements, newNode ];
+    saveForUndo(newElements);
+  };
+
+  const handleMoveNode = (e, node) => {
+    // console.log(node);
+    const newElements = elements.map((ele, idx) => {
+      const { id } = ele;
+
+      // Find the node that was just updated from the elements array
+      if (id === node.id) {
+        return {
+          ...ele,
+          position : node.position
+        };
+      } else {
+        // else return the node/edge as is
+        return ele;
+      }
+    });
+    setElements(newElements);
+    saveForUndo(newElements);
+  };
+
+  const onNodeDoubleClick = (e, node) => {
+    e.preventDefault();
+    setCurrentNode(node);
+    setOpenEditNode(!openEditNode);
+  };
+
+  const handleClose = () => {
+    setOpenEditNode(false);
   };
 
   return (
@@ -97,16 +106,19 @@ const Flow = ({ elements, setElements }) => {
         <div className='reactflow-wrapper' ref={reactFlowWrapper}>
           <ReactFlow
             elements={elements}
-            nodeTypes={nodeTypes}
+            nodeTypes={customNodes}
             onConnect={onConnect}
             onElementsRemove={onElementsRemove}
+            onNodeDragStop={handleMoveNode}
             onLoad={onLoad}
             onDrop={onDrop}
             onDragOver={onDragOver}
             snapToGrid={true}
             snapGrid={[ 15, 15 ]}
             deleteKeyCode={46}
+            onNodeDoubleClick={(event, node) => onNodeDoubleClick(event, node)}
           />
+          <EditNode open={openEditNode} node={currentNode} handleClose={handleClose} />
           <Background gap={15} />
           <Controls />
         </div>
