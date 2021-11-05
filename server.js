@@ -18,7 +18,6 @@ const app = express();
 // Preventing cors error
 app.use(cors());
 
-app.use(cors())
 // set up session cookies
 app.use(
   cookieSession({
