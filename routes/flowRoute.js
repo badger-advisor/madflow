@@ -8,10 +8,11 @@ const {
   removeFlow
 } = require('../controllers/flowController');
 
-router.get('/:id', getFlowInfo);
+router.get('/getFlow', getFlowInfo);
 // router.post('/:id', createNewFlow);
+router.post('/newFlow', createNewFlow);
 
 router.post('/updateElements', updateFlowElements);
-router.delete('/:id', removeFlow);
+router.delete('/removeFlow', removeFlow);
 
 module.exports = router;

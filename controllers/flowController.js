@@ -1,10 +1,10 @@
 const Flow = require('../models/flowModel');
 
 const getFlowInfo = async (req, res) => {
-  const flowID = req.params.id;
+  const { id } = req.body;
 
   try {
-    const flow = await Flow.findById(flowID);
+    const flow = await Flow.findById(id);
     res.json(flow);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -26,11 +26,12 @@ const updateFlowElements = async (req, res) => {
 };
 
 const createNewFlow = async (req, res) => {
+  const { name, elements, userGoogleID, major } = req.body;
   const newFlow = new Flow({
-    name         : req.query.name,
-    elements     : req.query.elements,
-    userGoogleID : req.query.googleId,
-    major        : req.query.major
+    name         : name,
+    elements     : elements,
+    userGoogleID : userGoogleID,
+    major        : major
   })
     .save()
     .then(newFlow => {
@@ -44,7 +45,8 @@ const createNewFlow = async (req, res) => {
 };
 
 const removeFlow = async (req, res) => {
-  Flow.findOneAndDelete({ _id: req.params.id })
+  const { id } = req.body;
+  Flow.findOneAndDelete({ _id: id })
     .then(result => {
       res.json(result);
       console.log(result);

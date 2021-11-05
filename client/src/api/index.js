@@ -47,16 +47,67 @@ const deleteUser = userID => API.delete(`/user/${userID}`);
 
 // Flow
 const getAllUserFlows = userID => API.get(`/flow/${userID}`);
-const getUserFlow = (userID, flowID) => API.get(`/flow/${userID}/${flowID}`);
-const deleteUserFlow = (userID, flowID) => API.delete(`/flow/${userID}/${flowID}`);
-const createUserFlow = (userID, flowID, flow) => API.post(`/flow/${userID}/${flowID}`, flow);
-const updateUserFlowElements = (flowID, updatedUserFlow) =>
-  API.post(`/flow/updateElements`, {
-    id       : flowID,
-    elements : updatedUserFlow
-  }).then(res => {
-    console.log(res);
-  });
+const getFlowInfo = flowID => {
+  axios({
+    method : 'get',
+    url    : 'http://localhost:8080/flow/getFlow',
+    params : { id: flowID }
+  })
+    .then(res => {
+      console.log(JSON.stringify(res.data));
+      return '';
+    })
+    .catch(error => {
+      console.log(error);
+      return '';
+    });
+};
+const removeFlow = flowID => {
+  axios({
+    method : 'delete',
+    url    : 'http://localhost:8080/flow/removeFlow',
+    params : { id: flowID }
+  })
+    .then(res => {
+      console.log(JSON.stringify(res.data));
+      return '';
+    })
+    .catch(error => {
+      console.log(error);
+      return '';
+    });
+};
+const createNewFlow = (name, elements, userGoogleID, major) => {
+  axios({
+    method : 'post',
+    url    : 'http://localhost:8080/flow/newFlow',
+    params : { name: name, elements: elements, userGoogleID: userGoogleID, major: major }
+  })
+    .then(res => {
+      console.log(JSON.stringify(res.data));
+      return '';
+    })
+    .catch(error => {
+      console.log(error);
+      return '';
+    });
+};
+
+const updateUserFlow = (flowID, updatedUserFlow) => {
+  axios({
+    method : 'post',
+    url    : 'http://localhost:8080/flow/updateElements',
+    params : { id: flowID, elements: updatedUserFlow }
+  })
+    .then(res => {
+      console.log(JSON.stringify(res.data));
+      return '';
+    })
+    .catch(error => {
+      console.log(error);
+      return '';
+    });
+};
 
 const getPrefilledFlow = majorID => API.get(`/flow/prefilled/${majorID}`);
 
@@ -69,10 +120,10 @@ export {
   currentUser,
   deleteUser,
   getAllUserFlows,
-  getUserFlow,
-  deleteUserFlow,
-  createUserFlow,
-  updateUserFlowElements,
+  getFlowInfo,
+  removeFlow,
+  createNewFlow,
+  updateUserFlow,
   getPrefilledFlow,
   getCourse
 };
