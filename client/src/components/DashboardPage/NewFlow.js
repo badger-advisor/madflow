@@ -17,10 +17,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const NewFlow = ({ open, setOpen }) => {
-  const [ name, setName ] = useState('');
-  const [ major, setMajor ] = useState('');
-
-  // use Formik to handle form submission
+  // use Formik to handle form validation and submission
   const formik = useFormik({
     enableReinitialize : true,
     initialValues      : {
@@ -29,49 +26,19 @@ const NewFlow = ({ open, setOpen }) => {
     },
     validationSchema   : validationSchema,
     onSubmit           : (values, { resetForm }) => {
+      // TODO: implement createNewFlow()
       console.log(values);
       resetForm();
-      setOpen(!open);
+      setOpen(false);
+    },
+    onReset            : () => {
+      setOpen(false);
     }
   });
 
-  // function to close the Dialog window
-  const handleClose = () => {
-    setOpen(!open);
-  };
-
-  // TODO: function to handle creating a blank Flow with the specified name and major
-  const startBlank = () => {
-    console.log('start blank clicked!');
-    console.log('name = %s    major = %s', name, major);
-    setOpen(!open);
-  };
-
-  // TODO: function to handle creating a pre-filled Flow with the specified name and major
-  const startPrefill = () => {
-    console.log('start pre-filled clicked!');
-    console.log('name = %s    major = %s', name, major);
-    setOpen(!open);
-  };
-
-  // TODO: alternative function to handle creating a new flow, regardless of blank/prefill option
-  const makeNewFlow = option => {
-    // option = 'blank' or 'prefill' depending on which button was clicked
-
-    newFlow = {
-      //flowID:  id of flow (assigned automatically),
-      //TODO: userID:  id of current user,
-      flowName  : name,
-      flowMajor : major
-      //TODO: elements:  array of all nodes and edges in the flow
-    };
-
-    // call function to create new Flow
-  };
-
   return (
     <div>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={formik.handleReset}>
         <DialogTitle>Create New Flow</DialogTitle>
         <DialogContent>
           {/* input for Flow name */}
@@ -110,7 +77,7 @@ const NewFlow = ({ open, setOpen }) => {
 
         {/* button options for new Flow */}
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={formik.handleReset}>Cancel</Button>
           <Button onClick={formik.handleSubmit}>Create Blank</Button>
           <Button onClick={formik.handleSubmit}>Create Pre-Filled</Button>
         </DialogActions>
