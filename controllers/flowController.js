@@ -27,11 +27,12 @@ const updateFlowElements = async (req, res) => {
 
 const createNewFlow = async (req, res) => {
   const { name, elements, userGoogleID, major } = req.body;
+
   const newFlow = new Flow({
-    name         : name,
-    elements     : elements,
-    userGoogleID : userGoogleID,
-    major        : major
+    name,
+    elements,
+    userGoogleID,
+    major
   })
     .save()
     .then(newFlow => {
@@ -46,6 +47,7 @@ const createNewFlow = async (req, res) => {
 
 const removeFlow = async (req, res) => {
   const { id } = req.body;
+
   Flow.findOneAndDelete({ _id: id })
     .then(result => {
       res.json(result);
@@ -56,4 +58,26 @@ const removeFlow = async (req, res) => {
       console.log('removeflow broke');
     });
 };
-module.exports = { getFlowInfo, createNewFlow, updateFlowElements, removeFlow };
+
+const updateFlow = async (req, res) => {
+  const { id, changes } = req.body;
+
+  Flow.updateOne({ _id: id }, { $set: changes })
+    .then(result => {
+      res.json(result);
+      console.log(result);
+    })
+    .catch(err => {
+      res.json(err);
+      console.log(err);
+      console.log('updateFlow broke');
+    });
+};
+
+module.exports = {
+  getFlowInfo,
+  createNewFlow,
+  updateFlowElements,
+  removeFlow,
+  updateFlow
+};
