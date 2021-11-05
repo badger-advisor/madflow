@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import ShowMoreText from 'react-show-more-text';
 
-import { generateNode } from '../../utils';
+import { connectPrereqs, determineType, generateNode } from '../../utils';
 
 import './dnd.css';
 
@@ -43,7 +43,8 @@ const courseOptions = [
   {
     courseID   : 6,
     label      : 'CS 506',
-    courseInfo : 'testing adding node function'
+    courseInfo :
+      'Ideas and techniques for designing, developing, and modifying large software systems. Topics include software engineering processes; requirements and specifications; project team organization and management; software architectures; design patterns; testing and debugging; and cost and quality metrics and estimation. Students will work in large teams on a substantial programming project. Enroll Info: None'
   }
 ];
 
@@ -72,7 +73,7 @@ const SearchBar = ({ elements, saveForUndo }) => {
 
   useEffect(
     () => {
-      if (inputValue === 0) {
+      if (inputValue === '') {
         setDisplayPop(false);
       }
     },
@@ -99,7 +100,7 @@ const SearchBar = ({ elements, saveForUndo }) => {
   };
 
   const handleOnClose = e => {
-    if (e.code === 'Escape') {
+    if (e.type !== 'blur') {
       setInputValue('');
       setDropDown(false);
       setDisplayPop(false);
@@ -109,7 +110,7 @@ const SearchBar = ({ elements, saveForUndo }) => {
 
   /**
    * Able to add most as taken and not taken
-   * TODO: implement logic to determine if can take or cannor take
+   * TODO: implement logic to determine if can take or cannot take
    */
   const addCourse = async () => {
     console.log(`Add ${taken ? 'Taken' : 'Not Taken'}: ${currentCourse.label}`);
@@ -117,17 +118,30 @@ const SearchBar = ({ elements, saveForUndo }) => {
     // Removes spaces from current course
     const courseNum = currentCourse.label.split(' ').join('');
 
-    // Determiens what type of node to add
+    // Determines what type of node to add
     const type = taken ? 'courseTaken' : 'courseCannotTake';
 
     try {
       const newCourse = await generateNode(courseNum, { type });
-      console.log(newCourse);
+
+      //Check if course is already present in the flow
+      if (elements.filter(el => el.id === newCourse.id).length !== 0) {
+        throw newCourse.id + ' already present in the flow, it cannot be added!';
+      }
+
+      //If the course is not taken, it is either courseCannotTake or courseCanTake
+      if (!taken) {
+        newCourse.type = determineType(newCourse, elements);
+      }
+
       const newElements = [ ...elements, newCourse ];
-      saveForUndo(newElements);
+
+      //Connect the new course to its prereqs
+      const connectedElements = connectPrereqs(newCourse, newElements);
+      saveForUndo(connectedElements);
     } catch (e) {
       // TODO: Error pop up maybe
-      console.error(e.name, e.message);
+      console.error(e);
     } finally {
       setInputValue('');
       setDropDown(false);
@@ -144,7 +158,7 @@ const SearchBar = ({ elements, saveForUndo }) => {
         options={courseOptions}
         onHighlightChange={courseChangeHandler}
         onInputChange={handleInputChange}
-        onClose={handleOnClose}
+        onClose={e => handleOnClose(e)}
         inputValue={inputValue}
         autoHighlight={true}
         open={dropDown}

@@ -5,10 +5,12 @@ import ReactFlow, {
   addEdge,
   removeElements,
   Controls,
-  Background
+  Background,
+  isEdge,
+  getConnectedEdges
 } from 'react-flow-renderer';
 
-import { autosave } from '../../utils';
+import { autosave, determineType } from '../../utils';
 
 // The 3 types of custom nodes that can appear in the Flow
 import customNodes from './customNodes';
@@ -29,8 +31,33 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
   const onLoad = _reactFlowInstance => setReactFlowInstance(_reactFlowInstance);
 
   // Event listener to handle removing elements and undoing
-  const onElementsRemove = elementsToRemove => {
+  const onElementsRemove = () => {
+    const edges = elements.filter(el => isEdge(el));
+    const edgesToRemove = getConnectedEdges([ currentNode ], edges);
+    const elementsToRemove = edgesToRemove.concat([ currentNode ]);
+    handleClose();
     saveForUndo(removeElements(elementsToRemove, elements));
+  };
+
+  //Lets the user change the course status as taken or not; changes are reflected in the graph
+  const handleSwitchStatus = e => {
+    //The default is 'taken', but we check the event to see if it is being switched to 'not taken'
+    //From there we determine the type based on the node's prereqs
+    let newType = 'courseTaken';
+    if (!e.target.checked) {
+      newType = determineType(currentNode, elements);
+    }
+    //This part actually modifies the type in the elements list
+    setElements(els =>
+      els.map(el => {
+        if (el.id === currentNode.id) {
+          el.type = newType;
+        }
+        return el;
+      })
+    );
+    //Close the EditNode component box
+    handleClose();
   };
 
   useEffect(
@@ -44,20 +71,18 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
   );
 
   //Handle dragging a node from the Sidebar
-  const onDragOver = event => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'move';
+  const onDragOver = e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
   };
 
   //Handle dropping the node from the sidebar and adding the new node to the graph
-  const onDrop = event => {
-    event.preventDefault();
-
+  const onDrop = e => {
     const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-    const type = event.dataTransfer.getData('application/reactflow');
+    const type = e.dataTransfer.getData('application/reactflow');
     const position = reactFlowInstance.project({
-      x : event.clientX - reactFlowBounds.left,
-      y : event.clientY - reactFlowBounds.top
+      x : e.clientX - reactFlowBounds.left,
+      y : e.clientY - reactFlowBounds.top
     });
     const newNode = {
       id       : getId(),
@@ -70,8 +95,7 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
     saveForUndo(newElements);
   };
 
-  const handleMoveNode = (e, node) => {
-    // console.log(node);
+  const handleMoveNode = (_, node) => {
     const newElements = elements.map((ele, idx) => {
       const { id } = ele;
 
@@ -90,8 +114,7 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
     saveForUndo(newElements);
   };
 
-  const onNodeDoubleClick = (e, node) => {
-    e.preventDefault();
+  const onNodeDoubleClick = node => {
     setCurrentNode(node);
     setOpenEditNode(!openEditNode);
   };
@@ -116,9 +139,17 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
             snapToGrid={true}
             snapGrid={[ 15, 15 ]}
             deleteKeyCode={46}
-            onNodeDoubleClick={(event, node) => onNodeDoubleClick(event, node)}
+            onNodeDoubleClick={(_, node) => onNodeDoubleClick(node)}
+            onElementClick={(_, node) => setCurrentNode(node)}
           />
-          <EditNode open={openEditNode} node={currentNode} handleClose={handleClose} />
+          <EditNode
+            open={openEditNode}
+            node={currentNode}
+            handleClose={handleClose}
+            elements={elements}
+            onElementsRemove={onElementsRemove}
+            onSwitch={handleSwitchStatus}
+          />
           <Background gap={15} />
           <Controls />
         </div>

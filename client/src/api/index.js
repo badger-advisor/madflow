@@ -87,7 +87,7 @@ const updateUserFlowElements = (flowID, updatedUserFlow) =>
     id       : flowID,
     elements : updatedUserFlow
   }).then(res => {
-    console.log(JSON.stringify(res.data));
+    // console.log(JSON.stringify(res.data));
   });
 
 /**
