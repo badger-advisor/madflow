@@ -93,7 +93,7 @@ const createNewFlow = (name, elements, userGoogleID, major) => {
     });
 };
 
-const updateUserFlow = (flowID, updatedUserFlow) => {
+const updateUserFlowElements = (flowID, updatedUserFlow) => {
   axios({
     method : 'post',
     url    : 'http://localhost:8080/flow/updateElements',
@@ -123,7 +123,7 @@ export {
   getFlowInfo,
   removeFlow,
   createNewFlow,
-  updateUserFlow,
+  updateUserFlowElements,
   getPrefilledFlow,
   getCourse
 };
