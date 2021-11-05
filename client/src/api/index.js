@@ -55,10 +55,7 @@ const deleteUser = userGoogleID =>
 /* ###################################### Flow ###################################### */
 const getAllUserFlows = userID => API.get(`/flow/${userID}`);
 
-const getFlowInfo = flowID =>
-  API.get('/flow/getFlow', { id: flowID })
-    .then(res => console.log(JSON.stringify(res.data)))
-    .catch(error => console.log(error));
+const getFlowInfo = flowID => API.get('/flow/getFlow', { id: flowID })
 
 const removeFlow = flowID =>
   API.delete('/flow/removeFlow/', { id: flowID })
