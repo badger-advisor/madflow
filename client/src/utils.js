@@ -73,3 +73,24 @@ export const connectPrereqs = (node, elements) => {
   });
   return elements;
 };
+
+/**
+ * Determines if a node is able to be taken based on the types of its prereqs in the graph
+ * @param {object} node A node that represents a course in the graph
+ * @param {[Object]} elements Elements array containing all nodes and edges
+ */
+export const determineType = (course, elements) => {
+  //Todo: find a solution to accomodate optional prereqs.
+  //This solution assumes that a course cannot be taken until all its prereqs are taken
+  const prereqs = course['data'].prerequisites;
+
+  //If a single prereq is not fulfilled, the course cannot be taken
+  let type = 'courseCanTake';
+  elements.map(el => {
+    if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
+      console.log('Cannot take the course');
+      type = 'courseCannotTake';
+    }
+  });
+  return type;
+};
