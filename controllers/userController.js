@@ -64,10 +64,21 @@ const insertTestUser = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  const { googleId } = req.body;
+
+  try {
+    const user = await User.findOneAndDelete({ googleId });
+    res.json(user);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 module.exports = {
   signIn,
   signOut,
   signUp,
-  insertTestUser
-  // otherFunction
+  insertTestUser,
+  deleteUser
 };

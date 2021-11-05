@@ -44,7 +44,13 @@ const currentUser = id =>
       return '';
     });
 
-const deleteUser = userID => API.delete(`/user/${userID}`);
+// TODO: Remove all flows assiciated with the user
+const deleteUser = userGoogleID =>
+  API.delete('/user/deleteUser', {
+    googleId : userGoogleID
+  }).then(res => {
+    console.log(res);
+  });
 
 /* ###################################### Flow ###################################### */
 const getAllUserFlows = userID => API.get(`/flow/${userID}`);
