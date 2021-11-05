@@ -5,44 +5,38 @@ const API = axios.create({ baseURL: 'http://localhost:8080' });
 
 /* ###################################### User ###################################### */
 const signIn = id =>
-  axios({ method: 'post', url: `http://localhost:8080/user/signIn?id=${id}`, header: {} })
+  API.post(`/user/signIn`, {
+    id : id
+  })
     .then(res => {
       const { user } = res.data;
       localStorage.setItem('google_id', id);
       return user;
     })
-    .catch(error => {
-      console.log(error);
-      return '';
-    });
+    .catch(error => console.log(error));
 
 const signUp = userObject =>
-  axios({
-    method : 'post',
-    url    : `http://localhost:8080/user/signup?id=${userObject.googleId}&displayName=${userObject.name}&email=${userObject.email}&profilePicture=${userObject.imageUrl}`,
-    header : {}
+  API.post(`/user/signup`, {
+    id             : userObject.googleId,
+    displayName    : userObject.name,
+    email          : userObject.email,
+    profilePicture : userObject.imageUrl
   })
     .then(res => {
       const { user } = res.data;
       localStorage.setItem('google_id', userObject.googleId);
       return user;
     })
-    .catch(error => {
-      console.log(error);
-      return null;
-    });
+    .catch(error => console.log(error));
 
 const currentUser = id =>
-  axios({ method: 'post', url: `http://localhost:8080/user/signIn?id=${id}`, header: {} })
+  API.post(`/user/signIn`, { id })
     .then(res => {
       const { user } = res.data;
       localStorage.setItem('google_id', id);
       return user;
     })
-    .catch(error => {
-      console.log(error);
-      return '';
-    });
+    .catch(error => console.log(error));
 
 // TODO: Remove all flows assiciated with the user
 const deleteUser = userGoogleID =>

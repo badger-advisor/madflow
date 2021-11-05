@@ -1,7 +1,7 @@
 import { Button, Typography, Box, alpha, Drawer } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
-import { signIn, signUp } from '../../api/index';
+import { signin, signup } from '../../utils';
 import Cookie from 'js-cookie';
 import { GoogleLogin } from 'react-google-login';
 
@@ -29,11 +29,11 @@ const SidePanel = () => {
   const onGoogleSuccess = async response => {
     const google_id = response.googleId;
     console.log(response);
-    const cur_user = await signIn(google_id);
+    const cur_user = signin(google_id);
     console.log('current user:');
     console.log(cur_user);
     if (cur_user == '') {
-      const new_user = await signUp(response.profileObj);
+      const new_user = signup(response.profileObj);
       console.log('created new user');
       console.log(new_user);
       if (new_user != '') {
