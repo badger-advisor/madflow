@@ -3,6 +3,6 @@ const router = express.Router();
 
 const { getCourseInfo } = require('../controllers/courseController');
 
-router.get('/:courseNumber', getCourseInfo);
+router.get('/getCourse', getCourseInfo);
 
 module.exports = router;
