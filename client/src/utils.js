@@ -1,5 +1,5 @@
 import { isNode, isEdge, removeElements, addEdge } from 'react-flow-renderer';
-import { getCourse, updateUserFlowElements } from './api';
+import { getCourse, updateUserFlowElements, currentUser, signUp, signIn } from './api';
 
 class Exception {
   /**
@@ -43,4 +43,32 @@ export const generateNode = async (courseNum, options) => {
 export const autosave = async (flowID, elements) => {
   // TODO: need to check valid input
   await updateUserFlowElements(flowID, elements);
+};
+
+/**
+ * Function to call when trying to find current user data
+ * @param {String} userID the google ID
+ */
+export const currentuser = async (userID) => {
+  // TODO: need to check valid input
+  const c = await currentUser(userID)
+  return(c);
+};
+
+/**
+ * Function to call when signing a user up
+ * @param {[Object]} profileObject object of user information
+ */
+export const signup = async (profileObject) => {
+  // TODO: need to check valid input
+  await signUp(profileObject);
+};
+
+/**
+ * Function to call when signing up
+ * @param {String} userID the google ID
+ */
+export const signin = async (userID) => {
+  // TODO: need to check valid input
+  await signIn(userID);
 };
