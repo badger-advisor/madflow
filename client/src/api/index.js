@@ -3,46 +3,40 @@ import axios from 'axios';
 // Initialize axios
 const API = axios.create({ baseURL: 'http://localhost:8080' });
 
-// User
-const signIn = (id) =>
+/* ###################################### User ###################################### */
+const signIn = id =>
   API.post(`/user/signIn`, {
-    id       : id,
-  }).then(res => {
-    const { user } = res.data;
-    localStorage.setItem('google_id', id);
-    return user;
-  }).catch(error => {
-      console.log(error);
-      return '';
-  });
-
-const signUp = (userObject) =>
-  API.post(`/user/signup`, {
-      id            : userObject.googleId,
-      displayName   : userObject.name,
-      email         : userObject.email,
-      profilePicture: userObject.imageUrl
-    }).then(res => {
-      const { user } = res.data;
-      localStorage.setItem('google_id', userObject.googleId);
-      return user;
-    }).catch(error => {
-      console.log(error);
-      return null;
-    });
-
-const currentUser = (id) =>
-  API.post(`/user/signIn`, {
-      id       : id,
-    }).then(res => {
+    id : id
+  })
+    .then(res => {
       const { user } = res.data;
       localStorage.setItem('google_id', id);
       return user;
     })
-    .catch(error => {
-      console.log(error);
-      return '';
-    });
+    .catch(error => console.log(error));
+
+const signUp = userObject =>
+  API.post(`/user/signup`, {
+    id             : userObject.googleId,
+    displayName    : userObject.name,
+    email          : userObject.email,
+    profilePicture : userObject.imageUrl
+  })
+    .then(res => {
+      const { user } = res.data;
+      localStorage.setItem('google_id', userObject.googleId);
+      return user;
+    })
+    .catch(error => console.log(error));
+
+const currentUser = id =>
+  API.post(`/user/signIn`, { id })
+    .then(res => {
+      const { user } = res.data;
+      localStorage.setItem('google_id', id);
+      return user;
+    })
+    .catch(error => console.log(error));
 
 // TODO: Remove all flows assiciated with the user
 const deleteUser = userGoogleID =>

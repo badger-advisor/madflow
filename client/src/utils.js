@@ -5,8 +5,8 @@ import {
   updateUserFlow,
   createUserFlow,
   deleteUser,
-  currentUser, 
-  signUp, 
+  currentUser,
+  signUp,
   signIn
 } from './api';
 
@@ -128,24 +128,22 @@ export const updateFlow = async (flowID, changes) => {
  */
 export const createNewFlow = async (userGoogleId, name, major) => {
   await createUserFlow(userGoogleId, name, major);
-
 };
 
 /**
  * Function to call when trying to find current user data
  * @param {String} userID the google ID
  */
-export const currentuser = async (userID) => {
+export const currentuser = async userID => {
   // TODO: need to check valid input
-  const c = await currentUser(userID)
-  return(c);
+  return await currentUser(userID);
 };
 
 /**
  * Function to call when signing a user up
  * @param {[Object]} profileObject object of user information
  */
-export const signup = async (profileObject) => {
+export const signup = async profileObject => {
   // TODO: need to check valid input
   await signUp(profileObject);
 };
@@ -154,7 +152,7 @@ export const signup = async (profileObject) => {
  * Function to call when signing up
  * @param {String} userID the google ID
  */
-export const signin = async (userID) => {
+export const signin = async userID => {
   // TODO: need to check valid input
   await signIn(userID);
 };
