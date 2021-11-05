@@ -9,7 +9,7 @@ const flowSchema = new mongoose.Schema({
   // Since elements will have a bunch of different things in it
   // using type Array will initialize an array of [Mixed] types
   elements     : Array,
-  userGoogleID : mongoose.ObjectId,
+  userGoogleID : String,
   major        : {
     type     : String,
     required : [ true, 'Each flow must have a major specified' ]
