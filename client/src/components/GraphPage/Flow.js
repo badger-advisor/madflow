@@ -71,20 +71,18 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
   );
 
   //Handle dragging a node from the Sidebar
-  const onDragOver = event => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'move';
+  const onDragOver = e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
   };
 
   //Handle dropping the node from the sidebar and adding the new node to the graph
-  const onDrop = event => {
-    event.preventDefault();
-
+  const onDrop = e => {
     const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-    const type = event.dataTransfer.getData('application/reactflow');
+    const type = e.dataTransfer.getData('application/reactflow');
     const position = reactFlowInstance.project({
-      x : event.clientX - reactFlowBounds.left,
-      y : event.clientY - reactFlowBounds.top
+      x : e.clientX - reactFlowBounds.left,
+      y : e.clientY - reactFlowBounds.top
     });
     const newNode = {
       id       : getId(),
@@ -97,8 +95,7 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
     saveForUndo(newElements);
   };
 
-  const handleMoveNode = (e, node) => {
-    // console.log(node);
+  const handleMoveNode = (_, node) => {
     const newElements = elements.map((ele, idx) => {
       const { id } = ele;
 
@@ -117,8 +114,7 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
     saveForUndo(newElements);
   };
 
-  const onNodeDoubleClick = (e, node) => {
-    e.preventDefault();
+  const onNodeDoubleClick = node => {
     setCurrentNode(node);
     setOpenEditNode(!openEditNode);
   };
@@ -143,7 +139,8 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
             snapToGrid={true}
             snapGrid={[ 15, 15 ]}
             deleteKeyCode={46}
-            onNodeDoubleClick={(event, node) => onNodeDoubleClick(event, node)}
+            onNodeDoubleClick={(_, node) => onNodeDoubleClick(node)}
+            onElementClick={(_, node) => setCurrentNode(node)}
           />
           <EditNode
             open={openEditNode}
