@@ -5,7 +5,9 @@ import ReactFlow, {
   addEdge,
   removeElements,
   Controls,
-  Background
+  Background,
+  isEdge,
+  getConnectedEdges
 } from 'react-flow-renderer';
 
 import { autosave } from '../../utils';
@@ -29,7 +31,11 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
   const onLoad = _reactFlowInstance => setReactFlowInstance(_reactFlowInstance);
 
   // Event listener to handle removing elements and undoing
-  const onElementsRemove = elementsToRemove => {
+  const onElementsRemove = () => {
+    const edges = elements.filter(el => isEdge(el));
+    const edgesToRemove = getConnectedEdges([ currentNode ], edges);
+    const elementsToRemove = edgesToRemove.concat([ currentNode ]);
+    handleClose();
     saveForUndo(removeElements(elementsToRemove, elements));
   };
 
@@ -118,7 +124,13 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
             deleteKeyCode={46}
             onNodeDoubleClick={(event, node) => onNodeDoubleClick(event, node)}
           />
-          <EditNode open={openEditNode} node={currentNode} handleClose={handleClose} />
+          <EditNode
+            open={openEditNode}
+            node={currentNode}
+            handleClose={handleClose}
+            elements={elements}
+            onElementsRemove={onElementsRemove}
+          />
           <Background gap={15} />
           <Controls />
         </div>

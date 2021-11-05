@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   }
 });
 
-const EditNode = ({ open, node, handleClose }) => {
+const EditNode = ({ open, node, handleClose, onElementsRemove }) => {
   const styles = useState(CourseNodeStyles);
   const classes = useStyles();
 
@@ -108,7 +108,7 @@ const EditNode = ({ open, node, handleClose }) => {
           Autofill Prerequisites
         </Button>
       </Stack>
-      <Button className={classes.rmbtn} variant='contained' size='small'>
+      <Button className={classes.rmbtn} variant='contained' size='small' onClick={onElementsRemove}>
         Remove from Flow
       </Button>
     </Dialog>
