@@ -80,6 +80,5 @@ module.exports = {
   signOut,
   signUp,
   insertTestUser,
-  // otherFunction
   deleteUser
 };
