@@ -7,7 +7,6 @@ import ShowMoreText from 'react-show-more-text';
 import { connectPrereqs, determineType, generateNode } from '../../utils';
 
 import './dnd.css';
-import CourseCannotTake from './customNodes/CourseCannotTake';
 
 //Later a list of courses will be fetched from the DB
 const courseOptions = [
@@ -44,7 +43,8 @@ const courseOptions = [
   {
     courseID   : 6,
     label      : 'CS 506',
-    courseInfo : 'testing adding node function'
+    courseInfo :
+      'Ideas and techniques for designing, developing, and modifying large software systems. Topics include software engineering processes; requirements and specifications; project team organization and management; software architectures; design patterns; testing and debugging; and cost and quality metrics and estimation. Students will work in large teams on a substantial programming project. Enroll Info: None'
   }
 ];
 
@@ -73,7 +73,7 @@ const SearchBar = ({ elements, saveForUndo }) => {
 
   useEffect(
     () => {
-      if (inputValue === 0) {
+      if (inputValue === '') {
         setDisplayPop(false);
       }
     },
@@ -100,7 +100,7 @@ const SearchBar = ({ elements, saveForUndo }) => {
   };
 
   const handleOnClose = e => {
-    if (e.code === 'Escape') {
+    if (e.type !== 'blur') {
       setInputValue('');
       setDropDown(false);
       setDisplayPop(false);
@@ -158,7 +158,7 @@ const SearchBar = ({ elements, saveForUndo }) => {
         options={courseOptions}
         onHighlightChange={courseChangeHandler}
         onInputChange={handleInputChange}
-        onClose={handleOnClose}
+        onClose={e => handleOnClose(e)}
         inputValue={inputValue}
         autoHighlight={true}
         open={dropDown}
