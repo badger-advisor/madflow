@@ -12,7 +12,13 @@ const API = axios.create({ baseURL: 'http://localhost:8080' });
 // User
 const signIn = formData => API.post('/user/signin', formData);
 const signUp = formData => API.post('/user/signup', formData);
-const deleteUser = userID => API.delete(`/user/${userID}`);
+const deleteUser = userID =>
+  API.post(/user/deleteUser, {
+    googleId    : userID,
+
+  }).then(res => {
+    console.log(res);
+  });
 
 // Flow
 const getAllUserFlows = userID => API.get(`/flow/${userID}`);

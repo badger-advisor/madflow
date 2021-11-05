@@ -1,5 +1,5 @@
 import { isNode, isEdge, removeElements, addEdge } from 'react-flow-renderer';
-import { getCourse } from './api';
+import { getCourse,deleteUser } from './api';
 
 class Exception {
   /**
@@ -34,3 +34,7 @@ export const generateNode = async (courseNum, options) => {
     data     : { label: courseNumber, prerequisites, ...info }
   };
 };
+
+export const deleteUserObj= async(UserID)=> {
+  await deleteUser(UserID);
+}
