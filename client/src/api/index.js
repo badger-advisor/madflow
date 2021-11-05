@@ -44,20 +44,17 @@ const currentUser = id =>
       return '';
     });
 
-<<<<<<< HEAD
 // User
 const signIn = formData => API.post('/user/signin', formData);
 const signUp = formData => API.post('/user/signup', formData);
-const deleteUser = userID =>
-  API.post(/user/deleteUser, {
-    googleId    : userID,
 
+// TODO: Remove all flows assiciated with the user
+const deleteUser = userGoogleID =>
+  API.delete('/user/deleteUser', {
+    googleId : userGoogleID
   }).then(res => {
     console.log(res);
   });
-=======
-const deleteUser = userID => API.delete(`/user/${userID}`);
->>>>>>> dev
 
 /* ###################################### Flow ###################################### */
 const getAllUserFlows = userID => API.get(`/flow/${userID}`);

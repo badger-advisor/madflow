@@ -63,11 +63,12 @@ const insertTestUser = async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 };
+
 const deleteUser = async (req, res) => {
-  const UserID = req.body.googleId;
+  const { googleId } = req.body;
 
   try {
-    const user = await User.findOneAndDelete({googleId:UserID})
+    const user = await User.findOneAndDelete({ googleId });
     res.json(user);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -82,5 +83,3 @@ module.exports = {
   // otherFunction
   deleteUser
 };
-
-
