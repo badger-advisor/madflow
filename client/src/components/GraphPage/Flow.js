@@ -40,7 +40,7 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
   };
 
   //Lets the user change the course status as taken or not; changes are reflected in the graph
-  const onSwitch = e => {
+  const handleSwitchStatus = e => {
     //The default is 'taken', but we check the event to see if it is being switched to 'not taken'
     //From there we determine the type based on the node's prereqs
     let newType = 'courseTaken';
@@ -148,7 +148,7 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
             handleClose={handleClose}
             elements={elements}
             onElementsRemove={onElementsRemove}
-            onSwitch={onSwitch}
+            onSwitch={handleSwitchStatus}
           />
           <Background gap={15} />
           <Controls />

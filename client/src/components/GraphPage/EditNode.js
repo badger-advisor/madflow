@@ -73,7 +73,7 @@ const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch }) => {
           <Typography>Have you taken this course?</Typography>
         </Box>
         <Typography variant='caption'>Not Taken</Typography>
-        <Switch checked={taken} onChange={e => onSwitch(e)} />
+        <Switch checked={taken} onChange={onSwitch} />
         <Typography variant='caption'>Taken</Typography>
       </Stack>
       <Stack
