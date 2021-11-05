@@ -10,7 +10,7 @@ import ReactFlow, {
   getConnectedEdges
 } from 'react-flow-renderer';
 
-import { autosave } from '../../utils';
+import { autosave, determineType } from '../../utils';
 
 // The 3 types of custom nodes that can appear in the Flow
 import customNodes from './customNodes';
@@ -37,6 +37,27 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
     const elementsToRemove = edgesToRemove.concat([ currentNode ]);
     handleClose();
     saveForUndo(removeElements(elementsToRemove, elements));
+  };
+
+  //Lets the user change the course status as taken or not; changes are reflected in the graph
+  const onSwitch = e => {
+    //The default is 'taken', but we check the event to see if it is being switched to 'not taken'
+    //From there we determine the type based on the node's prereqs
+    let newType = 'courseTaken';
+    if (!e.target.checked) {
+      newType = determineType(currentNode, elements);
+    }
+    //This part actually modifies the type in the elements list
+    setElements(els =>
+      els.map(el => {
+        if (el.id === currentNode.id) {
+          el.type = newType;
+        }
+        return el;
+      })
+    );
+    //Close the EditNode component box
+    handleClose();
   };
 
   useEffect(
@@ -130,6 +151,7 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
             handleClose={handleClose}
             elements={elements}
             onElementsRemove={onElementsRemove}
+            onSwitch={onSwitch}
           />
           <Background gap={15} />
           <Controls />

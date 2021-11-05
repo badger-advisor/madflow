@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   }
 });
 
-const EditNode = ({ open, node, handleClose, onElementsRemove }) => {
+const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch }) => {
   const styles = useState(CourseNodeStyles);
   const classes = useStyles();
 
@@ -44,7 +44,7 @@ const EditNode = ({ open, node, handleClose, onElementsRemove }) => {
   const data = node.data;
   const defined = data !== undefined;
   const label = defined ? data['label'] : 'Course unavailable';
-  const taken = type === 'courseTaken';
+  const taken = type === 'courseTaken' || false;
   const description =
     defined && data['description'] !== undefined
       ? data['description']
@@ -59,7 +59,7 @@ const EditNode = ({ open, node, handleClose, onElementsRemove }) => {
       </DialogTitle>
       <Divider />
       <DialogContent style={{ height: '150px' }}>
-        <div>{description}</div>
+        <Typography variant='body2'>{description}</Typography>
       </DialogContent>
       <Divider />
       <Stack
@@ -73,7 +73,7 @@ const EditNode = ({ open, node, handleClose, onElementsRemove }) => {
           <Typography>Have you taken this course?</Typography>
         </Box>
         <Typography variant='caption'>Not Taken</Typography>
-        <Switch defaultChecked={taken} />
+        <Switch checked={taken} onChange={e => onSwitch(e)} />
         <Typography variant='caption'>Taken</Typography>
       </Stack>
       <Stack
