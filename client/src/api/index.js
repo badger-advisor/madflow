@@ -49,7 +49,15 @@ const deleteUser = userID => API.delete(`/user/${userID}`);
 const getAllUserFlows = userID => API.get(`/flow/${userID}`);
 const getUserFlow = (userID, flowID) => API.get(`/flow/${userID}/${flowID}`);
 const deleteUserFlow = (userID, flowID) => API.delete(`/flow/${userID}/${flowID}`);
-const createUserFlow = (userID, flowID, flow) => API.post(`/flow/${userID}/${flowID}`, flow);
+const createUserFlow = (userID, flow) =>
+  API.post(`/flow/newFlow`, {
+    googleId : userID,
+    elements : [],
+    name     : flow.name,
+    major    : flow.major
+  }).then(res => {
+    console.log(res);
+  });
 const updateUserFlowElements = (flowID, updatedUserFlow) =>
   API.post(`/flow/updateElements`, {
     id       : flowID,
@@ -59,6 +67,14 @@ const updateUserFlowElements = (flowID, updatedUserFlow) =>
   });
 
 const getPrefilledFlow = majorID => API.get(`/flow/prefilled/${majorID}`);
+
+const updateUserFlow = (flowID, updatedUserFlow) =>
+  API.post(`/flow/update`, {
+    id      : flowID,
+    changes : updatedUserFlow
+  }).then(res => {
+    console.log(res);
+  });
 
 // Course
 const getCourse = courseNumber => API.get(`/course/${courseNumber}`);
@@ -74,5 +90,6 @@ export {
   createUserFlow,
   updateUserFlowElements,
   getPrefilledFlow,
-  getCourse
+  getCourse,
+  updateUserFlow
 };
