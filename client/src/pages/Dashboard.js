@@ -1,11 +1,11 @@
+// server
+import {currentuser} from '../utils';
+// components
 import NavBar from '../components/NavBar/NavBar';
 import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
-import {currentuser} from '../utils';
-
-import { Button, Typography, Box, alpha, AppBar, Drawer } from '@mui/material';
+import NewFlow from '../components/DashboardPage/NewFlow';
 
 const Dashboard = () => {
-
   const curUser = async () =>{
       const data = localStorage.getItem('google_id');
       const cur_user = currentuser(data);
@@ -17,7 +17,6 @@ const Dashboard = () => {
 
   return (
     <div>
-      {/* <AppBar position='top' /> */}
       <NavBar />
       <FlowCardGrid />
     </div>
