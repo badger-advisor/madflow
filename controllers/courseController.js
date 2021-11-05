@@ -1,7 +1,7 @@
 const Course = require('../models/courseModel');
 
 const getCourseInfo = async (req, res) => {
-  const courseNumber = req.params.courseNumber;
+  const { courseNumber } = req.body;
 
   try {
     const course = await Course.findOne({ courseNumber });

@@ -104,7 +104,10 @@ const updateUserFlow = (flowID, updatedUserFlow) =>
 const getPrefilledFlow = majorID => API.get(`/flow/prefilled/${majorID}`);
 
 /* ###################################### Course ###################################### */
-const getCourse = courseNumber => API.get(`/course/${courseNumber}`);
+const getCourse = courseNumber =>
+  API.get('/course/getCourse', { courseNumber: courseNumber })
+    .then(res => console.log(JSON.stringify(res.data)))
+    .catch(error => console.log(error));
 
 export {
   signIn,
