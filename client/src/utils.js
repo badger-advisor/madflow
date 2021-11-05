@@ -64,5 +64,5 @@ export const updateFlow = async (flowID, changes) => {
  */
 export const createNewFlow = async (userID, flowID, name, major) => {
   // TODO: need to check valid input
-  await createUserFlow(userID,flowID, {name,major});
+  await createUserFlow(userID, flowID, { name, major });
 };

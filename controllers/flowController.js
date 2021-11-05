@@ -44,15 +44,17 @@ const createNewFlow = async (req, res) => {
 };
 
 const updateFlow = async (req, res) => {
-  const {id, changes} = req.body;
-  Flow.updateOne({_id:id},{$set:changes}).then((result) => {
+  const { id, changes } = req.body;
+
+  Flow.updateOne({ _id: id }, { $set: changes })
+    .then(result => {
       res.json(result);
       console.log(result);
     })
-    .catch((err) => {
+    .catch(err => {
       res.json(err);
       console.log('updateFlow broke');
     });
-  };
+};
 
 module.exports = { getFlowInfo, createNewFlow, updateFlowElements, updateFlow };

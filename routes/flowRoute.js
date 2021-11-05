@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { getFlowInfo, createNewFlow, updateFlowElements, updateFlow } = require('../controllers/flowController');
+const {
+  getFlowInfo,
+  createNewFlow,
+  updateFlowElements,
+  updateFlow
+} = require('../controllers/flowController');
 
 router.get('/:id', getFlowInfo);
 router.post('/newFlow', createNewFlow);
