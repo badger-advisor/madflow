@@ -1,5 +1,5 @@
 // server
-import { currentUser, getUserFlowNames } from '../utils.js';
+import { currentUser } from '../utils.js';
 
 // components
 import NavBar from '../components/NavBar/NavBar';
@@ -13,22 +13,14 @@ const Dashboard = () => {
   //   console.log(userID);
   // };
 
-  // const getFlows = async userID => {
-  //   const allFlows = await getAllUserFlows(userID);
-  //   console.log('user flows:');
-  //   console.log(allFlows);
-  //   return allFlows;
-  // };
-
   //currUser();
-  userID = 0; // TODO: connect backend to get actual userID
 
-  userFlows = getUserFlowNames(userID);
+  const userID = 'tempgenelee'; // TODO: connect backend to get actual userID
 
   return (
     <div>
       <NavBar />
-      <FlowCardGrid flows={userFlows} />
+      <FlowCardGrid userID={userID} />
     </div>
   );
 };
