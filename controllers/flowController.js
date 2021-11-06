@@ -16,7 +16,7 @@ const getAllUserFlows = async (req, res) => {
 
   try {
     const flows = await Flow.find({ googleId: googleId });
-    res.json(flows);
+    res.json({ flows });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
