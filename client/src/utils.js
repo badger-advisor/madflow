@@ -10,6 +10,8 @@ import {
   signIn
 } from './api';
 
+import createEdge from './components/GraphPage/customEdges/createEdge';
+
 class Exception {
   /**
    * Custom exception class
@@ -69,21 +71,16 @@ export const autosave = async (flowID, elements) => {
 export const connectPrereqs = (node, elements) => {
   //TODO: create different edge types depending on the status of the node
   //Get id and prereqs for the course that is being added
-  const { id: targetId, data: { prerequisites: prereqs } } = node;
-  // console.log(targetId, prereqs);
-
+  const { id: targetId, type: targetType, data: { prerequisites: prereqs } } = node;
+  console.log(targetId, targetType, prereqs);
+  console.log('TEST');
   //Naive approach: check each element in the graph to see if its id matches the prereq ids
   elements.map(src => {
+    console.log(prereqs);
     //If there is a match, create a new edge between these elements and push it to the elements list
     if (prereqs.includes(src.id)) {
-      const newEdge = {
-        id            : `${src.id}-${targetId}`,
-        source        : src.id,
-        target        : targetId,
-        type          : 'smoothstep',
-        animated      : 'true',
-        arrowHeadType : 'arrowclosed'
-      };
+      console.log(src.id);
+      const newEdge = createEdge(src.id, src.type, targetId, targetType);
       elements.push(newEdge); //Add the new edge to the list
     }
   });
