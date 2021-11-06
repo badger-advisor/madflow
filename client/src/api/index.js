@@ -47,7 +47,11 @@ const deleteUser = userGoogleID =>
   });
 
 /* ###################################### Flow ###################################### */
-const getAllUserFlows = userID => API.get(`/flow/${userID}`);
+const getAllUserFlows = googleId =>
+  API.get('/flow/getUserFlows', { params: { googleId } }).then(res => {
+    const { flows } = res.data;
+    return flows;
+  });
 
 const getFlowInfo = flowID => API.get('/flow/getFlow', { id: flowID });
 
