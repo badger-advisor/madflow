@@ -29,7 +29,7 @@ const signUp = userObject =>
     })
     .catch(error => console.log(error));
 
-const currentUser = id =>
+const fetchCurrentUser = id =>
   API.post(`/user/signIn`, { id })
     .then(res => {
       const { user } = res.data;
@@ -104,7 +104,7 @@ const getCourse = courseNumber => API.get('/course/getCourse', { params: { cours
 export {
   signIn,
   signUp,
-  currentUser,
+  fetchCurrentUser,
   deleteUser,
   getAllUserFlows,
   getFlowInfo,

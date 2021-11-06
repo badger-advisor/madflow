@@ -58,7 +58,7 @@ const FlowCard = ({ flowID, flowName }) => {
       </Avatar>
 
       {/* FlowCard menu Popover */}
-      <FlowCardMenu showMenu={showMenu} setShowMenu={setShowMenu} />
+      <FlowCardMenu showMenu={showMenu} setShowMenu={setShowMenu} flowID={flowID} />
 
       {/* FlowCard image */}
       <CardMedia component='img' height='80%' image={testImg} alt='test image' />

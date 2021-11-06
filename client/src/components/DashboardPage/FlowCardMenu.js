@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { getUserFlowNames } from '../../utils.js';
+
 // material-ui
 import { Menu, MenuItem } from '@mui/material';
 
@@ -6,28 +9,28 @@ import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutli
 import FileCopyTwoToneIcon from '@mui/icons-material/FileCopyOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const FlowCardMenu = ({ showMenu, setShowMenu }) => {
+const FlowCardMenu = ({ showMenu, setShowMenu, flowID }) => {
   // function to close menu
-  const closeMenu = (e) => {
+  const closeMenu = e => {
     e.stopPropagation();
     console.log('close menu');
     setShowMenu(null);
   };
 
   // TODO: function to rename Flow
-  const renameFlow = (e) => {
+  const renameFlow = e => {
     e.stopPropagation();
     console.log('rename flow');
   };
 
   // TODO: function to copy Flow to a new Flow
-  const copyFlow = (e) => {
+  const copyFlow = e => {
     e.stopPropagation();
     console.log('copy flow');
   };
 
   // TODO: function to delete Flow
-  const deleteFlow = (e) => {
+  const deleteFlow = e => {
     e.stopPropagation();
     console.log('delete flow');
   };

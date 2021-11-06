@@ -1,24 +1,26 @@
 // server
-import { currentuser } from '../utils';
+import { currentUser } from '../utils.js';
+
 // components
 import NavBar from '../components/NavBar/NavBar';
 import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
-import NewFlow from '../components/DashboardPage/NewFlow';
 
 const Dashboard = () => {
-  const curUser = async () => {
-    const data = localStorage.getItem('google_id');
-    const cur_user = currentuser(data);
-    console.log('current User:');
-    console.log(cur_user);
-  };
+  // const currUser = async () => {
+  //   const data = localStorage.getItem('google_id');
+  //   const userID = await currentUser(data);
+  //   console.log('current User:');
+  //   console.log(userID);
+  // };
 
-  curUser();
+  //currUser();
+
+  const userID = 'tempgenelee'; // TODO: connect backend to get actual userID
 
   return (
     <div>
       <NavBar />
-      <FlowCardGrid />
+      <FlowCardGrid userID={userID} />
     </div>
   );
 };
