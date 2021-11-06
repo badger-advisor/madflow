@@ -20,8 +20,6 @@ const userSchema = new mongoose.Schema({
     required : [ false, 'A user must have an email' ]
   },
 
-  flows          : Array,
-
   majors         : Array
 });
 

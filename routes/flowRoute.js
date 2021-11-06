@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   getFlowInfo,
+  getAllUserFlows,
   createNewFlow,
   updateFlowElements,
   updateFlow,
@@ -10,6 +11,7 @@ const {
 } = require('../controllers/flowController');
 
 router.get('/getFlow', getFlowInfo);
+router.get('/getUserFlows', getAllUserFlows);
 
 router.post('/newFlow', createNewFlow);
 router.post('/update', updateFlow);

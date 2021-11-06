@@ -7,7 +7,8 @@ import {
   deleteUser,
   currentUser,
   signUp,
-  signIn
+  signIn,
+  getAllUserFlows
 } from './api';
 
 import createEdge from './components/GraphPage/customEdges/createEdge';
@@ -87,6 +88,10 @@ export const connectPrereqs = (node, elements) => {
   return elements;
 };
 
+// export const getUserFlowNames = async(googleId) => {
+//   await getAllUserFlows(googleId);
+// }
+
 /**
  * Determines if a node is able to be taken based on the types of its prereqs in the graph
  * @param {object} node A node that represents a course in the graph
@@ -134,6 +139,11 @@ export const createNewFlow = async (userGoogleId, name, major) => {
 export const currentuser = async userID => {
   // TODO: need to check valid input
   return await currentUser(userID);
+};
+
+export const getUserFlowNames = async userID => {
+  // TODO: need to check valid input
+  return await getAllUserFlows(userID);
 };
 
 /**
