@@ -135,7 +135,6 @@ const SearchBar = ({ elements, saveForUndo }) => {
       }
 
       const newElements = [ ...elements, newCourse ];
-      console.log('connect edges');
       //Connect the new course to its prereqs
       const connectedElements = connectPrereqs(newCourse, newElements);
       saveForUndo(connectedElements);
