@@ -1,19 +1,25 @@
 import NavBar from '../components/NavBar/NavBar';
 import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
-import {currentUser} from '../api/index';
+import { currentUser, getAllUserFlows } from '../api/index';
 
 import { Button, Typography, Box, alpha, AppBar, Drawer } from '@mui/material';
 
 const Dashboard = () => {
+  const currUser = async () => {
+    const data = localStorage.getItem('google_id');
+    const userID = await currentUser(data);
+    console.log('current User:');
+    console.log(userID);
+  };
 
-  const curUser = async () =>{
-      const data = localStorage.getItem('google_id');
-      const cur_user = await currentUser(data);
-      console.log('current User:');
-      console.log(cur_user);
-  }
+  const getFlows = async userID => {
+    const allFlows = await getAllUserFlows(userID);
+    console.log('user flows:');
+    console.log(allFlows);
+  };
 
-  curUser();
+  currUser();
+  getFlows();
 
   return (
     <div>
