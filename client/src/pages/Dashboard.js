@@ -1,33 +1,34 @@
 // server
-import { currentuser } from '../utils';
+import { currentUser, getUserFlowNames } from '../utils.js';
+
 // components
 import NavBar from '../components/NavBar/NavBar';
 import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
-import { currentUser, getAllUserFlows } from '../api/index';
-
-import { Button, Typography, Box, alpha, AppBar, Drawer } from '@mui/material';
 
 const Dashboard = () => {
-  const currUser = async () => {
-    const data = localStorage.getItem('google_id');
-    const userID = await currentUser(data);
-    console.log('current User:');
-    console.log(userID);
-  };
+  // const currUser = async () => {
+  //   const data = localStorage.getItem('google_id');
+  //   const userID = await currentUser(data);
+  //   console.log('current User:');
+  //   console.log(userID);
+  // };
 
-  const getFlows = async userID => {
-    const allFlows = await getAllUserFlows(userID);
-    console.log('user flows:');
-    console.log(allFlows);
-  };
+  // const getFlows = async userID => {
+  //   const allFlows = await getAllUserFlows(userID);
+  //   console.log('user flows:');
+  //   console.log(allFlows);
+  //   return allFlows;
+  // };
 
-  currUser();
-  getFlows();
+  //currUser();
+  userID = 0; // TODO: connect backend to get actual userID
+
+  userFlows = getUserFlowNames(userID);
 
   return (
     <div>
       <NavBar />
-      <FlowCardGrid />
+      <FlowCardGrid flows={userFlows} />
     </div>
   );
 };

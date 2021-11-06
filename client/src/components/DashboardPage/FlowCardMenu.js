@@ -6,7 +6,7 @@ import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutli
 import FileCopyTwoToneIcon from '@mui/icons-material/FileCopyOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const FlowCardMenu = ({ showMenu, setShowMenu }) => {
+const FlowCardMenu = ({ showMenu, setShowMenu, flowID }) => {
   // function to close menu
   const closeMenu = (e) => {
     e.stopPropagation();

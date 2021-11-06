@@ -5,7 +5,7 @@ import {
   updateUserFlow,
   createUserFlow,
   deleteUser,
-  currentUser,
+  fetchCurrentUser,
   signUp,
   signIn
 } from './api';
@@ -134,9 +134,9 @@ export const createNewFlow = async (userGoogleId, name, major) => {
  * Function to call when trying to find current user data
  * @param {String} userID the google ID
  */
-export const currentuser = async userID => {
+export const currentUser = async userID => {
   // TODO: need to check valid input
-  return await currentUser(userID);
+  return await fetchCurrentUser(userID);
 };
 
 /**
