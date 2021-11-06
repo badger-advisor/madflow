@@ -1,7 +1,7 @@
 const User = require('../models/userModel');
 
 const signIn = async (req, res) => {
-  User.findOne({ googleId: req.query.id }).then((currentUser) => {
+  User.findOne({ googleId: req.body.id }).then(currentUser => {
     if (currentUser) {
       // already have this user
       console.log('user is: ', currentUser);
@@ -21,20 +21,20 @@ const signOut = async (req, res) => {
 const signUp = async (req, res) => {
   // signUp logic
   new User({
-    googleId : req.query.id,
-    name   : req.query.displayName,
-    email  : req.query.email,
-    profilePicture: req.query.profilePicture,
-    flows  : [],
-    majors : []
+    googleId       : req.body.id,
+    name           : req.body.displayName,
+    email          : req.body.email,
+    profilePicture : req.body.profilePicture,
+    flows          : [],
+    majors         : []
     // thumbnail : profile._json.image.url
   })
     .save()
-    .then((newUser) => {
+    .then(newUser => {
       console.log('created new user: ', newUser);
       res.json({ user: newUser });
     })
-    .catch((error) => {
+    .catch(error => {
       console.log('cannot create user', error);
       res.json({ user: '' });
     });
@@ -64,10 +64,21 @@ const insertTestUser = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  const { googleId } = req.body;
+
+  try {
+    const user = await User.findOneAndDelete({ googleId });
+    res.json(user);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 module.exports = {
   signIn,
   signOut,
   signUp,
-  insertTestUser
-  // otherFunction
+  insertTestUser,
+  deleteUser
 };

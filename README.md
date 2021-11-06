@@ -1,27 +1,30 @@
 # MadFlow
 
-Currently, students at the University of Wisconsin-Madison can navigate through their major requirement paths using a few different methods such as DARS, the major requirements web page, or the provided sample course flow. However, none of these tools are interactive or intuitive to use. For this project, we are building a web application that provides a solution to this problem. 
+🌊 Helping students with course selection and planning
+
+## Problem
+
+Currently, students at the University of Wisconsin-Madison can navigate through their major requirement paths using a few different methods such as DARS, the major requirements web page, or the provided sample course flow. However, none of these tools are interactive or intuitive to use. For this project, we are building a web application that provides a solution to this problem.
 
 ## Structure
 
-### `frontend/`
-Using React with JavaScript
+We are using the Model View Controller architecture for this app.
 
-### `backend/`
-Using Node, Express, MongoDB, and Firebase
+### `client/`
 
-## Vscode Extensions
-### For this project
+This is where all of the front-end magic happens. All of the React code is in here.
 
-- [Prettier Now](https://marketplace.visualstudio.com/items?itemName=remimarsal.prettier-now)
-- [DotENV](https://marketplace.visualstudio.com/items?itemName=mikestead.dotenv)
-- [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+### `models/`
 
+Here we define what our data will look like.
 
-### Recommendations 
+### `routes/`
 
-- [Visual Studio IntelliCode](https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode)
-- [npm Intelliscense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.npm-intellisense)
-- [path Intelliscense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense)
-- [Bracket Pair Colorizer 2](https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer-2)
-- [ES7 React/Redux/GraphQL/React-Native snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets)
+Custom API routes for our Express server.
+
+### `controllers/`
+
+The brains of the server.
+
+## How to contribute
+Head over to [our guidelines and instructions.](./DEVELOP.md)

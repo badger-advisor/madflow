@@ -1,3 +1,6 @@
+// server
+import { currentuser } from '../utils';
+// components
 import NavBar from '../components/NavBar/NavBar';
 import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
 import { currentUser, getAllUserFlows } from '../api/index';
@@ -23,7 +26,6 @@ const Dashboard = () => {
 
   return (
     <div>
-      {/* <AppBar position='top' /> */}
       <NavBar />
       <FlowCardGrid />
     </div>

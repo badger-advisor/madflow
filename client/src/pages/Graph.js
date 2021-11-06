@@ -39,6 +39,8 @@ const Graph = () => {
   const [ undo, setUndo ] = useState([ initialElements ]); // Undo stack consists of a list of all element states
   const [ redo, setRedo ] = useState([]); // the current state added to the redo stack before redo is called
 
+  //TODO: need to collect the current flow elements with the flowid
+
   // for making sure the elements array update each time undo or redo is applied
   useEffect(
     () => {
