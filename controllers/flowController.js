@@ -11,6 +11,17 @@ const getFlowInfo = async (req, res) => {
   }
 };
 
+const getAllUserFlows = async (req, res) => {
+  const { googleId } = req.query;
+
+  try {
+    const flows = await Flow.find({ googleId: googleId });
+    res.json({ flows });
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
 const updateFlowElements = async (req, res) => {
   const { id, elements } = req.body;
 
@@ -76,6 +87,7 @@ const updateFlow = async (req, res) => {
 
 module.exports = {
   getFlowInfo,
+  getAllUserFlows,
   createNewFlow,
   updateFlowElements,
   removeFlow,
