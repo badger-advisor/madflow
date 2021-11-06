@@ -8,14 +8,20 @@ assignees: ''
 ---
 
 ## Feature Proposal
-**A clear and concise description of what the feature is:  **
+<!--
+  A clear and concise description of what the feature is
+-->
 
 
 
 ## Example
-**Describe how this feature would be used: **
+<!--
+ Describe how this feature would be used:
+-->
 
 
 
 ## Additional context
-**Add any other context or screenshots about the feature request here: **
+<!--
+ Add any other context or screenshots about the feature request here:
+-->
