@@ -1,22 +1,28 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  name   : {
+  googleId       : {
+    type     : String,
+    required : [ true, 'A user must have a google ID' ]
+  },
+  name           : {
     type     : String,
     required : [ true, 'A user must have a name' ]
   },
 
-  email  : {
+  email          : {
     type     : String,
-    required : [ true, 'A user must have an email' ],
-    unique   : true
+    required : [ false, 'A user must have an email' ]
   },
 
-  flows  : Array,
+  profilePicture : {
+    type     : String,
+    required : [ false, 'A user must have an email' ]
+  },
 
-  majors : Array
+  majors         : Array
 });
 
-const User = mongoose.model('user', userSchema);
+const User = mongoose.model('User', userSchema);
 
-module.exports(User);
+module.exports = User;
