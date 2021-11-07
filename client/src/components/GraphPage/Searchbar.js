@@ -34,8 +34,6 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   const [ dropDown, setDropDown ] = useState(false);
   const [ inputValue, setInputValue ] = useState('');
 
-  console.log('component got:');
-  console.log(courseOptions);
   useEffect(
     () => {
       if (inputValue === '') {
