@@ -11,4 +11,13 @@ const getCourseInfo = async (req, res) => {
   }
 };
 
-module.exports = { getCourseInfo };
+const getAllCourses = async (req, res) => {
+  try {
+    const courses = await Course.find()
+    res.json({courses});
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+module.exports = { getCourseInfo, getAllCourses };

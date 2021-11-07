@@ -1,5 +1,7 @@
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import UndoIcon from '@mui/icons-material/Undo';
+import { useState, useEffect } from 'react';
+
 import RedoIcon from '@mui/icons-material/Redo';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
@@ -10,6 +12,7 @@ import Searchbar from './Searchbar';
 
 import MuiAppBar from '@mui/material/AppBar';
 import { styled, useTheme } from '@mui/material/styles';
+import {getallCourses} from '../../utils';
 
 const drawerWidth = 240;
 
@@ -34,6 +37,17 @@ export const AppBar = styled(MuiAppBar, {
 }));
 
 const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo }) => {
+  const [ courseOptions, setCourseOptions] = useState([]);
+
+  const getCourseOptions = async () => {
+    setCourseOptions(await getallCourses());
+  };
+
+   useEffect(
+    () => {
+      getCourseOptions();
+    },[])
+
   return (
     <AppBar position='fixed' open={open} style={{ background: '#c5050c' }}>
       <Toolbar>
@@ -42,7 +56,7 @@ const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo })
         </Typography>
 
         {/* The actual search element */}
-        <Searchbar elements={elements} saveForUndo={saveForUndo} />
+        <Searchbar courseOptions={courseOptions} elements={elements} saveForUndo={saveForUndo} />
 
         <Box sx={{ flexGrow: 1 }} />
         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

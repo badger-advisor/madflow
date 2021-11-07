@@ -8,7 +8,8 @@ import {
   fetchCurrentUser,
   signUp,
   signIn,
-  getAllUserFlows
+  getAllUserFlows,
+  getAllCourses
 } from './api';
 
 import createEdge from './components/GraphPage/customEdges/createEdge';
@@ -159,3 +160,19 @@ export const signin = async userID => {
   // TODO: need to check valid input
   await signIn(userID);
 };
+
+/**
+ * Function to call when getting all courses
+ */
+export const getallCourses = async () => {
+  // TODO: need to check valid input
+  const t = await getAllCourses()
+  const temp = t.map((item) => ({
+      label: item.courseNumber,
+      courseInfo: item.info.description,
+      courseID: item._id
+    }));
+  return temp
+
+  };
+
