@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { deleteFlow } from '../../utils.js';
 
 // material-ui
@@ -10,10 +9,6 @@ import FileCopyTwoToneIcon from '@mui/icons-material/FileCopyOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const FlowCardMenu = ({ showMenu, setShowMenu, flowID, refresh, setRefresh }) => {
-  // function to use utility function to delete FLow
-  // const removeCurrentFlow = async flowID => {
-  //   await deleteFlow(flowID);
-  // };
 
   // function to close menu
   const handleClose = e => {
@@ -34,7 +29,7 @@ const FlowCardMenu = ({ showMenu, setShowMenu, flowID, refresh, setRefresh }) =>
     console.log('copy flow');
   };
 
-  // TODO: function to delete Flow
+  // function to handle deleting the selected Flow
   const handleDeleteFlow = async e => {
     e.stopPropagation();
     // console.log('delete flow');

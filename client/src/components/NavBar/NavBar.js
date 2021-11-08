@@ -14,11 +14,10 @@ import AddIcon from '@mui/icons-material/Add';
 
 const NavBarOffset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-const NavBar = ({ userID }) => {
+const NavBar = ({ userID, refresh, setRefresh }) => {
   const [ showProfileMenu, setShowProfileMenu ] = useState(null);
   const [ showNewFlow, setShowNewFlow ] = useState(false);
 
-  // TODO: function to handle opening the NewFlow component
   const newFlow = e => {
     console.log('new flow clicked!');
     setShowNewFlow(!showNewFlow);
@@ -57,7 +56,13 @@ const NavBar = ({ userID }) => {
             </Button>
 
             {/* add new flow dialog */}
-            <NewFlow open={showNewFlow} setOpen={setShowNewFlow} userID={userID} />
+            <NewFlow
+              open={showNewFlow}
+              setOpen={setShowNewFlow}
+              userID={userID}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />
 
             {/* profile icon and button */}
             <Avatar sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }} onClick={openProfileMenu}>

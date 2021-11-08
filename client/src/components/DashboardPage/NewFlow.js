@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
     .min(4, 'Major is too short. Cannot be less than 4 characters.')
 });
 
-const NewFlow = ({ open, setOpen, userID }) => {
+const NewFlow = ({ open, setOpen, userID, refresh, setRefresh }) => {
   // function to use utility function to create new FLow for current user
   const makeFlow = async (userID, flowName, flowMajor) => {
     await createNewFlow(userID, flowName, flowMajor);
@@ -36,6 +36,7 @@ const NewFlow = ({ open, setOpen, userID }) => {
       makeFlow(userID, values.name, values.major);
       resetForm();
       setOpen(false);
+      setRefresh(!refresh);
     },
     onReset            : () => {
       setOpen(false);
