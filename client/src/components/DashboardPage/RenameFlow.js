@@ -16,7 +16,7 @@ const validationSchema = Yup.object().shape({
     .min(4, 'Major is too short. Cannot be less than 4 characters.')
 });
 
-const NewFlow = ({ open, setOpen, userID, refresh, setRefresh }) => {
+const RenameFlow = ({ open, setOpen, userID, refresh, setRefresh, rename = false }) => {
   // function to use utility function to create new FLow for current user
   const makeFlow = async (userID, flowName, flowMajor) => {
     await createNewFlow(userID, flowName, flowMajor);
@@ -33,7 +33,11 @@ const NewFlow = ({ open, setOpen, userID, refresh, setRefresh }) => {
     onSubmit           : (values, { resetForm }) => {
       // console.log(values);
       // console.log(values.name);
-      makeFlow(userID, values.name, values.major);
+      if (rename) {
+        console.log('rename');
+      } else {
+        makeFlow(userID, values.name, values.major);
+      }
       resetForm();
       setOpen(false);
       setRefresh(!refresh);
@@ -84,13 +88,22 @@ const NewFlow = ({ open, setOpen, userID, refresh, setRefresh }) => {
 
         {/* button options for new Flow */}
         <DialogActions>
-          <Button onClick={formik.handleSubmit}>Create Blank</Button>
-          <Button onClick={formik.handleSubmit}>Create Pre-Filled</Button>
-          <Button onClick={formik.handleReset}>Cancel</Button>
+          {rename ? (
+            <div>
+              <Button onClick={formik.handleSubmit}>Rename</Button>
+              <Button onClick={formik.handleReset}>Cancel</Button>
+            </div>
+          ) : (
+            <div>
+              <Button onClick={formik.handleSubmit}>Create Blank</Button>
+              <Button onClick={formik.handleSubmit}>Create Pre-Filled</Button>
+              <Button onClick={formik.handleReset}>Cancel</Button>
+            </div>
+          )}
         </DialogActions>
       </Dialog>
     </div>
   );
 };
 
-export default NewFlow;
+export default RenameFlow;
