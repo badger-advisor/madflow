@@ -22,13 +22,9 @@ const Dashboard = () => {
   const [ userFlows, setUserFlows ] = useState([]);
   const [ refresh, setRefresh ] = useState(false);
 
-  const getFlows = async userID => {
-    setUserFlows(await getUserFlowNames(userID));
-  };
-
   useEffect(
-    () => {
-      getFlows(TEST_ID);
+    async () => {
+      setUserFlows(await getUserFlowNames(TEST_ID));
     },
     [ refresh ]
   );
