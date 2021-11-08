@@ -9,7 +9,8 @@ import {
   signUp,
   signIn,
   getAllUserFlows,
-  getAllCourses
+  getAllCourses,
+  removeFlow
 } from './api';
 
 import createEdge from './components/GraphPage/customEdges/createEdge';
@@ -136,6 +137,10 @@ export const updateFlow = async (flowID, changes) => {
  */
 export const createNewFlow = async (googleId, name, major) => {
   await createUserFlow(googleId, name, major);
+};
+
+export const deleteFlow = async flowID => {
+  await removeFlow(flowID);
 };
 
 /**
