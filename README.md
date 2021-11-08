@@ -27,4 +27,4 @@ Custom API routes for our Express server.
 The brains of the server.
 
 ## How to contribute
-Head over to [our guidelines and instructions.](./DEVELOP.md)
+Head over to [our guidelines and instructions.](./CONTRIBUTING.md)
