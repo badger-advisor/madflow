@@ -19,7 +19,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <NavBar />
+      <NavBar userID={userID} />
       <FlowCardGrid userID={userID} />
     </div>
   );

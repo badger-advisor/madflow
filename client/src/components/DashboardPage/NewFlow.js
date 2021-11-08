@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { createNewFlow } from '../../utils.js';
 
 // material-ui
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
@@ -15,7 +16,12 @@ const validationSchema = Yup.object().shape({
     .min(4, 'Major is too short. Cannot be less than 4 characters.')
 });
 
-const NewFlow = ({ open, setOpen }) => {
+const NewFlow = ({ open, setOpen, userID }) => {
+  // function to use utility function to create new FLow for current user
+  const makeFlow = async (userID, flowName, flowMajor) => {
+    await createNewFlow(userID, flowName, flowMajor);
+  };
+
   // use Formik to handle form validation and submission
   const formik = useFormik({
     enableReinitialize : true,
@@ -25,8 +31,9 @@ const NewFlow = ({ open, setOpen }) => {
     },
     validationSchema   : validationSchema,
     onSubmit           : (values, { resetForm }) => {
-      // TODO: implement createNewFlow()
-      console.log(values);
+      // console.log(values);
+      // console.log(values.name);
+      makeFlow(userID, values.name, values.major);
       resetForm();
       setOpen(false);
     },

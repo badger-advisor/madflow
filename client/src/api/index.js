@@ -64,11 +64,11 @@ const getUserFlow = (userID, flowID) => API.get(`/flow/${userID}/${flowID}`);
 
 const deleteUserFlow = (userID, flowID) => API.delete(`/flow/${userID}/${flowID}`);
 
-const createUserFlow = (userGoogleID, flowName, major) =>
+const createUserFlow = (googleId, name, major) =>
   API.post(`/flow/newFlow`, {
-    elements     : [],
-    userGoogleID,
-    flowName,
+    elements : [],
+    googleId,
+    name,
     major
   })
     .then(res => console.log(res))

@@ -14,7 +14,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 const NavBarOffset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-const NavBar = () => {
+const NavBar = ({ userID }) => {
   const [ showProfileMenu, setShowProfileMenu ] = useState(null);
   const [ showNewFlow, setShowNewFlow ] = useState(false);
 
@@ -57,7 +57,7 @@ const NavBar = () => {
             </Button>
 
             {/* add new flow dialog */}
-            <NewFlow open={showNewFlow} setOpen={setShowNewFlow} />
+            <NewFlow open={showNewFlow} setOpen={setShowNewFlow} userID={userID} />
 
             {/* profile icon and button */}
             <Avatar sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }} onClick={openProfileMenu}>
