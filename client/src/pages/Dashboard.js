@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+
 // server
 import { currentUser } from '../utils.js';
 
@@ -14,6 +16,8 @@ const Dashboard = () => {
   // };
 
   //currUser();
+
+  const [ userFlows, setUserFlows ] = useState([]);
 
   const userID = 'tempgenelee'; // TODO: connect backend to get actual userID
 
