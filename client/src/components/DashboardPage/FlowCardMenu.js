@@ -93,7 +93,7 @@ const FlowCardMenu = ({
         setOpen={setShowRename}
         refresh={refresh}
         setRefresh={setRefresh}
-        rename={true}
+        setShowMenu={setShowMenu}
       />
     </div>
   );

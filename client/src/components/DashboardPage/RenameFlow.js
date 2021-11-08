@@ -16,7 +16,16 @@ const validationSchema = Yup.object().shape({
     .min(4, 'Major is too short. Cannot be less than 4 characters.')
 });
 
-const RenameFlow = ({ flowID, flowName, flowMajor, open, setOpen, refresh, setRefresh }) => {
+const RenameFlow = ({
+  flowID,
+  flowName,
+  flowMajor,
+  open,
+  setOpen,
+  refresh,
+  setRefresh,
+  setShowMenu
+}) => {
   // function to use utility function to create new FLow for current user
   const updateFlowName = async (flowID, changes) => {
     await updateFlow(flowID, changes);
@@ -33,11 +42,11 @@ const RenameFlow = ({ flowID, flowName, flowMajor, open, setOpen, refresh, setRe
     onSubmit           : (values, { resetForm }) => {
       // console.log(values);
       // console.log(values.name);
-      changes = { name: values.name, major: values.major };
-      updateFlowName(flowID, changes);
+      updateFlowName(flowID, { name: values.name, major: values.major });
       resetForm();
       setOpen(false);
       setRefresh(!refresh);
+      setShowMenu(false);
     },
     onReset            : () => {
       setOpen(false);
@@ -79,6 +88,7 @@ const RenameFlow = ({ flowID, flowName, flowMajor, open, setOpen, refresh, setRe
               onChange={formik.handleChange}
               error={formik.touched.major && Boolean(formik.errors.major)}
               helperText={formik.touched.major && formik.errors.major}
+              disabled // TODO: disable?? figure out major requirements
             />
           </div>
         </DialogContent>
