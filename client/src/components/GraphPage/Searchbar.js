@@ -4,12 +4,9 @@ import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import ShowMoreText from 'react-show-more-text';
 
-import { connectPrereqs, determineType, generateNode,  } from '../../utils';
+import { connectPrereqs, determineType, generateNode } from '../../utils';
 
 import './dnd.css';
-
-//Later a list of courses will be fetched from the DB
-
 
 const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   const closedLocation = {

@@ -1,20 +1,20 @@
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import UndoIcon from '@mui/icons-material/Undo';
 import { useState, useEffect } from 'react';
 
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Searchbar from './Searchbar';
-
 import MuiAppBar from '@mui/material/AppBar';
 import { styled, useTheme } from '@mui/material/styles';
-import {getallCourses} from '../../utils';
 
-const drawerWidth = 240;
+import Searchbar from './Searchbar';
+import { getallCourses } from '../../utils';
+
+const DRAWER_WIDTH = 240;
 
 /**
  * Style for the tool bar
@@ -27,26 +27,21 @@ export const AppBar = styled(MuiAppBar, {
     duration : theme.transitions.duration.leavingScreen
   }),
   ...(open && {
-    width       : `calc(100% - ${drawerWidth}px)`,
+    width       : `calc(100% - ${DRAWER_WIDTH}px)`,
     transition  : theme.transitions.create([ 'margin', 'width' ], {
       easing   : theme.transitions.easing.easeOut,
       duration : theme.transitions.duration.enteringScreen
     }),
-    marginRight : drawerWidth
+    marginRight : DRAWER_WIDTH
   })
 }));
 
 const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo }) => {
-  const [ courseOptions, setCourseOptions] = useState([]);
+  const [ courseOptions, setCourseOptions ] = useState([]);
 
-  const getCourseOptions = async () => {
+  useEffect(async () => {
     setCourseOptions(await getallCourses());
-  };
-
-   useEffect(
-    () => {
-      getCourseOptions();
-    },[])
+  }, []);
 
   return (
     <AppBar position='fixed' open={open} style={{ background: '#c5050c' }}>

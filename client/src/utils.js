@@ -74,6 +74,9 @@ export const connectPrereqs = (node, elements) => {
   //TODO: create different edge types depending on the status of the node
   //Get id and prereqs for the course that is being added
   const { id: targetId, type: targetType, data: { prerequisites: prereqs } } = node;
+  console.log('new node');
+  console.log(`${targetId}: ${prereqs}`);
+
   //Naive approach: check each element in the graph to see if its id matches the prereq ids
   elements.map(src => {
     //If there is a match, create a new edge between these elements and push it to the elements list
@@ -164,15 +167,18 @@ export const signin = async userID => {
 /**
  * Function to call when getting all courses
  */
+
+/**
+ *
+ * @returns A list of courses with revalent information for displaying as search results
+ */
 export const getallCourses = async () => {
   // TODO: need to check valid input
-  const t = await getAllCourses()
-  const temp = t.map((item) => ({
-      label: item.courseNumber,
-      courseInfo: item.info.description,
-      courseID: item._id
-    }));
-  return temp
-
-  };
-
+  const allCourses = await getAllCourses();
+  const listing = allCourses.map(course => ({
+    label      : course.courseNumber,
+    courseInfo : course.info.description,
+    courseID   : course._id
+  }));
+  return listing;
+};

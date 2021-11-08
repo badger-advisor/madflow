@@ -11,10 +11,10 @@ const getCourseInfo = async (req, res) => {
   }
 };
 
-const getAllCourses = async (req, res) => {
+const getAllCourses = async (_, res) => {
   try {
-    const courses = await Course.find()
-    res.json({courses});
+    const courses = await Course.find();
+    res.json({ courses });
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
