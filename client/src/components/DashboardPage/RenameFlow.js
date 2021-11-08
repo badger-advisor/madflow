@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { createNewFlow } from '../../utils.js';
+import { updateFlow } from '../../utils.js';
 
 // material-ui
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
@@ -16,28 +16,25 @@ const validationSchema = Yup.object().shape({
     .min(4, 'Major is too short. Cannot be less than 4 characters.')
 });
 
-const RenameFlow = ({ open, setOpen, userID, refresh, setRefresh, rename = false }) => {
+const RenameFlow = ({ flowID, flowName, flowMajor, open, setOpen, refresh, setRefresh }) => {
   // function to use utility function to create new FLow for current user
-  const makeFlow = async (userID, flowName, flowMajor) => {
-    await createNewFlow(userID, flowName, flowMajor);
+  const updateFlowName = async (flowID, changes) => {
+    await updateFlow(flowID, changes);
   };
 
   // use Formik to handle form validation and submission
   const formik = useFormik({
     enableReinitialize : true,
     initialValues      : {
-      name  : '',
-      major : ''
+      name  : flowName,
+      major : flowMajor
     },
     validationSchema   : validationSchema,
     onSubmit           : (values, { resetForm }) => {
       // console.log(values);
       // console.log(values.name);
-      if (rename) {
-        console.log('rename');
-      } else {
-        makeFlow(userID, values.name, values.major);
-      }
+      changes = { name: values.name, major: values.major };
+      updateFlowName(flowID, changes);
       resetForm();
       setOpen(false);
       setRefresh(!refresh);
@@ -88,18 +85,8 @@ const RenameFlow = ({ open, setOpen, userID, refresh, setRefresh, rename = false
 
         {/* button options for new Flow */}
         <DialogActions>
-          {rename ? (
-            <div>
-              <Button onClick={formik.handleSubmit}>Rename</Button>
-              <Button onClick={formik.handleReset}>Cancel</Button>
-            </div>
-          ) : (
-            <div>
-              <Button onClick={formik.handleSubmit}>Create Blank</Button>
-              <Button onClick={formik.handleSubmit}>Create Pre-Filled</Button>
-              <Button onClick={formik.handleReset}>Cancel</Button>
-            </div>
-          )}
+          <Button onClick={formik.handleSubmit}>Rename</Button>
+          <Button onClick={formik.handleReset}>Cancel</Button>
         </DialogActions>
       </Dialog>
     </div>

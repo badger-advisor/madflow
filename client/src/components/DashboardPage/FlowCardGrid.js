@@ -34,6 +34,7 @@ const FlowCardGrid = ({ userID, userFlows, refresh, setRefresh }) => {
             <FlowCard
               flowID={flow._id}
               flowName={flow.name}
+              flowMajor={flow.major}
               refresh={refresh}
               setRefresh={setRefresh}
             />

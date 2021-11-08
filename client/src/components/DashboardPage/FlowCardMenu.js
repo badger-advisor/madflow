@@ -12,7 +12,15 @@ import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutli
 import FileCopyTwoToneIcon from '@mui/icons-material/FileCopyOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const FlowCardMenu = ({ showMenu, setShowMenu, flowID, refresh, setRefresh }) => {
+const FlowCardMenu = ({
+  flowID,
+  flowName,
+  flowMajor,
+  showMenu,
+  setShowMenu,
+  refresh,
+  setRefresh
+}) => {
   const [ showRename, setShowRename ] = useState(false);
 
   // function to close menu
@@ -78,6 +86,9 @@ const FlowCardMenu = ({ showMenu, setShowMenu, flowID, refresh, setRefresh }) =>
 
       {/* open component to rename */}
       <RenameFlow
+        flowID={flowID}
+        flowName={flowName}
+        flowMajor={flowMajor}
         open={showRename}
         setOpen={setShowRename}
         refresh={refresh}
