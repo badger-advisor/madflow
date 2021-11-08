@@ -8,8 +8,11 @@ import {
   fetchCurrentUser,
   signUp,
   signIn,
-  getAllUserFlows
+  getAllUserFlows,
+  getAllCourses
 } from './api';
+
+import createEdge from './components/GraphPage/customEdges/createEdge';
 
 class Exception {
   /**
@@ -70,21 +73,21 @@ export const autosave = async (flowID, elements) => {
 export const connectPrereqs = (node, elements) => {
   //TODO: create different edge types depending on the status of the node
   //Get id and prereqs for the course that is being added
-  const { id: targetId, data: { prerequisites: prereqs } } = node;
-  // console.log(targetId, prereqs);
+  const { id: targetId, type: targetType, data: { prerequisites: prereqs } } = node;
+  console.log('new node');
+  console.log(`${targetId}: ${prereqs}`);
 
-  //Naive approach: check each element in the graph to see if its id matches the prereq ids
-  elements.map(src => {
-    //If there is a match, create a new edge between these elements and push it to the elements list
-    if (prereqs.includes(src.id)) {
-      const newEdge = {
-        id            : `${src.id}-${targetId}`,
-        source        : src.id,
-        target        : targetId,
-        type          : 'smoothstep',
-        animated      : 'true',
-        arrowHeadType : 'arrowclosed'
-      };
+  //Naive approach: Checks if incoming node's prereqs are already in the flow
+  elements.map(sourceNode => {
+    // checks if any existing node should point to the new node
+    if (prereqs.includes(sourceNode.id)) {
+      const newEdge = createEdge(sourceNode.id, sourceNode.type, targetId, targetType);
+      elements.push(newEdge); //Add the new edge to the list
+    }
+
+    // checks if the new node should connect to the existing nodes
+    if (sourceNode.data && sourceNode.data.prerequisites.includes(targetId)) {
+      const newEdge = createEdge(targetId, targetType, sourceNode.id, sourceNode.type);
       elements.push(newEdge); //Add the new edge to the list
     }
   });
@@ -165,4 +168,23 @@ export const signup = async profileObject => {
 export const signin = async userID => {
   // TODO: need to check valid input
   await signIn(userID);
+};
+
+/**
+ * Function to call when getting all courses
+ */
+
+/**
+ *
+ * @returns A list of courses with revalent information for displaying as search results
+ */
+export const getallCourses = async () => {
+  // TODO: need to check valid input
+  const allCourses = await getAllCourses();
+  const listing = allCourses.map(course => ({
+    label      : course.courseNumber,
+    courseInfo : course.info.description,
+    courseID   : course._id
+  }));
+  return listing;
 };
