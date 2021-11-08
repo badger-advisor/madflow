@@ -56,13 +56,9 @@ const getAllUserFlows = googleId =>
 const getFlowInfo = flowID => API.get('/flow/getFlow', { id: flowID });
 
 const removeFlow = flowID =>
-  API.delete('/flow/removeFlow/', { id: flowID })
-    .then(res => console.log(JSON.stringify(res.data)))
+  API.delete('/flow/removeFlow/', { params: { id: flowID } })
+    .then(res => res.data)
     .catch(error => console.log(error));
-
-const getUserFlow = (userID, flowID) => API.get(`/flow/${userID}/${flowID}`);
-
-const deleteUserFlow = (userID, flowID) => API.delete(`/flow/${userID}/${flowID}`);
 
 const createUserFlow = (googleId, name, major) =>
   API.post(`/flow/newFlow`, {
@@ -124,7 +120,5 @@ export {
   getPrefilledFlow,
   getCourse,
   updateUserFlow,
-  getUserFlow,
-  deleteUserFlow,
   getAllCourses
 };

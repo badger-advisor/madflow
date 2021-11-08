@@ -10,7 +10,7 @@ import { Card, CardMedia, Typography, Avatar, alpha } from '@mui/material';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import testImg from './test.jpg';
 
-const FlowCard = ({ flowID, flowName }) => {
+const FlowCard = ({ flowID, flowName, refresh, setRefresh }) => {
   const [ showMenu, setShowMenu ] = useState(null);
 
   const openMenu = e => {
@@ -21,7 +21,7 @@ const FlowCard = ({ flowID, flowName }) => {
 
   // TODO: function to handle opening a Flow when the FlowCard is clicked
   const openFlow = e => {
-    console.log(`${flowName} opened`);
+    console.log(`${flowName} opened (${flowID})`);
     // pass flowID to open the correct FLow
   };
 
@@ -58,7 +58,13 @@ const FlowCard = ({ flowID, flowName }) => {
       </Avatar>
 
       {/* FlowCard menu Popover */}
-      <FlowCardMenu showMenu={showMenu} setShowMenu={setShowMenu} flowID={flowID} />
+      <FlowCardMenu
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+        flowID={flowID}
+        refresh={refresh}
+        setRefresh={setRefresh}
+      />
 
       {/* FlowCard image */}
       <CardMedia component='img' height='80%' image={testImg} alt='test image' />

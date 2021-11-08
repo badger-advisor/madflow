@@ -57,12 +57,12 @@ const createNewFlow = async (req, res) => {
 };
 
 const removeFlow = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.query;
+  // console.log(`inside controller: ${id}`);
 
   Flow.findOneAndDelete({ _id: id })
     .then(result => {
       res.json(result);
-      console.log(result);
     })
     .catch(err => {
       res.status(404).json({ message: err.message });
