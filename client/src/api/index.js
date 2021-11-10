@@ -12,6 +12,10 @@ const signOut = async () => {
   await API.get('/auth/logout');
 };
 
+const fetchCurrentUser = async () => {
+  const currentUser = await (await API.get('/user/current')).json();
+};
+
 // TODO: Remove all flows assiciated with the user
 const deleteUser = userGoogleID =>
   API.delete('/user/deleteUser', {
@@ -85,7 +89,7 @@ export {
   signIn,
   signOut,
   // signUp,
-  // fetchCurrentUser,
+  fetchCurrentUser,
   deleteUser,
   getAllUserFlows,
   getFlowInfo,
