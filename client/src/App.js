@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Landing, Dashboard, Profile, Graph } from './pages';
 import ApiTests from './components/ApiTests';
 
@@ -27,18 +27,16 @@ const TempNav = () => {
 const App = () => {
   return (
     <Router>
-      <Switch>
-        <Route exact path='/' render={TempNav} />
-        <Route exact path='/landing' render={Landing} />
-        <Route exact path='/dashboard'>
-          <Dashboard />
+      <Routes>
+        <Route path='/' element={<TempNav />} />
+        <Route path='landing' element={<Landing />} />
+        <Route path='dashboard' element={<Dashboard />} />
+        <Route path='profile' element={<Profile />} />
+        <Route path='flow' element={<Graph />}>
+          <Route path=':flowID' element={<Graph />} />
         </Route>
-        <Route exact path='/profile' render={Profile} />
-        <Route exact path='/flow'>
-          <Graph />
-        </Route>
-        <Route exact path='/test' render={ApiTests} />
-      </Switch>
+        <Route path='test' element={<ApiTests />} />
+      </Routes>
     </Router>
   );
 };

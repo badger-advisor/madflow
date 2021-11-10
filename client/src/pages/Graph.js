@@ -9,6 +9,8 @@ import SearchNavBar from '../components/GraphPage/SearchNavBar';
 import DrawerHeader from '../components/GraphPage/HeaderSpacer';
 import RecommendBar from '../components/GraphPage/RecommendBar';
 
+import { useParams } from 'react-router-dom';
+
 // TODO initialElements to be replaced with fetched elements from DB
 import { initialElements } from './initialElements';
 
@@ -39,8 +41,16 @@ const Graph = () => {
   const [ undo, setUndo ] = useState([ initialElements ]); // Undo stack consists of a list of all element states
   const [ redo, setRedo ] = useState([]); // the current state added to the redo stack before redo is called
 
-  //TODO: need to collect the current flow elements with the flowid
+  // Grabbing the flow id from react router link
+  const { flowID } = useParams();
 
+  // useEffect(
+  //   async () ={
+  //     setElements()
+  //   }
+  // )
+
+  //TODO: need to collect the current flow elements with the flowid
   // for making sure the elements array update each time undo or redo is applied
   useEffect(
     () => {
