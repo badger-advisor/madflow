@@ -1,24 +1,25 @@
 import { Link } from 'react-router-dom';
-
 // material-ui
 import { Menu, MenuItem } from '@mui/material';
-
 // icons
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+// Helper functions
+import { signOut } from '../../api';
 
 const ProfileMenu = ({ showMenu, setShowMenu }) => {
   // function to close menu
-  const closeMenu = (e) => {
+  const closeMenu = e => {
     e.stopPropagation();
     console.log('close menu');
     setShowMenu(null);
   };
 
   // TODO: function to sign current user out of the application
-  const signOut = (e) => {
-    e.stopPropagation();
+  const signOut = async e => {
+    // e.stopPropagation();
     console.log('sign out clicked :(');
+    window.location.href = '/auth/logout';
   };
 
   return (

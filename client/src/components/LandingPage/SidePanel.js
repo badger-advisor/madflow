@@ -1,9 +1,7 @@
 import { Button, Typography, Box, alpha, Drawer } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
-import { signin, signup } from '../../utils';
-import Cookie from 'js-cookie';
-import { GoogleLogin } from 'react-google-login';
+import { signIn } from '../../api';
 
 const useStyles = makeStyles(() => {
   return {
@@ -23,31 +21,21 @@ const useStyles = makeStyles(() => {
   };
 });
 
+const GoogleButton = () => {
+  const handleGoogle = async () => {
+    console.log('logging in with google');
+    window.location.href = '/auth/google';
+  };
+
+  return (
+    <Button variant='outlined' onClick={handleGoogle}>
+      Log in with Google
+    </Button>
+  );
+};
+
 const SidePanel = () => {
   const classes = useStyles();
-
-  const onGoogleSuccess = async response => {
-    const google_id = response.googleId;
-    console.log(response);
-    const cur_user = signin(google_id);
-    console.log('current user:');
-    console.log(cur_user);
-    if (cur_user == '') {
-      const new_user = signup(response.profileObj);
-      console.log('created new user');
-      console.log(new_user);
-      if (new_user != '') {
-        window.location.href = '/dashboard';
-      }
-    } else {
-      window.location.href = '/dashboard';
-    }
-  };
-
-  const onGoogleFailure = error => {
-    console.log('error');
-    console.log(error);
-  };
 
   return (
     <Drawer
@@ -57,18 +45,15 @@ const SidePanel = () => {
       classes={{ paper: classes.drawerPaper }}
     >
       <Typography variant='h3' align='center'>
-        Welcome to Mad Flow
+        Welcome to
+      </Typography>
+      <Typography variant='h3' align='center' sx={{ marginBottom: '50px' }}>
+        MadFlow
       </Typography>
 
       <div align='center'>
         <Box sx={{ pt: '20px', pb: '20px' }}>
-          <GoogleLogin
-            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-            buttonText='Sign in with Google'
-            onSuccess={onGoogleSuccess}
-            onFailure={onGoogleFailure}
-            className='google-login-button'
-          />
+          <GoogleButton />
         </Box>
       </div>
 
