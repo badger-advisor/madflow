@@ -1,44 +1,44 @@
 const User = require('../models/userModel');
 
-const signIn = async (req, res) => {
-  User.findOne({ googleId: req.body.id }).then(currentUser => {
-    if (currentUser) {
-      // already have this user
-      console.log('user is: ', currentUser);
-      res.json({ user: currentUser });
-    } else {
-      // if not, create user in our db
-      console.log('user does not exist');
-      res.json({ user: '' });
-    }
-  });
-};
+// const signIn = async (req, res) => {
+//   User.findOne({ googleId: req.body.id }).then(currentUser => {
+//     if (currentUser) {
+//       // already have this user
+//       console.log('user is: ', currentUser);
+//       res.json({ user: currentUser });
+//     } else {
+//       // if not, create user in our db
+//       console.log('user does not exist');
+//       res.json({ user: '' });
+//     }
+//   });
+// };
 
-const signOut = async (req, res) => {
-  // signOut logic
-};
+// const signOut = async (req, res) => {
+//   // signOut logic
+// };
 
-const signUp = async (req, res) => {
-  // signUp logic
-  new User({
-    googleId       : req.body.id,
-    name           : req.body.displayName,
-    email          : req.body.email,
-    profilePicture : req.body.profilePicture,
-    flows          : [],
-    majors         : []
-    // thumbnail : profile._json.image.url
-  })
-    .save()
-    .then(newUser => {
-      console.log('created new user: ', newUser);
-      res.json({ user: newUser });
-    })
-    .catch(error => {
-      console.log('cannot create user', error);
-      res.json({ user: '' });
-    });
-};
+// const signUp = async (req, res) => {
+//   // signUp logic
+//   new User({
+//     googleId       : req.body.id,
+//     name           : req.body.displayName,
+//     email          : req.body.email,
+//     profilePicture : req.body.profilePicture,
+//     flows          : [],
+//     majors         : []
+//     // thumbnail : profile._json.image.url
+//   })
+//     .save()
+//     .then(newUser => {
+//       console.log('created new user: ', newUser);
+//       res.json({ user: newUser });
+//     })
+//     .catch(error => {
+//       console.log('cannot create user', error);
+//       res.json({ user: '' });
+//     });
+// };
 
 /**
  * Simply a test request. !! WORKS
@@ -80,9 +80,9 @@ const currentUser = async (req, res) => {
 };
 
 module.exports = {
-  signIn,
-  signOut,
-  signUp,
+  // signIn,
+  // signOut,
+  // signUp,
   insertTestUser,
   deleteUser,
   currentUser

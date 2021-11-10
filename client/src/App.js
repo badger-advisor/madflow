@@ -21,6 +21,12 @@ const TempNav = () => {
       <li>
         <Link to='/flow'>flow</Link>
       </li>
+      <li>
+        <a href='/auth/google'>Login With Google</a>
+      </li>
+      <li>
+        <a href='/api/logout'>Logout</a>
+      </li>
     </ul>
   );
 };
