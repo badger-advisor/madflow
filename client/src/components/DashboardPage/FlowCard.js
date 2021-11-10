@@ -8,7 +8,7 @@ import { Card, CardMedia, Typography, Avatar, alpha } from '@mui/material';
 
 // icons and images
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import testImg from './test.jpg';
+import testImg from '../../images/test.jpg';
 
 // Router
 import { Link } from 'react-router-dom';
