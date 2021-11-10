@@ -64,7 +64,6 @@ export const deleteUserObj = async userGoogleId => {
  */
 export const autosave = async (flowID, elements) => {
   // TODO: need to check valid input
-  console.log(`saving: ${flowID}`);
   await updateUserFlowElements(flowID, elements);
 };
 
@@ -198,4 +197,15 @@ export const getFlowElements = async flowID => {
   const elements = await (await getFlowInfo(flowID)).data.elements;
   console.log(elements);
   return elements;
+};
+
+export const debounce = (func, timeout = 300) => {
+  console.log(func);
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
+  };
 };

@@ -10,7 +10,8 @@ import ReactFlow, {
   getConnectedEdges
 } from 'react-flow-renderer';
 
-import { autosave, determineType } from '../../utils';
+import { autosave, determineType, debounce } from '../../utils';
+import useDidUpdateEffect from '../../customhooks/useDidUpdateEffect';
 
 // The 3 types of custom nodes that can appear in the Flow
 import customNodes from './customNodes';
@@ -60,15 +61,12 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
     handleClose();
   };
 
-  // useEffect(
-  //   () => {
-  //     // Update the document title using the browser API
-
-  //     //call the save endpoint, for testing I have provided a flow id since functionality is not ready yet.
-  //     autosave(flowID, elements);
-  //   },
-  //   [ elements ]
-  // );
+  useDidUpdateEffect(
+    () => {
+      autosave(flowID, elements);
+    },
+    [ elements ]
+  );
 
   //Handle dragging a node from the Sidebar
   const onDragOver = e => {

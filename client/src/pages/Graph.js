@@ -11,8 +11,6 @@ import RecommendBar from '../components/GraphPage/RecommendBar';
 
 import { useParams } from 'react-router-dom';
 
-// TODO initialElements to be replaced with fetched elements from DB
-import { initialElements } from './initialElements';
 import { getFlowElements } from '../utils';
 
 export const RECOMMEND_BAR_WIDTH = 240;
@@ -36,11 +34,7 @@ const Main = styled('main', { shouldForwardProp: prop => prop !== 'open' })(({ t
 
 const Graph = () => {
   const [ openRec, setOpenRec ] = useState(false);
-
-  // TODO initialElements to be replaced with fetched elements from DB
-  // const [ elements, setElements ] = useState(initialElements); // All of the data for the Flow
   const [ elements, setElements ] = useState([]); // All of the data for the Flow
-  // const [ undo, setUndo ] = useState([ initialElements ]); // Undo stack consists of a list of all element states
   const [ undo, setUndo ] = useState([]); // Undo stack consists of a list of all element states
   const [ redo, setRedo ] = useState([]); // the current state added to the redo stack before redo is called
 
@@ -51,7 +45,6 @@ const Graph = () => {
     setElements(await getFlowElements(flowID));
   }, []);
 
-  //TODO: need to collect the current flow elements with the flowid
   // for making sure the elements array update each time undo or redo is applied
   useEffect(
     () => {
