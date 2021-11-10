@@ -6,12 +6,14 @@ const {
   signUp,
   signOut,
   insertTestUser,
-  deleteUser
+  deleteUser,
+  currentUser
 } = require('../controllers/userController');
 
 router.post('/signin', signIn);
 router.post('/signup', signUp);
 router.post('/testUser', insertTestUser);
 router.post('/deleteUser', deleteUser);
+router.get('/current', currentUser);
 
 module.exports = router;

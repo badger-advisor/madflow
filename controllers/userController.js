@@ -75,10 +75,15 @@ const deleteUser = async (req, res) => {
   }
 };
 
+const currentUser = async (req, res) => {
+  res.send(req.user);
+};
+
 module.exports = {
   signIn,
   signOut,
   signUp,
   insertTestUser,
-  deleteUser
+  deleteUser,
+  currentUser
 };
