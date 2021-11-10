@@ -76,8 +76,8 @@ export const connectPrereqs = (node, elements) => {
   //TODO: create different edge types depending on the status of the node
   //Get id and prereqs for the course that is being added
   const { id: targetId, type: targetType, data: { prerequisites: prereqs } } = node;
-  console.log('new node');
-  console.log(`${targetId}: ${prereqs}`);
+  // console.log('new node');
+  // console.log(`${targetId}: ${prereqs}`);
 
   //Naive approach: Checks if incoming node's prereqs are already in the flow
   elements.map(sourceNode => {
@@ -179,8 +179,8 @@ export const signin = async userID => {
 };
 
 /**
- *
- * @returns A list of courses with revalent information for displaying as search results
+ * Gets a list of courses with revalent information for displaying as search results
+ * @returns List of course information
  */
 export const getAllCourses = async () => {
   // TODO: need to check valid input
@@ -200,10 +200,16 @@ export const getAllCourses = async () => {
  */
 export const getFlowElements = async flowID => {
   const elements = (await getFlowInfo(flowID)).data.elements;
-  console.log(elements);
+  // console.log(elements);
   return elements;
 };
 
+/**
+ *! Experimenting with debounce function for limiting autosave occurances
+ * NOT working
+ * @param {Function} func
+ * @param {number} timeout timeout in miliseconds
+ */
 export const debounce = (func, timeout = 300) => {
   console.log(func);
   let timer;
@@ -214,4 +220,3 @@ export const debounce = (func, timeout = 300) => {
     }, timeout);
   };
 };
-

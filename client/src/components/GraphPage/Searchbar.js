@@ -64,7 +64,6 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
       setInputValue('');
       setDropDown(false);
       setDisplayPop(false);
-      console.log(e);
     }
   };
 
@@ -73,7 +72,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
    * TODO: implement logic to determine if can take or cannot take
    */
   const addCourse = async () => {
-    console.log(`Add ${taken ? 'Taken' : 'Not Taken'}: ${currentCourse.label}`);
+    // console.log(`Add ${taken ? 'Taken' : 'Not Taken'}: ${currentCourse.label}`);
 
     // Removes spaces from current course
     const courseNum = currentCourse.label.split(' ').join('');
@@ -94,6 +93,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
         newCourse.type = determineType(newCourse, elements);
       }
 
+      // Makes sure elements isn't empty
       let newElements;
       if (!elements) {
         newElements = [ newCourse ];
