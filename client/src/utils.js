@@ -193,8 +193,13 @@ export const getAllCourses = async () => {
   return listing;
 };
 
+/**
+ * For getting the elements array of any given flow
+ * @param {String} flowID Id of Flow
+ * @returns The elements array associated with a Flow
+ */
 export const getFlowElements = async flowID => {
-  const elements = await (await getFlowInfo(flowID)).data.elements;
+  const elements = (await getFlowInfo(flowID)).data.elements;
   console.log(elements);
   return elements;
 };
@@ -209,3 +214,4 @@ export const debounce = (func, timeout = 300) => {
     }, timeout);
   };
 };
+

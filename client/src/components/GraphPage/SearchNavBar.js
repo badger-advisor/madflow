@@ -13,6 +13,7 @@ import { styled, useTheme } from '@mui/material/styles';
 
 import Searchbar from './Searchbar';
 import { getAllCourses } from '../../utils';
+import { Link } from 'react-router-dom';
 
 const DRAWER_WIDTH = 240;
 
@@ -46,9 +47,12 @@ const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo })
   return (
     <AppBar position='fixed' open={open} style={{ background: '#c5050c' }}>
       <Toolbar>
-        <Typography variant='h6' noWrap sx={{ marginRight: 4 }} component='div'>
-          MadFlow
-        </Typography>
+        {/* // TODO: To be replaced with logo */}
+        <Link to='/dashboard' style={{ textDecoration: 'none' }}>
+          <Typography variant='h6' noWrap sx={{ marginRight: 4 }} component='div'>
+            MadFlow
+          </Typography>
+        </Link>
 
         {/* The actual search element */}
         <Searchbar courseOptions={courseOptions} elements={elements} saveForUndo={saveForUndo} />

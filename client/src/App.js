@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Landing, Dashboard, Profile, Graph } from './pages';
 import ApiTests from './components/ApiTests';
+import './app.css';
 
 const TempNav = () => {
   return (
