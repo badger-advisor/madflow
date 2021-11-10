@@ -5,9 +5,9 @@ import {
   updateUserFlow,
   createUserFlow,
   deleteUser,
-  fetchCurrentUser,
-  signUp,
-  signIn,
+  // fetchCurrentUser,
+  // signUp,
+  // signIn,
   getAllUserFlows,
   fetchAllCourses,
   removeFlow,
@@ -150,10 +150,9 @@ export const deleteFlow = async flowID => {
  * Function to call when trying to find current user data
  * @param {String} userID the google ID
  */
-export const currentUser = async userID => {
-  // TODO: need to check valid input
-  return await fetchCurrentUser(userID);
-};
+// export const currentUser = async userID => {
+//   return await fetchCurrentUser(userID);
+// };
 
 export const getUserFlowNames = async userID => {
   // TODO: need to check valid input
@@ -164,19 +163,17 @@ export const getUserFlowNames = async userID => {
  * Function to call when signing a user up
  * @param {[Object]} profileObject object of user information
  */
-export const signup = async profileObject => {
-  // TODO: need to check valid input
-  await signUp(profileObject);
-};
+// export const signup = async profileObject => {
+//   await signUp(profileObject);
+// };
 
 /**
  * Function to call when signing up
  * @param {String} userID the google ID
  */
-export const signin = async userID => {
-  // TODO: need to check valid input
-  await signIn(userID);
-};
+// export const signin = async userID => {
+//   await signIn(userID);
+// };
 
 /**
  * Gets a list of courses with revalent information for displaying as search results

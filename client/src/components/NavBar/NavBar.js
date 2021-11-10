@@ -12,6 +12,8 @@ import { styled } from '@mui/material/styles';
 import tempIcon from '../../images/tempIcon.png'; // TODO: replace with logo
 import AddIcon from '@mui/icons-material/Add';
 
+import { Link } from 'react-router-dom';
+
 const NavBarOffset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 const NavBar = ({ userID, refresh, setRefresh }) => {
@@ -40,7 +42,9 @@ const NavBar = ({ userID, refresh, setRefresh }) => {
         >
           {/* logo button */}
           <IconButton sx={{ mr: 2 }}>
-            <img src={tempIcon} height='45px' />
+            <Link to='/'>
+              <img src={tempIcon} height='45px' />
+            </Link>
           </IconButton>
 
           {/* right side of nav bar */}

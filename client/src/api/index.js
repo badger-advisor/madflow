@@ -4,40 +4,6 @@ import axios from 'axios';
 const API = axios.create({ baseURL: 'http://localhost:8080' });
 
 /* ###################################### User ###################################### */
-const signIn = id =>
-  API.post(`/user/signIn`, {
-    id : id
-  })
-    .then(res => {
-      const { user } = res.data;
-      localStorage.setItem('google_id', id);
-      return user;
-    })
-    .catch(error => console.log(error));
-
-const signUp = userObject =>
-  API.post(`/user/signup`, {
-    id             : userObject.googleId,
-    displayName    : userObject.name,
-    email          : userObject.email,
-    profilePicture : userObject.imageUrl
-  })
-    .then(res => {
-      const { user } = res.data;
-      localStorage.setItem('google_id', userObject.googleId);
-      return user;
-    })
-    .catch(error => console.log(error));
-
-const fetchCurrentUser = id =>
-  API.post(`/user/signIn`, { id })
-    .then(res => {
-      const { user } = res.data;
-      localStorage.setItem('google_id', id);
-      return user;
-    })
-    .catch(error => console.log(error));
-
 // TODO: Remove all flows assiciated with the user
 const deleteUser = userGoogleID =>
   API.delete('/user/deleteUser', {
@@ -108,9 +74,6 @@ const fetchAllCourses = () =>
     });
 
 export {
-  signIn,
-  signUp,
-  fetchCurrentUser,
   deleteUser,
   getAllUserFlows,
   getFlowInfo,

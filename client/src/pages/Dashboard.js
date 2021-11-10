@@ -10,15 +10,6 @@ import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
 const TEST_ID = 'tempgenelee'; // TODO: connect backend to get actual userID
 
 const Dashboard = () => {
-  // const currUser = async () => {
-  //   const data = localStorage.getItem('google_id');
-  //   const userID = await currentUser(data);
-  //   console.log('current User:');
-  //   console.log(userID);
-  // };
-
-  //currUser();
-
   const [ userFlows, setUserFlows ] = useState([]);
   const [ refresh, setRefresh ] = useState(false);
 
