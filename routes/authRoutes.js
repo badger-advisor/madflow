@@ -2,8 +2,6 @@
 const router = require('express').Router();
 const passport = require('passport');
 
-// const User = db.User;
-
 // auth login
 router.get('/login', (req, res) => {
   res.json({ user: req.user });
