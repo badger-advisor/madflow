@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { createNewFlow } from '../../utils.js';
+import { updateFlow } from '../../utils.js';
 
 // material-ui
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
@@ -16,27 +16,37 @@ const validationSchema = Yup.object().shape({
     .min(4, 'Major is too short. Cannot be less than 4 characters.')
 });
 
-const NewFlow = ({ open, setOpen, userID, refresh, setRefresh }) => {
+const RenameFlow = ({
+  flowID,
+  flowName,
+  flowMajor,
+  open,
+  setOpen,
+  refresh,
+  setRefresh,
+  setShowMenu
+}) => {
   // function to use utility function to create new FLow for current user
-  const makeFlow = async (userID, flowName, flowMajor) => {
-    await createNewFlow(userID, flowName, flowMajor);
+  const updateFlowName = async (flowID, changes) => {
+    await updateFlow(flowID, changes);
   };
 
   // use Formik to handle form validation and submission
   const formik = useFormik({
     enableReinitialize : true,
     initialValues      : {
-      name  : '',
-      major : ''
+      name  : flowName,
+      major : flowMajor
     },
     validationSchema   : validationSchema,
     onSubmit           : (values, { resetForm }) => {
       // console.log(values);
       // console.log(values.name);
-      makeFlow(userID, values.name, values.major);
+      updateFlowName(flowID, { name: values.name, major: values.major });
       resetForm();
       setOpen(false);
       setRefresh(!refresh);
+      setShowMenu(false);
     },
     onReset            : () => {
       setOpen(false);
@@ -78,14 +88,14 @@ const NewFlow = ({ open, setOpen, userID, refresh, setRefresh }) => {
               onChange={formik.handleChange}
               error={formik.touched.major && Boolean(formik.errors.major)}
               helperText={formik.touched.major && formik.errors.major}
+              disabled // TODO: disable?? figure out major requirements
             />
           </div>
         </DialogContent>
 
         {/* button options for new Flow */}
         <DialogActions>
-          <Button onClick={formik.handleSubmit}>Create Blank</Button>
-          <Button onClick={formik.handleSubmit}>Create Pre-Filled</Button>
+          <Button onClick={formik.handleSubmit}>Rename</Button>
           <Button onClick={formik.handleReset}>Cancel</Button>
         </DialogActions>
       </Dialog>
@@ -93,4 +103,4 @@ const NewFlow = ({ open, setOpen, userID, refresh, setRefresh }) => {
   );
 };
 
-export default NewFlow;
+export default RenameFlow;

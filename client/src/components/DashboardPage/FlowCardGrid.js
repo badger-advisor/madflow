@@ -25,7 +25,6 @@ const TempFlows = [
 ];
 
 const FlowCardGrid = ({ userID, userFlows, refresh, setRefresh }) => {
-
   return (
     <Box sx={{ flexGrow: 1, mt: '20px', ml: '30px', mr: '30px' }}>
       <Grid container spacing={4}>
@@ -35,6 +34,7 @@ const FlowCardGrid = ({ userID, userFlows, refresh, setRefresh }) => {
             <FlowCard
               flowID={flow._id}
               flowName={flow.name}
+              flowMajor={flow.major}
               refresh={refresh}
               setRefresh={setRefresh}
             />
