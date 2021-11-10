@@ -12,7 +12,7 @@ import MuiAppBar from '@mui/material/AppBar';
 import { styled, useTheme } from '@mui/material/styles';
 
 import Searchbar from './Searchbar';
-import { getallCourses } from '../../utils';
+import { getAllCourses } from '../../utils';
 
 const DRAWER_WIDTH = 240;
 
@@ -40,7 +40,7 @@ const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo })
   const [ courseOptions, setCourseOptions ] = useState([]);
 
   useEffect(async () => {
-    setCourseOptions(await getallCourses());
+    setCourseOptions(await getAllCourses());
   }, []);
 
   return (

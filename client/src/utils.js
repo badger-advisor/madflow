@@ -9,8 +9,9 @@ import {
   signUp,
   signIn,
   getAllUserFlows,
-  getAllCourses,
-  removeFlow
+  fetchAllCourses,
+  removeFlow,
+  getFlowInfo
 } from './api';
 
 import createEdge from './components/GraphPage/customEdges/createEdge';
@@ -63,6 +64,7 @@ export const deleteUserObj = async userGoogleId => {
  */
 export const autosave = async (flowID, elements) => {
   // TODO: need to check valid input
+  console.log(`saving: ${flowID}`);
   await updateUserFlowElements(flowID, elements);
 };
 
@@ -111,12 +113,14 @@ export const determineType = (course, elements) => {
 
   //If a single prereq is not fulfilled, the course cannot be taken
   let type = 'courseCanTake';
-  elements.map(el => {
-    if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
-      console.log('Cannot take the course');
-      type = 'courseCannotTake';
-    }
-  });
+  if (elements) {
+    elements.map(el => {
+      if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
+        console.log('Cannot take the course');
+        type = 'courseCannotTake';
+      }
+    });
+  }
   return type;
 };
 
@@ -176,20 +180,22 @@ export const signin = async userID => {
 };
 
 /**
- * Function to call when getting all courses
- */
-
-/**
  *
  * @returns A list of courses with revalent information for displaying as search results
  */
-export const getallCourses = async () => {
+export const getAllCourses = async () => {
   // TODO: need to check valid input
-  const allCourses = await getAllCourses();
+  const allCourses = await fetchAllCourses();
   const listing = allCourses.map(course => ({
     label      : course.courseNumber,
     courseInfo : course.info.description,
     courseID   : course._id
   }));
   return listing;
+};
+
+export const getFlowElements = async flowID => {
+  const elements = await (await getFlowInfo(flowID)).data.elements;
+  console.log(elements);
+  return elements;
 };

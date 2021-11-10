@@ -85,7 +85,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
       const newCourse = await generateNode(courseNum, { type });
 
       //Check if course is already present in the flow
-      if (elements.filter(el => el.id === newCourse.id).length !== 0) {
+      if (elements && elements.filter(el => el.id === newCourse.id).length !== 0) {
         throw newCourse.id + ' already present in the flow, it cannot be added!';
       }
 
@@ -94,7 +94,12 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
         newCourse.type = determineType(newCourse, elements);
       }
 
-      const newElements = [ ...elements, newCourse ];
+      let newElements;
+      if (!elements) {
+        newElements = [ newCourse ];
+      } else {
+        newElements = [ ...elements, newCourse ];
+      }
 
       //Connect the new course to its prereqs
       const connectedElements = connectPrereqs(newCourse, newElements);

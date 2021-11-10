@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 
 // TODO initialElements to be replaced with fetched elements from DB
 import { initialElements } from './initialElements';
+import { getFlowElements } from '../utils';
 
 export const RECOMMEND_BAR_WIDTH = 240;
 
@@ -37,18 +38,18 @@ const Graph = () => {
   const [ openRec, setOpenRec ] = useState(false);
 
   // TODO initialElements to be replaced with fetched elements from DB
-  const [ elements, setElements ] = useState(initialElements); // All of the data for the Flow
-  const [ undo, setUndo ] = useState([ initialElements ]); // Undo stack consists of a list of all element states
+  // const [ elements, setElements ] = useState(initialElements); // All of the data for the Flow
+  const [ elements, setElements ] = useState([]); // All of the data for the Flow
+  // const [ undo, setUndo ] = useState([ initialElements ]); // Undo stack consists of a list of all element states
+  const [ undo, setUndo ] = useState([]); // Undo stack consists of a list of all element states
   const [ redo, setRedo ] = useState([]); // the current state added to the redo stack before redo is called
 
   // Grabbing the flow id from react router link
   const { flowID } = useParams();
 
-  // useEffect(
-  //   async () ={
-  //     setElements()
-  //   }
-  // )
+  useEffect(async () => {
+    setElements(await getFlowElements(flowID));
+  }, []);
 
   //TODO: need to collect the current flow elements with the flowid
   // for making sure the elements array update each time undo or redo is applied
@@ -147,7 +148,12 @@ const Graph = () => {
       <Main open={openRec}>
         <DrawerHeader />
         {/*REACT FLOW VIEW*/}
-        <Flow elements={elements} setElements={setElements} saveForUndo={saveForUndo} />
+        <Flow
+          elements={elements}
+          setElements={setElements}
+          saveForUndo={saveForUndo}
+          flowID={flowID}
+        />
       </Main>
       <RecommendBar handleDrawer={handleDrawer} open={openRec} />
     </Box>
