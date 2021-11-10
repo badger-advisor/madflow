@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Avatar, Divider, List, ListItem } from '@mui/material';
-import NavBar from '..//NavBar/NavBar';
 import { Typography } from '@mui/material';
 import DeleteAccount from './DeleteAccount';
+import UserProvider from '../../contexts/UserProvider';
 
 import './profile.css';
 
 const ProfileMainView = () => {
   const [ openDeleteAccount, setOpenDeleteAccount ] = useState(false);
+  const { user, loggedIn } = useContext(UserProvider.context);
+
   const handleDeactivate = () => {
     setOpenDeleteAccount(!openDeleteAccount);
   };
@@ -35,7 +37,9 @@ const ProfileMainView = () => {
         >
           G
         </Avatar>
-        <Typography sx={{ marginBottom: 2 }}>Account Holder Name</Typography>
+        <Typography sx={{ marginBottom: 2 }}>
+          {loggedIn ? user.name : `Account Holder Name`}
+        </Typography>
         <div className='profile-box-inner'>
           <Typography sx={{ padding: 2 }}>Options</Typography>
           <Divider />

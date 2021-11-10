@@ -6,20 +6,7 @@ import { useState, useEffect, useContext } from 'react';
 import UserProvider from './contexts/UserProvider';
 
 const TempNav = () => {
-  const [ user, setUser ] = useState();
-  const userData = useContext(UserProvider.context);
-
-  useEffect(async () => {
-    // const currentUser = fetch('/user/current')
-    //   .then(res => res.json())
-    //   .then(res => console.log(res))
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-    // const currentUser = await (await fetch('/user/current')).json();
-    // console.log(currentUser);
-    console.log(userData);
-  }, []);
+  const { user, loggedIn } = useContext(UserProvider.context);
 
   return (
     <div>
@@ -46,7 +33,7 @@ const TempNav = () => {
           <a href='/auth/logout'>Logout</a>
         </li>
       </ul>
-      {userData.name ? <p>Currently logged in as {userData.name}</p> : <p>Go log in</p>}
+      {loggedIn ? <p>Currently logged in as {user.name}</p> : <p>Go log in</p>}
     </div>
   );
 };
