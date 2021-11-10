@@ -4,18 +4,6 @@ import axios from 'axios';
 const API = axios.create({ baseURL: 'http://localhost:8080' });
 
 /* ###################################### User ###################################### */
-const signIn = () => {
-  API.get('/auth/google').then(res => console.log(res.user));
-};
-
-const signOut = async () => {
-  await API.get('/auth/logout');
-};
-
-const fetchCurrentUser = async () => {
-  const currentUser = await (await API.get('/user/current')).json();
-};
-
 // TODO: Remove all flows assiciated with the user
 const deleteUser = userGoogleID =>
   API.delete('/user/deleteUser', {
@@ -86,10 +74,6 @@ const fetchAllCourses = () =>
     });
 
 export {
-  signIn,
-  signOut,
-  // signUp,
-  fetchCurrentUser,
   deleteUser,
   getAllUserFlows,
   getFlowInfo,
