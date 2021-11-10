@@ -31,6 +31,15 @@ const TempNav = () => {
   );
 };
 
+const GuestGraph = () => {
+  return (
+    <div>
+      <h1>You're a guest</h1>
+      <a href='/auth/google'>Go sign in</a>
+    </div>
+  );
+};
+
 const App = () => {
   return (
     <Router>
@@ -39,8 +48,9 @@ const App = () => {
         <Route path='landing' element={<Landing />} />
         <Route path='dashboard' element={<Dashboard />} />
         <Route path='profile' element={<Profile />} />
-        <Route path='flow' element={<Graph />}>
+        <Route path='flow'>
           <Route path=':flowID' element={<Graph />} />
+          <Route path='guest' element={<GuestGraph />} />
         </Route>
         <Route path='test' element={<ApiTests />} />
       </Routes>
