@@ -9,7 +9,7 @@ import { Button, IconButton, alpha, AppBar, Toolbar, Avatar } from '@mui/materia
 import { styled } from '@mui/material/styles';
 
 // icons
-import tempIcon from './tempIcon.png'; // TODO: replace with logo
+import tempIcon from '../../images/tempIcon.png'; // TODO: replace with logo
 import AddIcon from '@mui/icons-material/Add';
 
 const NavBarOffset = styled('div')(({ theme }) => theme.mixins.toolbar);

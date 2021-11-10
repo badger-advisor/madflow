@@ -53,7 +53,7 @@ const getAllUserFlows = googleId =>
     return flows;
   });
 
-const getFlowInfo = flowID => API.get('/flow/getFlow', { id: flowID });
+const getFlowInfo = flowID => API.get('/flow/getFlow', { params: { flowID } });
 
 const removeFlow = flowID =>
   API.delete('/flow/removeFlow/', { params: { id: flowID } })
@@ -97,7 +97,7 @@ const getPrefilledFlow = majorID => API.get(`/flow/prefilled/${majorID}`);
 /* ###################################### Course ###################################### */
 const getCourse = courseNumber => API.get('/course/getCourse', { params: { courseNumber } });
 
-const getAllCourses = () =>
+const fetchAllCourses = () =>
   API.get(`/course/all`)
     .then(res => {
       const { courses } = res.data;
@@ -120,5 +120,5 @@ export {
   getPrefilledFlow,
   getCourse,
   updateUserFlow,
-  getAllCourses
+  fetchAllCourses
 };
