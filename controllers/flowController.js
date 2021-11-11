@@ -37,12 +37,12 @@ const updateFlowElements = async (req, res) => {
 };
 
 const createNewFlow = async (req, res) => {
-  const { name, elements, userGoogleID, major } = req.body;
+  const { name, elements, googleId, major } = req.body;
 
   const newFlow = new Flow({
     name,
     elements,
-    userGoogleID,
+    googleId,
     major
   })
     .save()

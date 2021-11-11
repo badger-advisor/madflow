@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "chokidar": "^3.5.2",
+    "jest": "^27.3.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.14"
   }
