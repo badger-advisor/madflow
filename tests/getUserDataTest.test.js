@@ -14,13 +14,15 @@ afterAll(
   async () => await mongoose.connection.close().then(() => console.log('DB connection is closed!'))
 );
 
-test("GET /flow/getUserFlows", async () => {
-  //const post = await Post.create();
+test("GET /user/signin", async () => {
 
-  await supertest(app).get("/flow/getUserFlows").send({ googleId: '111778573652836733288' }).expect(200)
+  await supertest(app).post("/user/signin").send({ id: '111778573652836733288' }).expect(200)
     .then((response) => {
       // Check type and length
-      expect(Array.isArray(response.body['flows'])).toBeTruthy();
-      expect(response.body['flows'].length).toBeGreaterThanOrEqual(0);
+      let temp = response.body.user
+      expect(typeof temp.name).toEqual('string');
+      expect(typeof temp.email).toEqual('string');
+      expect(typeof temp.profilePicture).toEqual('string');
+      expect(typeof temp.googleId).toEqual('string');
     });
 });

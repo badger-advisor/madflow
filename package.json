@@ -10,7 +10,7 @@
     "server": "nodemon server.js",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "jest --testEnvironment=node --runInBand ./tests"
+    "test": "jest --verbose --testEnvironment=node --runInBand --rootDir=tests"
   },
   "repository": {
     "type": "git",
@@ -37,7 +37,8 @@
     "mongoose": "^6.0.11",
     "node-mocks-http": "^1.11.0",
     "passport": "^0.5.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "supertest": "^6.1.6"
   },
   "devDependencies": {
     "chokidar": "^3.5.2",
