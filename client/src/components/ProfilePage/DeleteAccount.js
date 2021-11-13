@@ -56,10 +56,10 @@ const DeleteAccount = ({ open, handleClose }) => {
         alignItems='center'
         justifyContent='center'
       >
-        <Button className={classes.rmbtn} variant='contained' size='small'>
+        <Button className={classes.autobtn} variant='contained' size='small'>
           Cancel
         </Button>
-        <Button className={classes.autobtn} variant='contained' size='small'>
+        <Button className={classes.rmbtn} variant='contained' size='small'>
           Deactivate
         </Button>
       </Stack>

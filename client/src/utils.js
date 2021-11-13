@@ -5,11 +5,13 @@ import {
   updateUserFlow,
   createUserFlow,
   deleteUser,
-  fetchCurrentUser,
-  signUp,
-  signIn,
+  // fetchCurrentUser,
+  // signUp,
+  // signIn,
   getAllUserFlows,
-  getAllCourses
+  fetchAllCourses,
+  removeFlow,
+  getFlowInfo
 } from './api';
 
 import createEdge from './components/GraphPage/customEdges/createEdge';
@@ -74,8 +76,8 @@ export const connectPrereqs = (node, elements) => {
   //TODO: create different edge types depending on the status of the node
   //Get id and prereqs for the course that is being added
   const { id: targetId, type: targetType, data: { prerequisites: prereqs } } = node;
-  console.log('new node');
-  console.log(`${targetId}: ${prereqs}`);
+  // console.log('new node');
+  // console.log(`${targetId}: ${prereqs}`);
 
   //Naive approach: Checks if incoming node's prereqs are already in the flow
   elements.map(sourceNode => {
@@ -110,12 +112,14 @@ export const determineType = (course, elements) => {
 
   //If a single prereq is not fulfilled, the course cannot be taken
   let type = 'courseCanTake';
-  elements.map(el => {
-    if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
-      console.log('Cannot take the course');
-      type = 'courseCannotTake';
-    }
-  });
+  if (elements) {
+    elements.map(el => {
+      if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
+        console.log('Cannot take the course');
+        type = 'courseCannotTake';
+      }
+    });
+  }
   return type;
 };
 
@@ -134,18 +138,21 @@ export const updateFlow = async (flowID, changes) => {
  * @param {String} name name of the flow
  * @param {String} major major of the flow
  */
-export const createNewFlow = async (userGoogleId, name, major) => {
-  await createUserFlow(userGoogleId, name, major);
+export const createNewFlow = async (googleId, name, major) => {
+  await createUserFlow(googleId, name, major);
+};
+
+export const deleteFlow = async flowID => {
+  await removeFlow(flowID);
 };
 
 /**
  * Function to call when trying to find current user data
  * @param {String} userID the google ID
  */
-export const currentUser = async userID => {
-  // TODO: need to check valid input
-  return await fetchCurrentUser(userID);
-};
+// export const currentUser = async userID => {
+//   return await fetchCurrentUser(userID);
+// };
 
 export const getUserFlowNames = async userID => {
   // TODO: need to check valid input
@@ -156,35 +163,57 @@ export const getUserFlowNames = async userID => {
  * Function to call when signing a user up
  * @param {[Object]} profileObject object of user information
  */
-export const signup = async profileObject => {
-  // TODO: need to check valid input
-  await signUp(profileObject);
-};
+// export const signup = async profileObject => {
+//   await signUp(profileObject);
+// };
 
 /**
  * Function to call when signing up
  * @param {String} userID the google ID
  */
-export const signin = async userID => {
-  // TODO: need to check valid input
-  await signIn(userID);
-};
+// export const signin = async userID => {
+//   await signIn(userID);
+// };
 
 /**
- * Function to call when getting all courses
+ * Gets a list of courses with revalent information for displaying as search results
+ * @returns List of course information
  */
-
-/**
- *
- * @returns A list of courses with revalent information for displaying as search results
- */
-export const getallCourses = async () => {
+export const getAllCourses = async () => {
   // TODO: need to check valid input
-  const allCourses = await getAllCourses();
+  const allCourses = await fetchAllCourses();
   const listing = allCourses.map(course => ({
     label      : course.courseNumber,
     courseInfo : course.info.description,
     courseID   : course._id
   }));
   return listing;
+};
+
+/**
+ * For getting the elements array of any given flow
+ * @param {String} flowID Id of Flow
+ * @returns The elements array associated with a Flow
+ */
+export const getFlowElements = async flowID => {
+  const elements = (await getFlowInfo(flowID)).data.elements;
+  // console.log(elements);
+  return elements;
+};
+
+/**
+ *! Experimenting with debounce function for limiting autosave occurances
+ * NOT working
+ * @param {Function} func
+ * @param {number} timeout timeout in miliseconds
+ */
+export const debounce = (func, timeout = 300) => {
+  console.log(func);
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
+  };
 };

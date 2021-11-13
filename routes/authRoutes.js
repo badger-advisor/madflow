@@ -2,8 +2,6 @@
 const router = require('express').Router();
 const passport = require('passport');
 
-// const User = db.User;
-
 // auth login
 router.get('/login', (req, res) => {
   res.json({ user: req.user });
@@ -11,6 +9,7 @@ router.get('/login', (req, res) => {
 
 // auth logout
 router.get('/logout', (req, res) => {
+  console.log('logging out');
   req.logout();
   res.redirect('/');
 });

@@ -8,8 +8,9 @@ const userRoute = require('./routes/userRoute');
 const profileRoutes = require('./routes/profileRoutes');
 const courseRoute = require('./routes/courseRoute');
 const flowRoute = require('./routes/flowRoute');
-const passportSetup = require('./controllers/passport-setup');
 
+// Just want the passport setup to run ONCE
+require('./controllers/passport-setup');
 // set up enviromental variables
 require('dotenv').config();
 
@@ -18,11 +19,11 @@ const app = express();
 // Preventing cors error
 app.use(cors());
 
-// set up session cookies
+// set up session cookies (10 DAYS)
 app.use(
   cookieSession({
-    maxAge : 24 * 60 * 60 * 1000,
-    keys   : [ 'key1' ] //! no idea how this works
+    maxAge : 10 * 24 * 60 * 60 * 1000,
+    keys   : [ process.env.COOKIE_KEY ]
   })
 );
 

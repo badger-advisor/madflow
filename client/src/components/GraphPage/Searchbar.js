@@ -64,7 +64,6 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
       setInputValue('');
       setDropDown(false);
       setDisplayPop(false);
-      console.log(e);
     }
   };
 
@@ -73,7 +72,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
    * TODO: implement logic to determine if can take or cannot take
    */
   const addCourse = async () => {
-    console.log(`Add ${taken ? 'Taken' : 'Not Taken'}: ${currentCourse.label}`);
+    // console.log(`Add ${taken ? 'Taken' : 'Not Taken'}: ${currentCourse.label}`);
 
     // Removes spaces from current course
     const courseNum = currentCourse.label.split(' ').join('');
@@ -83,9 +82,8 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
 
     try {
       const newCourse = await generateNode(courseNum, { type });
-
       //Check if course is already present in the flow
-      if (elements.filter(el => el.id === newCourse.id).length !== 0) {
+      if (elements && elements.filter(el => el.id === newCourse.id).length !== 0) {
         throw newCourse.id + ' already present in the flow, it cannot be added!';
       }
 
@@ -94,7 +92,13 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
         newCourse.type = determineType(newCourse, elements);
       }
 
-      const newElements = [ ...elements, newCourse ];
+      // Makes sure elements isn't empty
+      let newElements;
+      if (!elements) {
+        newElements = [ newCourse ];
+      } else {
+        newElements = [ ...elements, newCourse ];
+      }
 
       //Connect the new course to its prereqs
       const connectedElements = connectPrereqs(newCourse, newElements);
@@ -114,6 +118,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   return (
     <div>
       <Autocomplete
+        id='searchbar'
         clearOnEscape={true}
         options={courseOptions}
         onHighlightChange={courseChangeHandler}
