@@ -3,6 +3,7 @@ const controller = require('../controllers/flowController');
 const httpMocks = require('node-mocks-http');
 const app = require("../server");
 const supertest = require("supertest");
+const User = require("../models/userModel");
 
 require('dotenv').config();
 const db = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
@@ -14,12 +15,17 @@ afterAll(
   async () => await mongoose.connection.close().then(() => console.log('DB connection is closed!'))
 );
 
-test("GET /user/signin", async () => {
-
-  await supertest(app).post("/user/signin").send({ id: '111778573652836733288' }).expect(200)
+test("GET /user/deleteUser", async () => {
+  const newUser = await User({
+        googleId       : 'test',
+        name           : 'test',
+        email          : 'test',
+        profilePicture : 'test'
+      }).save();
+  await supertest(app).post("/user/deleteUser").send({ googleId: 'test' }).expect(200)
     .then((response) => {
       // Check type and length
-      let temp = response.body.user
+      let temp = response.body
       expect(typeof temp.name).toEqual('string');
       expect(typeof temp.email).toEqual('string');
       expect(typeof temp.profilePicture).toEqual('string');
