@@ -7,7 +7,7 @@
     "client-install": "cd client && npm install",
     "dev-install": "npm install && npm run client-install",
     "start": "node server.js",
-    "server": "nodemon server.js",
+    "server": "nodemon index.js",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test": "jest --verbose --testEnvironment=node --runInBand --rootDir=tests"
