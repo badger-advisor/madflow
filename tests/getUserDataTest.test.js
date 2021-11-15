@@ -15,6 +15,10 @@ afterAll(
   async () => await mongoose.connection.close().then(() => console.log('DB connection is closed!'))
 );
 
+test("GET /profile/", async () => {
+  await supertest(app).get("/profile/").send({ user: 'test' }).expect(302)
+});
+
 test("GET /user/deleteUser", async () => {
   const newUser = await User({
         googleId       : 'test',
