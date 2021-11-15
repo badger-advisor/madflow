@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   }
 });
 
-const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch }) => {
+const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, id }) => {
   const styles = useState(CourseNodeStyles);
   const classes = useStyles();
 
@@ -53,7 +53,7 @@ const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch }) => {
     defined && data['prerequisites'] !== undefined ? data['prerequisites'].join(', ') : 'None';
 
   return (
-    <Dialog maxWidth='xs' onClose={handleClose} open={open}>
+    <Dialog maxWidth='xs' onClose={handleClose} open={open} id={id}>
       <DialogTitle margin='auto'>
         <div>{label}</div>
       </DialogTitle>

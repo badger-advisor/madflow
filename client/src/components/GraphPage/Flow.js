@@ -126,6 +126,7 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
       <ReactFlowProvider>
         <div className='reactflow-wrapper' ref={reactFlowWrapper}>
           <ReactFlow
+            id={flowID}
             elements={elements}
             nodeTypes={customNodes}
             onConnect={onConnect}
@@ -141,6 +142,7 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
             onElementClick={(_, node) => setCurrentNode(node)}
           />
           <EditNode
+            id={'edit_node'}
             open={openEditNode}
             node={currentNode}
             handleClose={handleClose}
