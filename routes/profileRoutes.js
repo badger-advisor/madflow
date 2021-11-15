@@ -3,7 +3,6 @@ const router = require('express').Router();
 const authCheck = (req, res, next) => {
   if (!req.user) {
     console.log(`error checking profile`);
-    console.log(req);
     res.redirect('/auth/login');
   } else {
     console.log(`user exists`);

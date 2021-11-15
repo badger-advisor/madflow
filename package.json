@@ -10,7 +10,7 @@
     "server": "nodemon index.js",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "jest --verbose --testEnvironment=node --runInBand --rootDir=tests"
+    "test": "jest --coverage --verbose --testEnvironment=node --runInBand --rootDir=tests"
   },
   "repository": {
     "type": "git",
