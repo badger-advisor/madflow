@@ -113,7 +113,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
     }
   };
 
-  const id = open ? 'simple-popper' : undefined;
+  const id = open ? 'popper' : undefined;
 
   return (
     <div>
