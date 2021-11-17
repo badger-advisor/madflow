@@ -219,15 +219,14 @@ export const debounce = (func, timeout = 300) => {
 };
 
 export const addCourse = async (currentCourse, elements, saveForUndo, taken) => {
-  // console.log(`Add ${taken ? 'Taken' : 'Not Taken'}: ${currentCourse.label}`);
-
   // Removes spaces from current course
-  const courseNum = currentCourse.label.split(' ').join('');
+  const courseNum = currentCourse;
 
   // Determines what type of node to add
   const type = taken ? 'courseTaken' : 'courseCannotTake';
 
   const newCourse = await generateNode(courseNum, { type });
+
   //Check if course is already present in the flow
   if (elements && elements.filter(el => el.id === newCourse.id).length !== 0) {
     throw newCourse.id + ' already present in the flow, it cannot be added!';
@@ -249,4 +248,5 @@ export const addCourse = async (currentCourse, elements, saveForUndo, taken) => 
   //Connect the new course to its prereqs
   const connectedElements = connectPrereqs(newCourse, newElements);
   saveForUndo(connectedElements);
+  return newElements;
 };

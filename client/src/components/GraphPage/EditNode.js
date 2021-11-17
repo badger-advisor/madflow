@@ -11,6 +11,7 @@ import CourseNodeStyles from './customNodes/CourseNodeStyles';
 import { makeStyles } from '@mui/styles';
 
 import './dnd.css';
+import { addCourse } from '../../utils';
 
 const useStyles = makeStyles({
   autobtn : {
@@ -35,7 +36,15 @@ const useStyles = makeStyles({
   }
 });
 
-const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch }) => {
+const EditNode = ({
+  open,
+  node,
+  handleClose,
+  elements,
+  onElementsRemove,
+  onSwitch,
+  saveForUndo
+}) => {
   const styles = useState(CourseNodeStyles);
   const classes = useStyles();
 
@@ -51,6 +60,20 @@ const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch }) => {
       : 'No description available for this course.';
   const prereqs =
     defined && data['prerequisites'] !== undefined ? data['prerequisites'].join(', ') : 'None';
+
+  const generatePrereqs = async () => {
+    let prereqArray = data['prerequisites'];
+    let numPrereqs = prereqArray.length;
+    for (let i = 0; i < numPrereqs; i++) {
+      try {
+        elements = await addCourse(prereqArray[i], elements, saveForUndo, taken);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    handleClose();
+  };
 
   return (
     <Dialog maxWidth='xs' onClose={handleClose} open={open}>
@@ -104,7 +127,12 @@ const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch }) => {
             <Typography>{prereqs}</Typography>
           </Box>
         </Box>
-        <Button className={classes.autobtn} variant='contained' size='small'>
+        <Button
+          className={classes.autobtn}
+          variant='contained'
+          size='small'
+          onClick={generatePrereqs}
+        >
           Autofill Prerequisites
         </Button>
       </Stack>

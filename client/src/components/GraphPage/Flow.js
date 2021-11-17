@@ -147,6 +147,7 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
             elements={elements}
             onElementsRemove={onElementsRemove}
             onSwitch={handleSwitchStatus}
+            saveForUndo={saveForUndo}
           />
           <Background gap={15} />
           <Controls />

@@ -46,7 +46,6 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
       setLocation(openLocation);
       setOpen(true);
       setCurrentCourse(option);
-      console.log(currentCourse);
       setDisplayPop(true);
     }
   };
@@ -71,7 +70,9 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   //Handle adding a course to the flow
   const handleAddCourse = (currentCourse, elements, saveForUndo) => {
     try {
-      addCourse(currentCourse, elements, saveForUndo);
+      //Get course into the proper format
+      let course = currentCourse.label.split(' ').join('');
+      addCourse(course, elements, saveForUndo);
     } catch (e) {
       console.error(e);
     } finally {
