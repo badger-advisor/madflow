@@ -54,6 +54,47 @@ test('GET /flow/getFlow', async () => {
       expect(typeof response.body.googleId).toEqual('string');
       expect(typeof response.body.major).toEqual('string');
       expect(response.body.elements).toEqual([ 1, 2, 3 ]);
+      expect(response.body.name).toEqual('Flow-Elements-Test');
+      expect(response.body.major).toEqual('Math');
+    });
+});
+
+test('POST /flow/update', async () => {
+  await supertest(app)
+    .post('/flow/update')
+    .send({
+      id      : flowID,
+      changes : {
+        name     : 'Flow-Elements-Tests',
+        major    : 'CS',
+        googleId : 'tkach941',
+        elements : [ 1, 2, 3, 4, 5 ]
+      }
+    })
+    .expect(200)
+    .then(response => {
+      // Check type and length
+      expect(response.body.modifiedCount).toEqual(1);
+      expect(response.body.matchedCount).toEqual(1);
+    });
+});
+
+test('GET /flow/getFlow', async () => {
+  await supertest(app)
+    .get('/flow/getFlow?flowID=' + flowID)
+    //.send({ flowID: flowID })
+    .expect(200)
+    .then(response => {
+      // Check types and length
+      expect(Object.keys(response.body).length).toEqual(6);
+      expect(typeof response.body.name).toEqual('string');
+      expect(Array.isArray(response.body.elements)).toBeTruthy();
+      expect(typeof response.body.googleId).toEqual('string');
+      expect(typeof response.body.major).toEqual('string');
+      expect(response.body.elements).toEqual([ 1, 2, 3, 4, 5 ]);
+      expect(response.body.name).toEqual('Flow-Elements-Tests');
+      expect(response.body.major).toEqual('CS');
+      expect(response.body.googleId).toEqual('tkach941');
     });
 });
 
@@ -69,6 +110,5 @@ test('DELETE /flow/removeFlow', async () => {
       expect(Array.isArray(response.body.elements)).toBeTruthy();
       expect(typeof response.body.googleId).toEqual('string');
       expect(typeof response.body.major).toEqual('string');
-      expect(response.body.elements).toEqual([ 1, 2, 3 ]);
     });
 });
