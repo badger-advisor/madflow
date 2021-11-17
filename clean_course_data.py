@@ -23,17 +23,7 @@ def helper(major_key, string, index):
     relist = []
     find_duplicates(major_key, string, index,relist)
     return relist
-
-def find_duplicates_majors(major_key, string, index, relist):
-    relist.append(major_key + " " + string[index:index+4])
-    if string[index+4:index+5] == ',':
-        find_duplicates(major_key,string,index+5,relist)
-        
-def helper(major_key, string, index):
-    relist = []
-    find_duplicates(major_key, string, index,relist)
-    return relist
-
+    
 def run():
   data_for_mongo = []
   for k in data:
