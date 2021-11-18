@@ -123,7 +123,6 @@ export const determineType = (course, elements) => {
   if (elements) {
     elements.map(el => {
       if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
-        console.log('Cannot take course');
         type = 'courseCannotTake';
       }
     });
@@ -259,11 +258,7 @@ export const addCourse = async (currentCourse, elements, saveForUndo, taken) => 
   return newElements;
 };
 
-export const changeOutgoerType = (node, elements) => {
-  //Need to change the edge type for outgoing edges when switching course status as well
-
-  //Get a list of the outgoing nodes
-  let targetList = getOutgoers(node, elements);
+export const changeOutgoerType = (node, targetList, elements) => {
   let numTargets = targetList.length;
   let newType = null;
 
@@ -276,16 +271,39 @@ export const changeOutgoerType = (node, elements) => {
       }
       return el;
     });
+
+    /*The portion of code below works for updating node edges;
+    / For some reason putting it into its own function updateNodeEdges was
+    / not updating the elements array correctly
+    */
+    let sourceNode = node;
+    let targetNode = targetList[i];
+    let targetType = newType;
+    let edgeId = sourceNode.id + '-' + targetNode.id;
+    elements = elements.map(el => {
+      if (el.id === edgeId) {
+        el = createEdge(el.source, sourceNode.type, el.target, targetType);
+      }
+      return el;
+    });
   }
+  return elements;
 };
 
 //WARNING: not working yet
-export const updateNodeEdges = (node, elements, setElements) => {
+export const updateNodeEdges = (sourceNode, targetNode, targetType, elements) => {
+  let edgeId = sourceNode.id + '-' + targetNode.id;
+  elements = elements.map(el => {
+    if (el.id === edgeId) {
+      el = createEdge(el.source, sourceNode.type, el.target, targetType);
+    }
+    return el;
+  });
+  /*
   let nodeList = [ node ];
   let connectedEdges = getConnectedEdges(nodeList, elements);
   connectedEdges.map(edge => {
     if (edge.source == node.id) {
-      console.log(edge.id);
       //console.log(node.type);
       //console.log(targetType);
       let newEdge = createEdge(edge.source, node.type, edge.target, targetType);
@@ -297,4 +315,5 @@ export const updateNodeEdges = (node, elements, setElements) => {
       //console.log(elements);
     }
   });
+*/
 };

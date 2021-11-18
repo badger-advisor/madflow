@@ -6,8 +6,8 @@ const EdgeCanTake = (srcId, targetId) => {
     source        : srcId,
     target        : targetId,
     type          : 'smoothstep',
-    style         : { stroke: 'blue' },
-    animated      : 'true',
+    style         : { stroke: 'grey' },
+    animated      : 'false',
     arrowHeadType : 'arrowclosed'
   };
 };
