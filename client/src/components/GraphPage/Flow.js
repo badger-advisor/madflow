@@ -7,8 +7,7 @@ import ReactFlow, {
   Controls,
   Background,
   isEdge,
-  getConnectedEdges,
-  getOutgoers
+  getConnectedEdges
 } from 'react-flow-renderer';
 
 import { autosave, determineType, debounce, getTargetNodes, changeOutgoerType } from '../../utils';
@@ -72,7 +71,8 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
     }
 
     //This will modify the types of the current node's children based on the new type change
-    changeOutgoerType(modifiedNode, elements, setElements);
+    changeOutgoerType(modifiedNode, elements);
+    //updateNodeEdges(modifiedNode, elements, setElements)
 
     //Close the EditNode component box
     handleClose();

@@ -1,4 +1,12 @@
-import { isNode, isEdge, removeElements, addEdge, getOutgoers } from 'react-flow-renderer';
+import {
+  isNode,
+  isEdge,
+  removeElements,
+  addEdge,
+  getOutgoers,
+  updateEdge,
+  getConnectedEdges
+} from 'react-flow-renderer';
 import {
   getCourse,
   updateUserFlowElements,
@@ -115,7 +123,7 @@ export const determineType = (course, elements) => {
   if (elements) {
     elements.map(el => {
       if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
-        console.log('Cannot take the course');
+        console.log('Cannot take course');
         type = 'courseCannotTake';
       }
     });
@@ -251,20 +259,42 @@ export const addCourse = async (currentCourse, elements, saveForUndo, taken) => 
   return newElements;
 };
 
-export const changeOutgoerType = (node, elements, setElements) => {
+export const changeOutgoerType = (node, elements) => {
+  //Need to change the edge type for outgoing edges when switching course status as well
+
+  //Get a list of the outgoing nodes
   let targetList = getOutgoers(node, elements);
   let numTargets = targetList.length;
   let newType = null;
+
+  //Iterate through, determine the correct type, and modify the outgoing node
   for (let i = 0; i < numTargets; i++) {
-    console.log(targetList[i]);
     newType = determineType(targetList[i], elements);
-    setElements(els =>
-      els.map(el => {
-        if (el.id === targetList[i].id) {
-          el.type = newType;
-        }
-        return el;
-      })
-    );
+    elements = elements.map(el => {
+      if (el.id === targetList[i].id) {
+        el.type = newType;
+      }
+      return el;
+    });
   }
+};
+
+//WARNING: not working yet
+export const updateNodeEdges = (node, elements, setElements) => {
+  let nodeList = [ node ];
+  let connectedEdges = getConnectedEdges(nodeList, elements);
+  connectedEdges.map(edge => {
+    if (edge.source == node.id) {
+      console.log(edge.id);
+      //console.log(node.type);
+      //console.log(targetType);
+      let newEdge = createEdge(edge.source, node.type, edge.target, targetType);
+      //console.log(edge)
+      console.log(newEdge);
+      console.log(edge.id);
+
+      updateEdge(edge, newEdge, elements);
+      //console.log(elements);
+    }
+  });
 };
