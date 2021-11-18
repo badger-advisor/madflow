@@ -7,11 +7,10 @@ import ReactFlow, {
   Controls,
   Background,
   isEdge,
-  getConnectedEdges,
-  getOutgoers
+  getConnectedEdges
 } from 'react-flow-renderer';
 
-import { autosave, determineType, debounce, getTargetNodes, changeOutgoerType } from '../../utils';
+import { autosave, determineType, debounce } from '../../utils';
 import useDidUpdateEffect from '../../customhooks/useDidUpdateEffect';
 
 // The 3 types of custom nodes that can appear in the Flow
@@ -45,12 +44,10 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
   const handleSwitchStatus = e => {
     //The default is 'taken', but we check the event to see if it is being switched to 'not taken'
     //From there we determine the type based on the node's prereqs
-
     let newType = 'courseTaken';
     if (!e.target.checked) {
       newType = determineType(currentNode, elements);
     }
-
     //This part actually modifies the type in the elements list
     setElements(els =>
       els.map(el => {
@@ -60,20 +57,6 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
         return el;
       })
     );
-
-    //Now, we get the modified node (same id as current node, but with its type determined)
-    let numElements = elements.length;
-    let modifiedNode = null;
-    for (let i = 0; i < numElements; i++) {
-      if (elements[i].id == currentNode.id) {
-        modifiedNode = elements[i];
-        break;
-      }
-    }
-
-    //This will modify the types of the current node's children based on the new type change
-    changeOutgoerType(modifiedNode, elements, setElements);
-
     //Close the EditNode component box
     handleClose();
   };
@@ -143,6 +126,7 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
       <ReactFlowProvider>
         <div className='reactflow-wrapper' ref={reactFlowWrapper}>
           <ReactFlow
+            id={flowID}
             elements={elements}
             nodeTypes={customNodes}
             onConnect={onConnect}
@@ -158,13 +142,13 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
             onElementClick={(_, node) => setCurrentNode(node)}
           />
           <EditNode
+            id={'edit_node'}
             open={openEditNode}
             node={currentNode}
             handleClose={handleClose}
             elements={elements}
             onElementsRemove={onElementsRemove}
             onSwitch={handleSwitchStatus}
-            saveForUndo={saveForUndo}
           />
           <Background gap={15} />
           <Controls />

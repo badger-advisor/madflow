@@ -1,4 +1,4 @@
-import { isNode, isEdge, removeElements, addEdge } from 'react-flow-renderer';
+import { isNode, isEdge, removeElements, addEdge, getOutgoers } from 'react-flow-renderer';
 import {
   getCourse,
   updateUserFlowElements,
@@ -249,4 +249,22 @@ export const addCourse = async (currentCourse, elements, saveForUndo, taken) => 
   const connectedElements = connectPrereqs(newCourse, newElements);
   saveForUndo(connectedElements);
   return newElements;
+};
+
+export const changeOutgoerType = (node, elements, setElements) => {
+  let targetList = getOutgoers(node, elements);
+  let numTargets = targetList.length;
+  let newType = null;
+  for (let i = 0; i < numTargets; i++) {
+    console.log(targetList[i]);
+    newType = determineType(targetList[i], elements);
+    setElements(els =>
+      els.map(el => {
+        if (el.id === targetList[i].id) {
+          el.type = newType;
+        }
+        return el;
+      })
+    );
+  }
 };
