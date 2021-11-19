@@ -10,6 +10,7 @@ router.get('/login', (req, res) => {
 // auth logout
 router.get('/logout', (req, res) => {
   console.log('logging out');
+  req.session = null;
   req.logout();
   res.redirect('/');
 });
@@ -28,7 +29,9 @@ router.get(
   '/google/redirect',
   passport.authenticate('google', {
     failureRedirect : '/',
-    successRedirect : 'http://localhost:3000/dashboard'
+    // successRedirect : 'http://localhost:3000/dashboard'
+    // testing purposes, change back to 3000 for prod
+    successRedirect : 'http://localhost:8080/user/current'
   }),
   (req, res) => {
     res.json({ user: req.user });
