@@ -9,7 +9,7 @@ const db = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSW
 beforeAll(async () => await mongoose.connect(db), 60 * 1000); // give 60 seconds to connect to db, default 5
 afterAll(async () => await mongoose.connection.close());
 
-describe('All flow functions', () => {
+describe('Testing flow controller functions', () => {
   let flowID = '';
 
   test('POST /flow/newFlow', async () => {
