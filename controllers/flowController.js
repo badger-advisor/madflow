@@ -47,11 +47,11 @@ const createNewFlow = async (req, res) => {
   })
     .save()
     .then(newFlow => {
-      console.log('created new flow: ', newFlow);
+      // console.log('created new flow: ', newFlow);
       res.json({ flow: newFlow });
     })
     .catch(error => {
-      console.log('cannot create flow', error);
+      // console.log('cannot create flow', error);
       res.json({ flow: '' });
     });
 };
