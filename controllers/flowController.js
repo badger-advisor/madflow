@@ -76,7 +76,7 @@ const updateFlow = async (req, res) => {
   Flow.updateOne({ _id: id }, { $set: changes })
     .then(result => {
       res.json(result);
-      console.log(result);
+      // console.log(result);
     })
     .catch(err => {
       res.json(err);
