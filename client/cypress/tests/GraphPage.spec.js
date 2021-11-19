@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { mount } from '@cypress/react';
 import { styled, useTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 
-import '../components/GraphPage/dnd.css';
-import Flow from '../components/GraphPage/Flow';
-import SearchNavBar from '../components/GraphPage/SearchNavBar';
-import DrawerHeader from '../components/GraphPage/HeaderSpacer';
-import RecommendBar from '../components/GraphPage/RecommendBar';
+import '../../src/components/GraphPage/dnd.css';
+import Flow from '../../src/components/GraphPage/Flow';
+import SearchNavBar from '../../src/components/GraphPage/SearchNavBar';
+import DrawerHeader from '../../src/components/GraphPage/HeaderSpacer';
+import RecommendBar from '../../src/components/GraphPage/RecommendBar';
 
 import { useParams } from 'react-router-dom';
 
-import { getFlowElements } from '../utils';
+import { getFlowElements } from '../../src/utils';
 
 export const RECOMMEND_BAR_WIDTH = 240;
 
@@ -39,8 +40,7 @@ const Graph = () => {
   const [ redo, setRedo ] = useState([]); // the current state added to the redo stack before redo is called
 
   // Grabbing the flow id from react router link
-  const { flowID } = useParams();
-  console.log(flowID);
+  const flowID = '61947661d74b7307c7f19b96';
 
   useEffect(async () => {
     setElements(await getFlowElements(flowID));
@@ -154,4 +154,7 @@ const Graph = () => {
   );
 };
 
-export default Graph;
+it('loads graph page', () => {
+  mount(<Graph />);
+  cy.get('#test');
+});
