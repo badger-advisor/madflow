@@ -16,9 +16,8 @@ import useDidUpdateEffect from '../../customhooks/useDidUpdateEffect';
 
 // The 3 types of custom nodes that can appear in the Flow
 import customNodes from './customNodes';
-
-import './dnd.css';
 import EditNode from './EditNode';
+import './dnd.css';
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
@@ -143,8 +142,12 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
     setOpenEditNode(false);
   };
 
+  // For making the flow take up the entire screen
+  // 64px is the default value from theme.mixins.toolbar
+  const flowHeight = `calc(100vh - 64px)`;
+
   return (
-    <div className='dndflow' style={{ height: 1080 }}>
+    <div className='dndflow' style={{ height: flowHeight }}>
       <ReactFlowProvider>
         <div className='reactflow-wrapper' ref={reactFlowWrapper}>
           <ReactFlow
