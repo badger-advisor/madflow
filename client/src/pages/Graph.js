@@ -40,7 +40,6 @@ const Graph = () => {
 
   // Grabbing the flow id from react router link
   const { flowID } = useParams();
-  console.log(flowID);
 
   useEffect(async () => {
     setElements(await getFlowElements(flowID));
