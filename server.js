@@ -39,7 +39,7 @@ app.use(passport.session());
 // Connect to mongodb
 const db = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
 try {
-  mongoose.connect(db).then(() => console.log('DB connection successful!'));
+  mongoose.connect(db).then(() => {});
 } catch (error) {
   console.log('Cannot connect to DB', error);
 }

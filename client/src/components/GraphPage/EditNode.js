@@ -11,6 +11,7 @@ import CourseNodeStyles from './customNodes/CourseNodeStyles';
 import { makeStyles } from '@mui/styles';
 
 import './dnd.css';
+import { addCourse } from '../../utils';
 
 const useStyles = makeStyles({
   autobtn : {
@@ -35,7 +36,17 @@ const useStyles = makeStyles({
   }
 });
 
-const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, id }) => {
+
+const EditNode = ({
+  open,
+  node,
+  handleClose,
+  elements,
+  onElementsRemove,
+  onSwitch,
+  saveForUndo,
+  onGeneratePrereq
+}) => {
   const styles = useState(CourseNodeStyles);
   const classes = useStyles();
 
@@ -53,7 +64,7 @@ const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, id }) =
     defined && data['prerequisites'] !== undefined ? data['prerequisites'].join(', ') : 'None';
 
   return (
-    <Dialog maxWidth='xs' onClose={handleClose} open={open} id={id}>
+    <Dialog maxWidth='xs' open={open}>
       <DialogTitle margin='auto'>
         <div>{label}</div>
       </DialogTitle>
@@ -104,7 +115,12 @@ const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, id }) =
             <Typography>{prereqs}</Typography>
           </Box>
         </Box>
-        <Button className={classes.autobtn} variant='contained' size='small'>
+        <Button
+          className={classes.autobtn}
+          variant='contained'
+          size='small'
+          onClick={() => onGeneratePrereq(data)}
+        >
           Autofill Prerequisites
         </Button>
       </Stack>

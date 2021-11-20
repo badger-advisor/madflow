@@ -7,17 +7,24 @@ import ReactFlow, {
   Controls,
   Background,
   isEdge,
-  getConnectedEdges
+  getConnectedEdges,
+  getOutgoers
 } from 'react-flow-renderer';
 
-import { autosave, determineType, debounce } from '../../utils';
+import {
+  autosave,
+  determineType,
+  debounce,
+  getTargetNodes,
+  changeOutgoerType,
+  generatePrereq
+} from '../../utils';
 import useDidUpdateEffect from '../../customhooks/useDidUpdateEffect';
 
 // The 3 types of custom nodes that can appear in the Flow
 import customNodes from './customNodes';
-
-import './dnd.css';
 import EditNode from './EditNode';
+import './dnd.css';
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
@@ -29,7 +36,12 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
   const [ openEditNode, setOpenEditNode ] = useState(false);
   const [ currentNode, setCurrentNode ] = useState('');
   const onConnect = params => setElements(els => addEdge(params, els));
-  const onLoad = _reactFlowInstance => setReactFlowInstance(_reactFlowInstance);
+  const onLoad = _reactFlowInstance => {
+    console.log(_reactFlowInstance);
+    _reactFlowInstance.fitView();
+    setReactFlowInstance(_reactFlowInstance);
+  };
+  const [ initialView, setInitialView ] = useState(false);
 
   // Event listener to handle removing elements and undoing
   const onElementsRemove = () => {
@@ -44,10 +56,12 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
   const handleSwitchStatus = e => {
     //The default is 'taken', but we check the event to see if it is being switched to 'not taken'
     //From there we determine the type based on the node's prereqs
+
     let newType = 'courseTaken';
     if (!e.target.checked) {
       newType = determineType(currentNode, elements);
     }
+
     //This part actually modifies the type in the elements list
     setElements(els =>
       els.map(el => {
@@ -57,16 +71,45 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
         return el;
       })
     );
+
+    //Now, we get the modified node (same id as current node, but with its type determined)
+    let numElements = elements.length;
+    let modifiedNode = null;
+    for (let i = 0; i < numElements; i++) {
+      if (elements[i].id == currentNode.id) {
+        modifiedNode = elements[i];
+        break;
+      }
+    }
+
+    //Get a list of the outgoing nodes
+    let targetList = getOutgoers(modifiedNode, elements);
+
+    //This will modify the types of the current node's children based on the new type change
+    if (targetList.length !== 0) {
+      setElements(changeOutgoerType(modifiedNode, targetList, elements));
+    }
+
     //Close the EditNode component box
     handleClose();
   };
 
   useDidUpdateEffect(
     () => {
+      // Only want the view to center on the first load,
+      // and not subsequent element updates
+      const centerView = () => {
+        reactFlowInstance.fitView({ padding: 0.5 });
+        setInitialView(true);
+      };
+
       autosave(flowID, elements);
+      reactFlowInstance && !initialView && centerView();
     },
     [ elements ]
   );
+
+  useEffect(() => {}, []);
 
   //Handle dragging a node from the Sidebar
   const onDragOver = e => {
@@ -121,8 +164,17 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
     setOpenEditNode(false);
   };
 
+  const handleGeneratePrereq = async data => {
+    generatePrereq(data, elements, saveForUndo);
+    handleClose();
+  };
+
+  // For making the flow take up the entire screen
+  // 64px is the default value from theme.mixins.toolbar
+  const flowHeight = `calc(100vh - 64px)`;
+
   return (
-    <div className='dndflow' style={{ height: 1080 }}>
+    <div className='dndflow' style={{ height: flowHeight }}>
       <ReactFlowProvider>
         <div className='reactflow-wrapper' ref={reactFlowWrapper}>
           <ReactFlow
@@ -149,6 +201,8 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
             elements={elements}
             onElementsRemove={onElementsRemove}
             onSwitch={handleSwitchStatus}
+            saveForUndo={saveForUndo}
+            onGeneratePrereq={handleGeneratePrereq}
           />
           <Background gap={15} />
           <Controls />
