@@ -9,8 +9,29 @@ import {
   DialogActions,
   Button
 } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles({
+  rmbtn : {
+    backgroundColor : '#a33d3d',
+    color           : '#ffffff',
+    '&:hover'       : {
+      backgroundColor : '#ffffff',
+      color           : '#a33d3d'
+    }
+  },
+  btn   : {
+    backgroundColor : '#f6fafd',
+    '&:hover'       : {
+      backgroundColor : '#ffffff',
+      borderColor     : '#ffffff'
+    }
+  }
+});
 
 const DeleteConfirmation = ({ flowID, flowName, open, setOpen, refresh, setRefresh }) => {
+  const classes = useStyles();
+
   // function to prevent clicks from propagating through to FlowCard underneath
   const handleClicks = e => {
     e.stopPropagation();
@@ -46,8 +67,12 @@ const DeleteConfirmation = ({ flowID, flowName, open, setOpen, refresh, setRefre
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleDeleteFlow}>Delete</Button>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleDeleteFlow} className={classes.rmbtn}>
+            Delete
+          </Button>
+          <Button onClick={handleClose} variant='outlined' className={classes.btn}>
+            Cancel
+          </Button>
         </DialogActions>
       </div>
     </Dialog>
