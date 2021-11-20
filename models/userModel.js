@@ -18,9 +18,7 @@ const userSchema = new mongoose.Schema({
   profilePicture : {
     type     : String,
     required : [ false, 'A user must have an email' ]
-  },
-
-  majors         : Array
+  }
 });
 
 const User = mongoose.model('User', userSchema);

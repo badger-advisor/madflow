@@ -8,8 +8,9 @@ const userRoute = require('./routes/userRoute');
 const profileRoutes = require('./routes/profileRoutes');
 const courseRoute = require('./routes/courseRoute');
 const flowRoute = require('./routes/flowRoute');
-const passportSetup = require('./controllers/passport-setup');
 
+// Just want the passport setup to run ONCE
+require('./controllers/passport-setup');
 // set up enviromental variables
 require('dotenv').config();
 
@@ -18,11 +19,11 @@ const app = express();
 // Preventing cors error
 app.use(cors());
 
-// set up session cookies
+// set up session cookies (10 DAYS)
 app.use(
   cookieSession({
-    maxAge : 24 * 60 * 60 * 1000,
-    keys   : [ 'key1' ] //! no idea how this works
+    maxAge : 10 * 24 * 60 * 60 * 1000,
+    keys   : [ process.env.COOKIE_KEY ]
   })
 );
 
@@ -38,7 +39,7 @@ app.use(passport.session());
 // Connect to mongodb
 const db = process.env.DATABASE.replace('<PASSWORD>', process.env.DATABASE_PASSWORD);
 try {
-  mongoose.connect(db).then(() => console.log('DB connection successful!'));
+  mongoose.connect(db).then(() => {});
 } catch (error) {
   console.log('Cannot connect to DB', error);
 }
@@ -60,8 +61,4 @@ app.get('/', (req, res) => {
   }
 });
 
-// Start server, listen for requests
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on: http://localhost:${PORT}`);
-});
+module.exports = app;

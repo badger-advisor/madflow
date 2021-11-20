@@ -7,9 +7,10 @@
     "client-install": "cd client && npm install",
     "dev-install": "npm install && npm run client-install",
     "start": "node server.js",
-    "server": "nodemon server.js",
+    "server": "nodemon index.js",
     "client": "cd client && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "jest --coverage --verbose --testEnvironment=node --runInBand --rootDir=tests"
   },
   "repository": {
     "type": "git",
@@ -34,11 +35,14 @@
     "http-proxy-middleware": "^2.0.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.11",
+    "node-mocks-http": "^1.11.0",
     "passport": "^0.5.0",
-    "passport-google-oauth20": "^2.0.0"
+    "passport-google-oauth20": "^2.0.0",
+    "supertest": "^6.1.6"
   },
   "devDependencies": {
     "chokidar": "^3.5.2",
+    "jest": "^27.3.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.14"
   }

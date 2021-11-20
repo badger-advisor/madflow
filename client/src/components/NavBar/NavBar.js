@@ -9,16 +9,17 @@ import { Button, IconButton, alpha, AppBar, Toolbar, Avatar } from '@mui/materia
 import { styled } from '@mui/material/styles';
 
 // icons
-import tempIcon from './tempIcon.png'; // TODO: replace with logo
+import tempIcon from '../../images/tempIcon.png'; // TODO: replace with logo
 import AddIcon from '@mui/icons-material/Add';
+
+import { Link } from 'react-router-dom';
 
 const NavBarOffset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-const NavBar = () => {
+const NavBar = ({ userID, refresh, setRefresh }) => {
   const [ showProfileMenu, setShowProfileMenu ] = useState(null);
   const [ showNewFlow, setShowNewFlow ] = useState(false);
 
-  // TODO: function to handle opening the NewFlow component
   const newFlow = e => {
     console.log('new flow clicked!');
     setShowNewFlow(!showNewFlow);
@@ -41,7 +42,9 @@ const NavBar = () => {
         >
           {/* logo button */}
           <IconButton sx={{ mr: 2 }}>
-            <img src={tempIcon} height='45px' />
+            <Link to='/'>
+              <img src={tempIcon} height='45px' />
+            </Link>
           </IconButton>
 
           {/* right side of nav bar */}
@@ -57,7 +60,13 @@ const NavBar = () => {
             </Button>
 
             {/* add new flow dialog */}
-            <NewFlow open={showNewFlow} setOpen={setShowNewFlow} />
+            <NewFlow
+              open={showNewFlow}
+              setOpen={setShowNewFlow}
+              userID={userID}
+              refresh={refresh}
+              setRefresh={setRefresh}
+            />
 
             {/* profile icon and button */}
             <Avatar sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }} onClick={openProfileMenu}>

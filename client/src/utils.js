@@ -1,14 +1,25 @@
-import { isNode, isEdge, removeElements, addEdge } from 'react-flow-renderer';
+import {
+  isNode,
+  isEdge,
+  removeElements,
+  addEdge,
+  getOutgoers,
+  updateEdge,
+  getConnectedEdges
+} from 'react-flow-renderer';
 import {
   getCourse,
   updateUserFlowElements,
   updateUserFlow,
   createUserFlow,
   deleteUser,
-  fetchCurrentUser,
-  signUp,
-  signIn,
-  getAllUserFlows
+  // fetchCurrentUser,
+  // signUp,
+  // signIn,
+  getAllUserFlows,
+  fetchAllCourses,
+  removeFlow,
+  getFlowInfo
 } from './api';
 
 import createEdge from './components/GraphPage/customEdges/createEdge';
@@ -73,11 +84,24 @@ export const connectPrereqs = (node, elements) => {
   //TODO: create different edge types depending on the status of the node
   //Get id and prereqs for the course that is being added
   const { id: targetId, type: targetType, data: { prerequisites: prereqs } } = node;
-  //Naive approach: check each element in the graph to see if its id matches the prereq ids
-  elements.map(src => {
-    //If there is a match, create a new edge between these elements and push it to the elements list
-    if (prereqs.includes(src.id)) {
-      const newEdge = createEdge(src.id, src.type, targetId, targetType);
+  console.log('new node');
+  console.log(`${targetId}: ${prereqs}`);
+
+  //Naive approach: Checks if incoming node's prereqs are already in the flow
+  elements.map(sourceNode => {
+    // checks if any existing node should point to the new node
+    if (prereqs.includes(sourceNode.id)) {
+      const newEdge = createEdge(sourceNode.id, sourceNode.type, targetId, targetType);
+      elements.push(newEdge); //Add the new edge to the list
+    }
+
+    // checks if the new node should connect to the existing nodes
+    if (
+      sourceNode.data &&
+      sourceNode.data.prerequisites &&
+      sourceNode.data.prerequisites.includes(targetId)
+    ) {
+      const newEdge = createEdge(targetId, targetType, sourceNode.id, sourceNode.type);
       elements.push(newEdge); //Add the new edge to the list
     }
   });
@@ -100,12 +124,13 @@ export const determineType = (course, elements) => {
 
   //If a single prereq is not fulfilled, the course cannot be taken
   let type = 'courseCanTake';
-  elements.map(el => {
-    if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
-      console.log('Cannot take the course');
-      type = 'courseCannotTake';
-    }
-  });
+  if (elements) {
+    elements.map(el => {
+      if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
+        type = 'courseCannotTake';
+      }
+    });
+  }
   return type;
 };
 
@@ -124,18 +149,21 @@ export const updateFlow = async (flowID, changes) => {
  * @param {String} name name of the flow
  * @param {String} major major of the flow
  */
-export const createNewFlow = async (userGoogleId, name, major) => {
-  await createUserFlow(userGoogleId, name, major);
+export const createNewFlow = async (googleId, name, major, elements=[]) => {
+  await createUserFlow(googleId, name, major, elements);
+};
+
+export const deleteFlow = async flowID => {
+  await removeFlow(flowID);
 };
 
 /**
  * Function to call when trying to find current user data
  * @param {String} userID the google ID
  */
-export const currentUser = async userID => {
-  // TODO: need to check valid input
-  return await fetchCurrentUser(userID);
-};
+// export const currentUser = async userID => {
+//   return await fetchCurrentUser(userID);
+// };
 
 export const getUserFlowNames = async userID => {
   // TODO: need to check valid input
@@ -146,16 +174,178 @@ export const getUserFlowNames = async userID => {
  * Function to call when signing a user up
  * @param {[Object]} profileObject object of user information
  */
-export const signup = async profileObject => {
-  // TODO: need to check valid input
-  await signUp(profileObject);
-};
+// export const signup = async profileObject => {
+//   await signUp(profileObject);
+// };
 
 /**
  * Function to call when signing up
  * @param {String} userID the google ID
  */
-export const signin = async userID => {
+// export const signin = async userID => {
+//   await signIn(userID);
+// };
+
+/**
+ * Gets a list of courses with revalent information for displaying as search results
+ * @returns List of course information
+ */
+export const getAllCourses = async () => {
   // TODO: need to check valid input
-  await signIn(userID);
+  const allCourses = await fetchAllCourses();
+  const listing = allCourses.map(course => ({
+    label      : course.courseNumber,
+    courseInfo : course.info.description,
+    courseID   : course._id
+  }));
+  return listing;
+};
+
+/**
+ * For getting the elements array of any given flow
+ * @param {String} flowID Id of Flow
+ * @returns The elements array associated with a Flow
+ */
+export const getFlowElements = async flowID => {
+  const elements = (await getFlowInfo(flowID)).data.elements;
+  // console.log(elements);
+  return elements;
+};
+
+/**
+ *! Experimenting with debounce function for limiting autosave occurances
+ * NOT working
+ * @param {Function} func
+ * @param {number} timeout timeout in miliseconds
+ */
+export const debounce = (func, timeout = 300) => {
+  console.log(func);
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
+  };
+};
+
+export const addCourse = async (currentCourse, elements, saveForUndo, taken) => {
+  // Removes spaces from current course
+  const courseNum = currentCourse;
+
+  // Determines what type of node to add
+  const type = taken ? 'courseTaken' : 'courseCannotTake';
+
+  const newCourse = await generateNode(courseNum, { type });
+
+  //Check if course is already present in the flow
+  if (elements && elements.filter(el => el.id === newCourse.id).length !== 0) {
+    throw newCourse.id + ' already present in the flow, it cannot be added!';
+  }
+
+  //If the course is not taken, it is either courseCannotTake or courseCanTake
+  if (!taken) {
+    newCourse.type = determineType(newCourse, elements);
+  }
+
+  // Makes sure elements isn't empty
+  let newElements;
+  if (!elements) {
+    newElements = [ newCourse ];
+  } else {
+    newElements = [ ...elements, newCourse ];
+  }
+
+  //Connect the new course to its prereqs
+  const connectedElements = connectPrereqs(newCourse, newElements);
+  saveForUndo(connectedElements);
+  return newElements;
+};
+
+export const changeOutgoerType = (node, targetList, elements) => {
+  let numTargets = targetList.length;
+  let newType = null;
+
+  //Iterate through, determine the correct type, and modify the outgoing node
+  for (let i = 0; i < numTargets; i++) {
+    newType = determineType(targetList[i], elements);
+    elements = elements.map(el => {
+      if (el.id === targetList[i].id) {
+        el.type = newType;
+      }
+      return el;
+    });
+
+    /**
+     * The portion of code below works for updating node edges;
+     * For some reason putting it into its own function updateNodeEdges was
+     * not updating the elements array correctly
+     */
+    let sourceNode = node;
+    let targetNode = targetList[i];
+    let targetType = newType;
+    let edgeId = sourceNode.id + '-' + targetNode.id;
+    elements = elements.map(el => {
+      if (el.id === edgeId) {
+        el = createEdge(el.source, sourceNode.type, el.target, targetType);
+      }
+      return el;
+    });
+  }
+  return elements;
+};
+
+//WARNING: not working yet
+export const updateNodeEdges = (sourceNode, targetNode, targetType, elements) => {
+  let edgeId = sourceNode.id + '-' + targetNode.id;
+  elements = elements.map(el => {
+    if (el.id === edgeId) {
+      el = createEdge(el.source, sourceNode.type, el.target, targetType);
+    }
+    return el;
+  });
+  /*
+  let nodeList = [ node ];
+  let connectedEdges = getConnectedEdges(nodeList, elements);
+  connectedEdges.map(edge => {
+    if (edge.source == node.id) {
+      //console.log(node.type);
+      //console.log(targetType);
+      let newEdge = createEdge(edge.source, node.type, edge.target, targetType);
+      //console.log(edge)
+      console.log(newEdge);
+      console.log(edge.id);
+
+      updateEdge(edge, newEdge, elements);
+      //console.log(elements);
+    }
+  });
+*/
+};
+
+/**
+ * Generates all prereqs of a given course
+ * TODO: implement topological sort to include all prereqs
+ *
+ * @param {Object} data data field of a course node
+ * @param {[Object]} elements elements array
+ * @param {function} saveForUndo call with updated elements array
+ * @param {Boolean} taken whether the given course has been taken or not
+ */
+export const generatePrereq = async (data, elements, saveForUndo, taken) => {
+  console.log(data);
+  console.log('generate req');
+  if (!data.prerequisites) {
+    console.log('Course has no prereqs');
+    return;
+  }
+
+  let prereqArray = data.prerequisites;
+  for (let prereq of prereqArray) {
+    try {
+      elements = await addCourse(prereq, elements, saveForUndo);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 };

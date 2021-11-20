@@ -8,21 +8,25 @@ import { Card, CardMedia, Typography, Avatar, alpha } from '@mui/material';
 
 // icons and images
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import testImg from './test.jpg';
+import testImg from '../../images/test.jpg';
 
-const FlowCard = ({ flowID, flowName }) => {
+// Router
+import { useNavigate } from 'react-router-dom';
+
+const FlowCard = ({ userID, flowID, flowName, flowMajor, refresh, setRefresh }) => {
   const [ showMenu, setShowMenu ] = useState(null);
+  const navigate = useNavigate();
 
+  // function to open the Flow menu
   const openMenu = e => {
     e.stopPropagation(); // stop openFlow() from being called when menu icon is clicked
     console.log('menu clicked!');
     setShowMenu(e.currentTarget);
   };
 
-  // TODO: function to handle opening a Flow when the FlowCard is clicked
-  const openFlow = e => {
-    console.log(`${flowName} opened`);
-    // pass flowID to open the correct FLow
+  // function to open the selected Flow
+  const openFlow = () => {
+    navigate(`/flow/${flowID}`);
   };
 
   return (
@@ -58,7 +62,16 @@ const FlowCard = ({ flowID, flowName }) => {
       </Avatar>
 
       {/* FlowCard menu Popover */}
-      <FlowCardMenu showMenu={showMenu} setShowMenu={setShowMenu} flowID={flowID} />
+      <FlowCardMenu
+        userID={userID}
+        flowID={flowID}
+        flowName={flowName}
+        flowMajor={flowMajor}
+        showMenu={showMenu}
+        setShowMenu={setShowMenu}
+        refresh={refresh}
+        setRefresh={setRefresh}
+      />
 
       {/* FlowCard image */}
       <CardMedia component='img' height='80%' image={testImg} alt='test image' />
