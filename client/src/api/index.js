@@ -26,9 +26,9 @@ const removeFlow = flowID =>
     .then(res => res.data)
     .catch(error => console.log(error));
 
-const createUserFlow = (googleId, name, major) =>
+const createUserFlow = (googleId, name, major, elements) =>
   API.post(`/flow/newFlow`, {
-    elements : [],
+    elements,
     googleId,
     name,
     major

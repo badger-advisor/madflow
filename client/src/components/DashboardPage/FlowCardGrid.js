@@ -32,6 +32,7 @@ const FlowCardGrid = ({ userID, userFlows, refresh, setRefresh }) => {
         {userFlows.map(flow => (
           <Grid item xs={6} sm={5} md={3} key={flow._id}>
             <FlowCard
+              userID={userID}
               flowID={flow._id}
               flowName={flow.name}
               flowMajor={flow.major}

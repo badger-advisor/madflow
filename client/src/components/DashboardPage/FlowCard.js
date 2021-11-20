@@ -13,7 +13,7 @@ import testImg from '../../images/test.jpg';
 // Router
 import { useNavigate } from 'react-router-dom';
 
-const FlowCard = ({ flowID, flowName, flowMajor, refresh, setRefresh }) => {
+const FlowCard = ({ userID, flowID, flowName, flowMajor, refresh, setRefresh }) => {
   const [ showMenu, setShowMenu ] = useState(null);
   const navigate = useNavigate();
 
@@ -63,6 +63,7 @@ const FlowCard = ({ flowID, flowName, flowMajor, refresh, setRefresh }) => {
 
       {/* FlowCard menu Popover */}
       <FlowCardMenu
+        userID={userID}
         flowID={flowID}
         flowName={flowName}
         flowMajor={flowMajor}
