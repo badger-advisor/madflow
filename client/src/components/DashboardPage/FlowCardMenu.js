@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { deleteFlow } from '../../utils.js';
+import { getFlowElements } from '../../utils.js';
 
 // components
 import RenameFlow from './RenameFlow.js';
 import DeleteConfirmation from './DeleteConfirmation.js';
+import NewFlow from './NewFlow.js';
 
 // material-ui
 import { Menu, MenuItem, Dialog, DialogTitle, Button } from '@mui/material';
@@ -14,6 +15,7 @@ import FileCopyTwoToneIcon from '@mui/icons-material/FileCopyOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const FlowCardMenu = ({
+  userID,
   flowID,
   flowName,
   flowMajor,
@@ -24,6 +26,8 @@ const FlowCardMenu = ({
 }) => {
   const [ showRename, setShowRename ] = useState(false);
   const [ showDelete, setShowDelete ] = useState(false);
+  const [ showNewFlow, setShowNewFlow ] = useState(false);
+  const [ copyElements, setCopyElements ] = useState([]);
 
   // function to close menu
   const handleClose = e => {
@@ -39,13 +43,17 @@ const FlowCardMenu = ({
   };
 
   // TODO: function to copy Flow to a new Flow
-  const handleCopyFlow = e => {
+  const handleCopyFlow = async e => {
     e.stopPropagation();
     console.log('copy flow');
+
+    setCopyElements(await getFlowElements(flowID));
+    //console.log(copyElements);
+    setShowNewFlow(true);
   };
 
   // function to open delete confirmation Dialog
-  const handleDeleteFlow = async e => {
+  const handleDeleteFlow = e => {
     e.stopPropagation();
     setShowDelete(true);
   };
@@ -102,6 +110,17 @@ const FlowCardMenu = ({
         setOpen={setShowDelete}
         refresh={refresh}
         setRefresh={setRefresh}
+      />
+
+      {/* add new flow dialog */}
+      <NewFlow
+        open={showNewFlow}
+        setOpen={setShowNewFlow}
+        userID={userID}
+        refresh={refresh}
+        setRefresh={setRefresh}
+        elements={copyElements}
+        setShowMenu={setShowMenu}
       />
     </div>
   );

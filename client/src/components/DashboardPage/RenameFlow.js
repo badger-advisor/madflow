@@ -26,6 +26,11 @@ const RenameFlow = ({
   setRefresh,
   setShowMenu
 }) => {
+  // function to stop clicks from propagating through Dialog
+  const handleClicks = e => {
+    e.stopPropagation();
+  };
+
   // function to use utility function to create new FLow for current user
   const updateFlowName = async (flowID, changes) => {
     await updateFlow(flowID, changes);
@@ -56,48 +61,50 @@ const RenameFlow = ({
   return (
     <div>
       <Dialog open={open} onClose={formik.handleReset}>
-        <DialogTitle>Create New Flow</DialogTitle>
-        <DialogContent>
-          {/* input for Flow name */}
-          <div align='center'>
-            <TextField
-              autoFocus
-              margin='dense'
-              name='name'
-              label='Flow Name'
-              type='text'
-              variant='standard'
-              sx={{ width: '75%' }}
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              error={formik.touched.name && Boolean(formik.errors.name)}
-              helperText={formik.touched.name && formik.errors.name}
-            />
-          </div>
+        <div onClick={handleClicks}>
+          <DialogTitle>Rename Flow</DialogTitle>
+          <DialogContent>
+            {/* input for Flow name */}
+            <div align='center'>
+              <TextField
+                autoFocus
+                margin='dense'
+                name='name'
+                label='Flow Name'
+                type='text'
+                variant='standard'
+                sx={{ width: '75%' }}
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
+              />
+            </div>
 
-          {/* input for Flow major */}
-          <div align='center'>
-            <TextField
-              margin='dense'
-              name='major'
-              label='Major'
-              type='text'
-              variant='standard'
-              sx={{ width: '75%' }}
-              value={formik.values.major}
-              onChange={formik.handleChange}
-              error={formik.touched.major && Boolean(formik.errors.major)}
-              helperText={formik.touched.major && formik.errors.major}
-              disabled // TODO: disable?? figure out major requirements
-            />
-          </div>
-        </DialogContent>
+            {/* input for Flow major */}
+            <div align='center'>
+              <TextField
+                margin='dense'
+                name='major'
+                label='Major'
+                type='text'
+                variant='standard'
+                sx={{ width: '75%' }}
+                value={formik.values.major}
+                onChange={formik.handleChange}
+                error={formik.touched.major && Boolean(formik.errors.major)}
+                helperText={formik.touched.major && formik.errors.major}
+                disabled // TODO: disable?? figure out major requirements
+              />
+            </div>
+          </DialogContent>
 
-        {/* button options for new Flow */}
-        <DialogActions>
-          <Button onClick={formik.handleSubmit}>Rename</Button>
-          <Button onClick={formik.handleReset}>Cancel</Button>
-        </DialogActions>
+          {/* button options for new Flow */}
+          <DialogActions>
+            <Button onClick={formik.handleSubmit}>Rename</Button>
+            <Button onClick={formik.handleReset}>Cancel</Button>
+          </DialogActions>
+        </div>
       </Dialog>
     </div>
   );

@@ -138,8 +138,8 @@ export const updateFlow = async (flowID, changes) => {
  * @param {String} name name of the flow
  * @param {String} major major of the flow
  */
-export const createNewFlow = async (googleId, name, major) => {
-  await createUserFlow(googleId, name, major);
+export const createNewFlow = async (googleId, name, major, elements=[]) => {
+  await createUserFlow(googleId, name, major, elements);
 };
 
 export const deleteFlow = async flowID => {
