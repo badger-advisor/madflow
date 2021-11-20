@@ -4,6 +4,7 @@ const EdgeTaken = (srcId, targetId) => {
     source        : srcId,
     target        : targetId,
     type          : 'smoothstep',
+    animated      : 'false',
     arrowHeadType : 'arrowclosed'
   };
 };
