@@ -1,4 +1,12 @@
-import { isNode, isEdge, removeElements, addEdge } from 'react-flow-renderer';
+import {
+  isNode,
+  isEdge,
+  removeElements,
+  addEdge,
+  getOutgoers,
+  updateEdge,
+  getConnectedEdges
+} from 'react-flow-renderer';
 import {
   getCourse,
   updateUserFlowElements,
@@ -76,8 +84,8 @@ export const connectPrereqs = (node, elements) => {
   //TODO: create different edge types depending on the status of the node
   //Get id and prereqs for the course that is being added
   const { id: targetId, type: targetType, data: { prerequisites: prereqs } } = node;
-  // console.log('new node');
-  // console.log(`${targetId}: ${prereqs}`);
+  console.log('new node');
+  console.log(`${targetId}: ${prereqs}`);
 
   //Naive approach: Checks if incoming node's prereqs are already in the flow
   elements.map(sourceNode => {
@@ -88,7 +96,11 @@ export const connectPrereqs = (node, elements) => {
     }
 
     // checks if the new node should connect to the existing nodes
-    if (sourceNode.data && sourceNode.data.prerequisites.includes(targetId)) {
+    if (
+      sourceNode.data &&
+      sourceNode.data.prerequisites &&
+      sourceNode.data.prerequisites.includes(targetId)
+    ) {
       const newEdge = createEdge(targetId, targetType, sourceNode.id, sourceNode.type);
       elements.push(newEdge); //Add the new edge to the list
     }
@@ -115,7 +127,6 @@ export const determineType = (course, elements) => {
   if (elements) {
     elements.map(el => {
       if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
-        console.log('Cannot take the course');
         type = 'courseCannotTake';
       }
     });
@@ -216,4 +227,125 @@ export const debounce = (func, timeout = 300) => {
       func.apply(this, args);
     }, timeout);
   };
+};
+
+export const addCourse = async (currentCourse, elements, saveForUndo, taken) => {
+  // Removes spaces from current course
+  const courseNum = currentCourse;
+
+  // Determines what type of node to add
+  const type = taken ? 'courseTaken' : 'courseCannotTake';
+
+  const newCourse = await generateNode(courseNum, { type });
+
+  //Check if course is already present in the flow
+  if (elements && elements.filter(el => el.id === newCourse.id).length !== 0) {
+    throw newCourse.id + ' already present in the flow, it cannot be added!';
+  }
+
+  //If the course is not taken, it is either courseCannotTake or courseCanTake
+  if (!taken) {
+    newCourse.type = determineType(newCourse, elements);
+  }
+
+  // Makes sure elements isn't empty
+  let newElements;
+  if (!elements) {
+    newElements = [ newCourse ];
+  } else {
+    newElements = [ ...elements, newCourse ];
+  }
+
+  //Connect the new course to its prereqs
+  const connectedElements = connectPrereqs(newCourse, newElements);
+  saveForUndo(connectedElements);
+  return newElements;
+};
+
+export const changeOutgoerType = (node, targetList, elements) => {
+  let numTargets = targetList.length;
+  let newType = null;
+
+  //Iterate through, determine the correct type, and modify the outgoing node
+  for (let i = 0; i < numTargets; i++) {
+    newType = determineType(targetList[i], elements);
+    elements = elements.map(el => {
+      if (el.id === targetList[i].id) {
+        el.type = newType;
+      }
+      return el;
+    });
+
+    /**
+     * The portion of code below works for updating node edges;
+     * For some reason putting it into its own function updateNodeEdges was
+     * not updating the elements array correctly
+     */
+    let sourceNode = node;
+    let targetNode = targetList[i];
+    let targetType = newType;
+    let edgeId = sourceNode.id + '-' + targetNode.id;
+    elements = elements.map(el => {
+      if (el.id === edgeId) {
+        el = createEdge(el.source, sourceNode.type, el.target, targetType);
+      }
+      return el;
+    });
+  }
+  return elements;
+};
+
+//WARNING: not working yet
+export const updateNodeEdges = (sourceNode, targetNode, targetType, elements) => {
+  let edgeId = sourceNode.id + '-' + targetNode.id;
+  elements = elements.map(el => {
+    if (el.id === edgeId) {
+      el = createEdge(el.source, sourceNode.type, el.target, targetType);
+    }
+    return el;
+  });
+  /*
+  let nodeList = [ node ];
+  let connectedEdges = getConnectedEdges(nodeList, elements);
+  connectedEdges.map(edge => {
+    if (edge.source == node.id) {
+      //console.log(node.type);
+      //console.log(targetType);
+      let newEdge = createEdge(edge.source, node.type, edge.target, targetType);
+      //console.log(edge)
+      console.log(newEdge);
+      console.log(edge.id);
+
+      updateEdge(edge, newEdge, elements);
+      //console.log(elements);
+    }
+  });
+*/
+};
+
+/**
+ * Generates all prereqs of a given course
+ * TODO: implement topological sort to include all prereqs
+ *
+ * @param {Object} data data field of a course node
+ * @param {[Object]} elements elements array
+ * @param {function} saveForUndo call with updated elements array
+ * @param {Boolean} taken whether the given course has been taken or not
+ */
+export const generatePrereq = async (data, elements, saveForUndo, taken) => {
+  console.log(data);
+  console.log('generate req');
+  if (!data.prerequisites) {
+    console.log('Course has no prereqs');
+    return;
+  }
+
+  let prereqArray = data.prerequisites;
+  for (let prereq of prereqArray) {
+    try {
+      elements = await addCourse(prereq, elements, saveForUndo);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 };

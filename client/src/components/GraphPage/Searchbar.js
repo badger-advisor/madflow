@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import ShowMoreText from 'react-show-more-text';
 
-import { connectPrereqs, determineType, generateNode } from '../../utils';
+import { connectPrereqs, determineType, generateNode, addCourse } from '../../utils';
 
 import './dnd.css';
 
@@ -67,10 +67,24 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
     }
   };
 
+  //Handle adding a course to the flow
+  const handleAddCourse = (currentCourse, elements, saveForUndo) => {
+    try {
+      //Get course into the proper format
+      let course = currentCourse.label.split(' ').join('');
+      addCourse(course, elements, saveForUndo);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setInputValue('');
+      setDropDown(false);
+      setDisplayPop(false);
+    }
+  };
   /**
    * Able to add most as taken and not taken
    * TODO: implement logic to determine if can take or cannot take
-   */
+
   const addCourse = async () => {
     // console.log(`Add ${taken ? 'Taken' : 'Not Taken'}: ${currentCourse.label}`);
 
@@ -112,7 +126,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
       setDisplayPop(false);
     }
   };
-
+   */
   const id = open ? 'simple-popper' : undefined;
 
   return (
@@ -163,7 +177,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
                 <Button
                   onMouseEnter={() => setTaken(false)}
                   // have to use onMouseDown because onClick closes the dorp down, and this button is never fired
-                  onMouseDown={addCourse}
+                  onMouseDown={() => handleAddCourse(currentCourse, elements, saveForUndo)}
                   sx={{
                     backgroundColor : '#a33d3d',
                     color           : '#ffffff',
@@ -191,7 +205,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
                   onMouseEnter={() => setTaken(true)}
                   onMouseLeave={() => setTaken(false)}
                   // have to use onMouseDown because onClick closes the dorp down, and this button is never fired
-                  onMouseDown={addCourse}
+                  onMouseDown={() => handleAddCourse(currentCourse, elements, saveForUndo)}
                   variant='contained'
                   size='small'
                 >
