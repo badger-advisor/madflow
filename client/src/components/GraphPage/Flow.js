@@ -29,7 +29,12 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
   const [ openEditNode, setOpenEditNode ] = useState(false);
   const [ currentNode, setCurrentNode ] = useState('');
   const onConnect = params => setElements(els => addEdge(params, els));
-  const onLoad = _reactFlowInstance => setReactFlowInstance(_reactFlowInstance);
+  const onLoad = _reactFlowInstance => {
+    console.log(_reactFlowInstance);
+    _reactFlowInstance.fitView();
+    setReactFlowInstance(_reactFlowInstance);
+  };
+  const [ initialView, setInitialView ] = useState(false);
 
   // Event listener to handle removing elements and undoing
   const onElementsRemove = () => {
@@ -84,10 +89,20 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
 
   useDidUpdateEffect(
     () => {
+      // Only want the view to center on the first load,
+      // and not subsequent element updates
+      const centerView = () => {
+        reactFlowInstance.fitView({ padding: 0.5 });
+        setInitialView(true);
+      };
+
       autosave(flowID, elements);
+      reactFlowInstance && !initialView && centerView();
     },
     [ elements ]
   );
+
+  useEffect(() => {}, []);
 
   //Handle dragging a node from the Sidebar
   const onDragOver = e => {

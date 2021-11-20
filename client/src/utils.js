@@ -84,8 +84,8 @@ export const connectPrereqs = (node, elements) => {
   //TODO: create different edge types depending on the status of the node
   //Get id and prereqs for the course that is being added
   const { id: targetId, type: targetType, data: { prerequisites: prereqs } } = node;
-  // console.log('new node');
-  // console.log(`${targetId}: ${prereqs}`);
+  console.log('new node');
+  console.log(`${targetId}: ${prereqs}`);
 
   //Naive approach: Checks if incoming node's prereqs are already in the flow
   elements.map(sourceNode => {
@@ -96,7 +96,11 @@ export const connectPrereqs = (node, elements) => {
     }
 
     // checks if the new node should connect to the existing nodes
-    if (sourceNode.data && sourceNode.data.prerequisites.includes(targetId)) {
+    if (
+      sourceNode.data &&
+      sourceNode.data.prerequisites &&
+      sourceNode.data.prerequisites.includes(targetId)
+    ) {
       const newEdge = createEdge(targetId, targetType, sourceNode.id, sourceNode.type);
       elements.push(newEdge); //Add the new edge to the list
     }
