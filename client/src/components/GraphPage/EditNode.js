@@ -43,7 +43,8 @@ const EditNode = ({
   elements,
   onElementsRemove,
   onSwitch,
-  saveForUndo
+  saveForUndo,
+  onGeneratePrereq
 }) => {
   const styles = useState(CourseNodeStyles);
   const classes = useStyles();
@@ -61,22 +62,8 @@ const EditNode = ({
   const prereqs =
     defined && data['prerequisites'] !== undefined ? data['prerequisites'].join(', ') : 'None';
 
-  const generatePrereqs = async () => {
-    let prereqArray = data['prerequisites'];
-    let numPrereqs = prereqArray.length;
-    for (let i = 0; i < numPrereqs; i++) {
-      try {
-        elements = await addCourse(prereqArray[i], elements, saveForUndo, taken);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    handleClose();
-  };
-
   return (
-    <Dialog maxWidth='xs' onClose={handleClose} open={open}>
+    <Dialog maxWidth='xs' open={open}>
       <DialogTitle margin='auto'>
         <div>{label}</div>
       </DialogTitle>
@@ -131,7 +118,7 @@ const EditNode = ({
           className={classes.autobtn}
           variant='contained'
           size='small'
-          onClick={generatePrereqs}
+          onClick={onGeneratePrereq}
         >
           Autofill Prerequisites
         </Button>

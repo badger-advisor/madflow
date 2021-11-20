@@ -11,7 +11,14 @@ import ReactFlow, {
   getOutgoers
 } from 'react-flow-renderer';
 
-import { autosave, determineType, debounce, getTargetNodes, changeOutgoerType } from '../../utils';
+import {
+  autosave,
+  determineType,
+  debounce,
+  getTargetNodes,
+  changeOutgoerType,
+  generatePrereq
+} from '../../utils';
 import useDidUpdateEffect from '../../customhooks/useDidUpdateEffect';
 
 // The 3 types of custom nodes that can appear in the Flow
@@ -157,6 +164,20 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
     setOpenEditNode(false);
   };
 
+  const handleGeneratePrereq = async () => {
+    // let prereqArray = data['prerequisites'];
+    // let numPrereqs = prereqArray.length;
+    // for (let i = 0; i < numPrereqs; i++) {
+    //   try {
+    //     elements = await addCourse(prereqArray[i], elements, saveForUndo, taken);
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // }
+    generatePrereq();
+    handleClose();
+  };
+
   // For making the flow take up the entire screen
   // 64px is the default value from theme.mixins.toolbar
   const flowHeight = `calc(100vh - 64px)`;
@@ -188,6 +209,7 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
             onElementsRemove={onElementsRemove}
             onSwitch={handleSwitchStatus}
             saveForUndo={saveForUndo}
+            onGeneratePrereq={handleGeneratePrereq}
           />
           <Background gap={15} />
           <Controls />

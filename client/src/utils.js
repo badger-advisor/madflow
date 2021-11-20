@@ -321,3 +321,7 @@ export const updateNodeEdges = (sourceNode, targetNode, targetType, elements) =>
   });
 */
 };
+
+export const generatePrereq = async () => {
+  console.log('generate req');
+};
