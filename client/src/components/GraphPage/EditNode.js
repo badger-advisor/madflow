@@ -108,7 +108,13 @@ const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, id }) =
           Autofill Prerequisites
         </Button>
       </Stack>
-      <Button className={classes.rmbtn} variant='contained' size='small' onClick={onElementsRemove}>
+      <Button
+        id={'remove_btn'}
+        className={classes.rmbtn}
+        variant='contained'
+        size='small'
+        onClick={onElementsRemove}
+      >
         Remove from Flow
       </Button>
     </Dialog>

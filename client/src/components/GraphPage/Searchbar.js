@@ -140,7 +140,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
         renderInput={params => <TextField {...params} label='Search to add a course...' />}
       />
       {displayPop && (
-        <Popper disablePortal={false} id={id} open={open} style={location}>
+        <Popper disablePortal={false} id={'popper'} open={open} style={location}>
           <Paper>
             <Box
               sx={{
@@ -161,6 +161,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
               <Typography variant='mystyle'>Add Course as:</Typography>
               <div className='buttons'>
                 <Button
+                  id={'not_taken'}
                   onMouseEnter={() => setTaken(false)}
                   // have to use onMouseDown because onClick closes the dorp down, and this button is never fired
                   onMouseDown={addCourse}
@@ -179,6 +180,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
                   Not Taken
                 </Button>
                 <Button
+                  id={'taken'}
                   sx={{
                     backgroundColor : '#484848',
                     color           : '#ffffff',

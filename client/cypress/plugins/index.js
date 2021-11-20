@@ -1,7 +1,7 @@
-const webpack = require('@cypress/webpack-preprocessor');
-
 module.exports = (on, config) => {
-  require('@cypress/code-coverage/task', '@cypress/instrument-cra')(on, config);
-  o;
+  if (config.testingType === 'component') {
+    require('@cypress/react/plugins/react-scripts')(on, config);
+  }
+
   return config;
 };
