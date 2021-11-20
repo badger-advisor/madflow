@@ -54,6 +54,6 @@ npm start
 
 #### Only serve backend
 ```shell
-> node index.js
+> npm run server
 ```
 This will start up nodemon, and all changes made will be updated in the server immediately, no need to restart the server each time.
