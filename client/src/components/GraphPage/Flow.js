@@ -164,17 +164,8 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
     setOpenEditNode(false);
   };
 
-  const handleGeneratePrereq = async () => {
-    // let prereqArray = data['prerequisites'];
-    // let numPrereqs = prereqArray.length;
-    // for (let i = 0; i < numPrereqs; i++) {
-    //   try {
-    //     elements = await addCourse(prereqArray[i], elements, saveForUndo, taken);
-    //   } catch (e) {
-    //     console.error(e);
-    //   }
-    // }
-    generatePrereq();
+  const handleGeneratePrereq = async data => {
+    generatePrereq(data, elements, saveForUndo);
     handleClose();
   };
 

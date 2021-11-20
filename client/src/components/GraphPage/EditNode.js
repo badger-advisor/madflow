@@ -118,7 +118,7 @@ const EditNode = ({
           className={classes.autobtn}
           variant='contained'
           size='small'
-          onClick={onGeneratePrereq}
+          onClick={() => onGeneratePrereq(data)}
         >
           Autofill Prerequisites
         </Button>

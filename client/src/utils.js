@@ -276,10 +276,11 @@ export const changeOutgoerType = (node, targetList, elements) => {
       return el;
     });
 
-    /*The portion of code below works for updating node edges;
-    / For some reason putting it into its own function updateNodeEdges was
-    / not updating the elements array correctly
-    */
+    /**
+     * The portion of code below works for updating node edges;
+     * For some reason putting it into its own function updateNodeEdges was
+     * not updating the elements array correctly
+     */
     let sourceNode = node;
     let targetNode = targetList[i];
     let targetType = newType;
@@ -322,6 +323,29 @@ export const updateNodeEdges = (sourceNode, targetNode, targetType, elements) =>
 */
 };
 
-export const generatePrereq = async () => {
+/**
+ * Generates all prereqs of a given course
+ * TODO: implement topological sort to include all prereqs
+ *
+ * @param {Object} data data field of a course node
+ * @param {[Object]} elements elements array
+ * @param {function} saveForUndo call with updated elements array
+ * @param {Boolean} taken whether the given course has been taken or not
+ */
+export const generatePrereq = async (data, elements, saveForUndo, taken) => {
+  console.log(data);
   console.log('generate req');
+  if (!data.prerequisites) {
+    console.log('Course has no prereqs');
+    return;
+  }
+
+  let prereqArray = data.prerequisites;
+  for (let prereq of prereqArray) {
+    try {
+      elements = await addCourse(prereq, elements, saveForUndo);
+    } catch (e) {
+      console.error(e);
+    }
+  }
 };
