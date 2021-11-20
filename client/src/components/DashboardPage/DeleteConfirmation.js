@@ -11,6 +11,11 @@ import {
 } from '@mui/material';
 
 const DeleteConfirmation = ({ flowID, flowName, open, setOpen, refresh, setRefresh }) => {
+  // function to prevent clicks from propagating through to FlowCard underneath
+  const handleClicks = e => {
+    e.stopPropagation();
+  };
+
   // function to close menu
   const handleClose = e => {
     e.stopPropagation();
@@ -30,19 +35,21 @@ const DeleteConfirmation = ({ flowID, flowName, open, setOpen, refresh, setRefre
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Delete "{flowName}"?</DialogTitle>
+      <div onClick={handleClicks}>
+        <DialogTitle>Delete "{flowName}"?</DialogTitle>
 
-      <DialogContent>
-        <DialogContentText>
-          Are you sure you want to delete the Flow named "{flowName}"? This action is irreversible
-          and will delete all the course information associated with this Flow.
-        </DialogContentText>
-      </DialogContent>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete the Flow named "{flowName}"? This action is irreversible
+            and will delete all the course information associated with this Flow.
+          </DialogContentText>
+        </DialogContent>
 
-      <DialogActions>
-        <Button onClick={handleDeleteFlow}>Delete</Button>
-        <Button onClick={handleClose}>Cancel</Button>
-      </DialogActions>
+        <DialogActions>
+          <Button onClick={handleDeleteFlow}>Delete</Button>
+          <Button onClick={handleClose}>Cancel</Button>
+        </DialogActions>
+      </div>
     </Dialog>
   );
 };
