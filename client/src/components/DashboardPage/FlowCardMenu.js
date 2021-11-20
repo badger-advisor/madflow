@@ -3,10 +3,10 @@ import { deleteFlow } from '../../utils.js';
 
 // components
 import RenameFlow from './RenameFlow.js';
-
+import DeleteConfirmation from './DeleteConfirmation.js';
 
 // material-ui
-import { Menu, MenuItem } from '@mui/material';
+import { Menu, MenuItem, Dialog, DialogTitle, Button } from '@mui/material';
 
 // icons and images
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
@@ -23,7 +23,7 @@ const FlowCardMenu = ({
   setRefresh
 }) => {
   const [ showRename, setShowRename ] = useState(false);
-
+  const [ showDelete, setShowDelete ] = useState(false);
 
   // function to close menu
   const handleClose = e => {
@@ -32,7 +32,6 @@ const FlowCardMenu = ({
     setShowMenu(null);
   };
 
-  // TODO: function to rename Flow
   const handleRename = e => {
     e.stopPropagation();
     console.log('rename flow');
@@ -45,13 +44,10 @@ const FlowCardMenu = ({
     console.log('copy flow');
   };
 
-  // function to handle deleting the selected Flow
+  // function to open delete confirmation Dialog
   const handleDeleteFlow = async e => {
     e.stopPropagation();
-    // console.log('delete flow');
-    // console.log(`inside menu: ${flowID}`);
-    await deleteFlow(flowID);
-    setRefresh(!refresh);
+    setShowDelete(true);
   };
 
   return (
@@ -96,6 +92,16 @@ const FlowCardMenu = ({
         refresh={refresh}
         setRefresh={setRefresh}
         setShowMenu={setShowMenu}
+      />
+
+      {/* open delete confirmation message */}
+      <DeleteConfirmation
+        flowID={flowID}
+        flowName={flowName}
+        open={showDelete}
+        setOpen={setShowDelete}
+        refresh={refresh}
+        setRefresh={setRefresh}
       />
     </div>
   );
