@@ -17,12 +17,14 @@ const FlowCard = ({ flowID, flowName, flowMajor, refresh, setRefresh }) => {
   const [ showMenu, setShowMenu ] = useState(null);
   const navigate = useNavigate();
 
+  // function to open the Flow menu
   const openMenu = e => {
     e.stopPropagation(); // stop openFlow() from being called when menu icon is clicked
     console.log('menu clicked!');
     setShowMenu(e.currentTarget);
   };
 
+  // function to open the selected Flow
   const openFlow = () => {
     navigate(`/flow/${flowID}`);
   };
