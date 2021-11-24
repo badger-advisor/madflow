@@ -28,3 +28,5 @@ The brains of the server.
 
 ## How to contribute
 Head over to [our guidelines and instructions.](./CONTRIBUTING.md)
+
+some tests
