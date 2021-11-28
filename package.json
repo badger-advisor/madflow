@@ -2,15 +2,19 @@
   "name": "madflow",
   "version": "1.0.0",
   "description": "Helping students pick out the most optimal courses",
-  "main": "server.js",
+  "main": "index.js",
+  "engines": {
+    "node": "16.13.0"
+  },
   "scripts": {
     "client-install": "cd client && npm install",
     "dev-install": "npm install && npm run client-install",
-    "start": "node server.js",
+    "start": "node index.js",
     "server": "nodemon index.js",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "jest --coverage --verbose --testEnvironment=node --runInBand --rootDir=tests"
+    "test": "jest --coverage --verbose --testEnvironment=node --runInBand --rootDir=tests",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "repository": {
     "type": "git",
