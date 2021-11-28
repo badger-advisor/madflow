@@ -30,8 +30,8 @@ router.get(
   passport.authenticate('google', {
     failureRedirect : '/',
     // successRedirect : 'http://localhost:3000/dashboard'
-    // testing purposes, change back to 3000 for prod
-    successRedirect : 'http://localhost:8080/user/current'
+    //todo testing purposes, change back to 3000 for prod
+    successRedirect : '/user/current'
   }),
   (req, res) => {
     res.json({ user: req.user });
