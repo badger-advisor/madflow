@@ -51,7 +51,17 @@ app.use('/profile', profileRoutes);
 app.use('/course', courseRoute);
 app.use('/flow', flowRoute);
 
-// create home route
+// Serve app if in production
+if (process.env.NODE_ENV === 'production') {
+  //set static folder
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolv(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
+// create home route mainly for testing
 app.get('/', (req, res) => {
   if (req.user) {
     res.json({ user: req.user });
