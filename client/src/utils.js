@@ -90,20 +90,19 @@ export const connectPrereqs = (node, elements) => {
   //Naive approach: Checks if incoming node's prereqs are already in the flow
   elements.map(sourceNode => {
     // checks if any existing node should point to the new node
-    if (prereqs.includes(sourceNode.id)) {
-      const newEdge = createEdge(sourceNode.id, sourceNode.type, targetId, targetType);
-      elements.push(newEdge); //Add the new edge to the list
-    }
-
+    // if (prereqs.includes(sourceNode.id)) {
+    //   const newEdge = createEdge(sourceNode.id, sourceNode.type, targetId, targetType);
+    //   elements.push(newEdge); //Add the new edge to the list
+    // }
     // checks if the new node should connect to the existing nodes
-    if (
-      sourceNode.data &&
-      sourceNode.data.prerequisites &&
-      sourceNode.data.prerequisites.includes(targetId)
-    ) {
-      const newEdge = createEdge(targetId, targetType, sourceNode.id, sourceNode.type);
-      elements.push(newEdge); //Add the new edge to the list
-    }
+    // if (
+    //   sourceNode.data &&
+    //   sourceNode.data.prerequisites &&
+    //   sourceNode.data.prerequisites.includes(targetId)
+    // ) {
+    //   const newEdge = createEdge(targetId, targetType, sourceNode.id, sourceNode.type);
+    //   elements.push(newEdge); //Add the new edge to the list
+    // }
   });
   return elements;
 };
@@ -125,11 +124,11 @@ export const determineType = (course, elements) => {
   //If a single prereq is not fulfilled, the course cannot be taken
   let type = 'courseCanTake';
   if (elements) {
-    elements.map(el => {
-      if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
-        type = 'courseCannotTake';
-      }
-    });
+    // elements.map(el => {
+    //   if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
+    //     type = 'courseCannotTake';
+    //   }
+    // });
   }
   return type;
 };
@@ -149,7 +148,7 @@ export const updateFlow = async (flowID, changes) => {
  * @param {String} name name of the flow
  * @param {String} major major of the flow
  */
-export const createNewFlow = async (googleId, name, major, elements=[]) => {
+export const createNewFlow = async (googleId, name, major, elements = []) => {
   await createUserFlow(googleId, name, major, elements);
 };
 
