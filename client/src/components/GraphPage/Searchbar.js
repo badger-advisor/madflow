@@ -82,6 +82,8 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
 
     try {
       const newCourse = await generateNode(courseNum, { type });
+
+      console.log(newCourse);
       //Check if course is already present in the flow
       if (elements && elements.filter(el => el.id === newCourse.id).length !== 0) {
         throw newCourse.id + ' already present in the flow, it cannot be added!';

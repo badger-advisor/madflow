@@ -35,6 +35,10 @@ class Exception {
  * @returns a Node object ready to be inserted to the Flow
  */
 export const generateNode = async (courseNum, options) => {
+  if (courseNum.includes('COMPSCI')) {
+    courseNum = 'COMP SCI ' + courseNum.slice(-3);
+  }
+
   const courseData = (await getCourse(courseNum)).data;
   if (!courseData) {
     throw new Exception('InvalidCourseNum', courseNum);
@@ -77,7 +81,7 @@ export const connectPrereqs = (node, elements) => {
   //Get id and prereqs for the course that is being added
   const { id: targetId, type: targetType, data: { prerequisites: prereqs } } = node;
   // console.log('new node');
-  // console.log(`${targetId}: ${prereqs}`);
+  console.log(`${targetId}: ${prereqs}`);
 
   //Naive approach: Checks if incoming node's prereqs are already in the flow
   elements.map(sourceNode => {
@@ -88,7 +92,11 @@ export const connectPrereqs = (node, elements) => {
     }
 
     // checks if the new node should connect to the existing nodes
-    if (sourceNode.data && sourceNode.data.prerequisites.includes(targetId)) {
+    if (
+      sourceNode.data &&
+      sourseNode.data.prerequisites &&
+      sourceNode.data.prerequisites.includes(targetId)
+    ) {
       const newEdge = createEdge(targetId, targetType, sourceNode.id, sourceNode.type);
       elements.push(newEdge); //Add the new edge to the list
     }
