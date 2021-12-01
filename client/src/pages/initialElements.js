@@ -53,20 +53,20 @@ export const initialElements = [
     position : { x: 795, y: 315 }
   },
 
-  {
-    id       : 'CS407',
-    type     : 'courseTaken',
-    data     : {
-      courseName    : 'FOUNDATIONS OF MOBILE SYSTEMS AND APPLICATIONS',
-      credits       : '3',
-      description   :
-        'Design and implementation of applications, systems, and services for mobile platforms with (i) constraints, such as limited processing, memory, energy, interfaces, variable bandwidth, and high mobility, and (ii) features, such as touchscreens, cameras, electronic compasses, GPS, and accelerometers. Enroll Info: None',
-      label         : 'CS407',
-      lastTaught    : 'Fall 2021',
-      prerequisites : [ 'CS300', 'CS367' ]
-    },
-    position : { x: 200, y: 105 }
-  },
+  // {
+  //   id       : 'CS407',
+  //   type     : 'courseTaken',
+  //   data     : {
+  //     courseName    : 'FOUNDATIONS OF MOBILE SYSTEMS AND APPLICATIONS',
+  //     credits       : '3',
+  //     description   :
+  //       'Design and implementation of applications, systems, and services for mobile platforms with (i) constraints, such as limited processing, memory, energy, interfaces, variable bandwidth, and high mobility, and (ii) features, such as touchscreens, cameras, electronic compasses, GPS, and accelerometers. Enroll Info: None',
+  //     label         : 'CS407',
+  //     lastTaught    : 'Fall 2021',
+  //     prerequisites : [ 'CS300', 'CS367' ]
+  //   },
+  //   position : { x: 200, y: 105 }
+  // },
 
   {
     id            : 'e1-CS400',

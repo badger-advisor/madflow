@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Landing, Dashboard, Profile, Graph } from './pages';
+import { Landing, Dashboard, Profile, Graph, GuestGraph } from './pages';
 import ApiTests from './components/ApiTests';
 import './app.css';
 import { useState, useEffect, useContext } from 'react';
@@ -38,15 +38,6 @@ const TempNav = () => {
   );
 };
 
-const GuestGraph = () => {
-  return (
-    <div>
-      <h1>You're a guest</h1>
-      <a href='/auth/google'>Go sign in</a>
-    </div>
-  );
-};
-
 const App = () => {
   return (
     <UserProvider>
@@ -58,7 +49,7 @@ const App = () => {
           <Route path='profile' element={<Profile />} />
           <Route path='flow'>
             <Route path=':flowID' element={<Graph />} />
-            <Route path='guest' element={<GuestGraph />} />
+            <Route index element={<GuestGraph />} />
           </Route>
           <Route path='test' element={<ApiTests />} />
         </Routes>
