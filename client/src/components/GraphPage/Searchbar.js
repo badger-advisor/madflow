@@ -71,7 +71,8 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   const handleAddCourse = (currentCourse, elements, saveForUndo) => {
     try {
       //Get course into the proper format
-      let course = currentCourse.label.split(' ').join('');
+      // let course = currentCourse.label.split(' ').join('');
+      let course = currentCourse.label;
       addCourse(course, elements, saveForUndo);
     } catch (e) {
       console.error(e);
@@ -127,8 +128,8 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
     }
   };
 */
-  
-  const id = open ? 'popper' : undefined; 
+
+  const id = open ? 'popper' : undefined;
 
   return (
     <div>
