@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 
 import '../components/GraphPage/dnd.css';
-import Flow from '../components/GraphPage/Flow';
-import SearchNavBar from '../components/GraphPage/SearchNavBar';
+import Flow from '../components/GuestView/Flow';
+import SearchNavBar from '../components/GuestView/SearchNavBar';
 import DrawerHeader from '../components/GraphPage/HeaderSpacer';
 import RecommendBar from '../components/GraphPage/RecommendBar';
 
-import { useParams } from 'react-router-dom';
-
-import { getFlowElements } from '../utils';
+import { initialElements } from './initialElements';
 
 export const RECOMMEND_BAR_WIDTH = 240;
 
@@ -34,24 +32,17 @@ const Main = styled('main', { shouldForwardProp: prop => prop !== 'open' })(({ t
 
 const Graph = () => {
   const [ openRec, setOpenRec ] = useState(false);
-  const [ elements, setElements ] = useState([]); // All of the data for the Flow
+  const [ elements, setElements ] = useState(initialElements); // All of the data for the Flow
   const [ undo, setUndo ] = useState([]); // Undo stack consists of a list of all element states
   const [ redo, setRedo ] = useState([]); // the current state added to the redo stack before redo is called
 
-  // Grabbing the flow id from react router link
-  const { flowID } = useParams();
-
-  useEffect(async () => {
-    setElements(await getFlowElements(flowID));
-  }, []);
-
   // for making sure the elements array update each time undo or redo is applied
-  useEffect(
-    () => {
-      setElements(undo[undo.length - 1]);
-    },
-    [ undo ]
-  );
+  // useEffect(
+  //   () => {
+  //     setElements(undo[undo.length - 1]);
+  //   },
+  //   [ undo ]
+  // );
 
   // Keyboard shortcuts for undo and redo
   useEffect(() => {
@@ -149,14 +140,9 @@ const Graph = () => {
       <Main open={openRec}>
         <DrawerHeader />
         {/*REACT FLOW VIEW*/}
-        <Flow
-          elements={elements}
-          setElements={setElements}
-          saveForUndo={saveForUndo}
-          flowID={flowID}
-        />
+        <Flow elements={elements} setElements={setElements} saveForUndo={saveForUndo} />
       </Main>
-      <RecommendBar handleDrawer={handleDrawer} open={openRec} />
+      {/* <RecommendBar handleDrawer={handleDrawer} open={openRec} /> */}
     </Box>
   );
 };
