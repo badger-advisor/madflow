@@ -43,7 +43,7 @@ const App = () => {
     <UserProvider>
       <Router>
         <Routes>
-          <Route path='/' element={<TempNav />} />
+          <Route path='/' element={<Landing />} />
           <Route path='landing' element={<Landing />} />
           <Route path='dashboard' element={<Dashboard />} />
           <Route path='profile' element={<Profile />} />

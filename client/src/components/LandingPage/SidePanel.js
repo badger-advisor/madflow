@@ -59,7 +59,7 @@ const SidePanel = () => {
 
       <div align='center'>
         <Box sx={{ pb: '20px' }}>
-          <Button component={Link} to='/flow/guest' variant='outlined'>
+          <Button component={Link} to='/flow' variant='outlined'>
             Continue as Guest
           </Button>
         </Box>

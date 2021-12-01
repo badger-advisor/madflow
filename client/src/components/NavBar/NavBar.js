@@ -16,9 +16,10 @@ import { Link } from 'react-router-dom';
 
 const NavBarOffset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-const NavBar = ({ userID, refresh, setRefresh }) => {
+const NavBar = ({ user, refresh, setRefresh }) => {
   const [ showProfileMenu, setShowProfileMenu ] = useState(null);
   const [ showNewFlow, setShowNewFlow ] = useState(false);
+  const userID = user.googleId;
 
   const newFlow = e => {
     console.log('new flow clicked!');
@@ -69,9 +70,11 @@ const NavBar = ({ userID, refresh, setRefresh }) => {
             />
 
             {/* profile icon and button */}
-            <Avatar sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }} onClick={openProfileMenu}>
-              G
-            </Avatar>
+            <Avatar
+              sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }}
+              src={user.profilePicture}
+              onClick={openProfileMenu}
+            />
 
             {/* profile menu */}
             <ProfileMenu showMenu={showProfileMenu} setShowMenu={setShowProfileMenu} />
