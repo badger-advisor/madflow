@@ -4,11 +4,10 @@ import axios from 'axios';
 let API;
 
 // Serve app if in production
-if (process.env.NODE_ENV === 'production') {
-  API = axios;
-} else {
-  API = axios.create({ baseURL: 'http://localhost:8080' });
-}
+API =
+  process.env.NODE_ENV === 'production'
+    ? axios
+    : axios.create({ baseURL: 'http://localhost:8080' });
 
 /* ###################################### User ###################################### */
 // TODO: Remove all flows assiciated with the user
