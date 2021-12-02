@@ -1,7 +1,7 @@
 {
   "name": "madflow",
   "version": "1.0.0",
-  "description": "Helping students pick out the most optimal courses",
+  "description": "Helping students pick the most optimal courses",
   "main": "server.js",
   "scripts": {
     "client-install": "cd client && npm install",
