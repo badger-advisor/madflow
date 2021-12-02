@@ -1,12 +1,12 @@
 import { Button, Typography, Box, alpha, Drawer } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
-import { signIn } from '../../api';
+import { useContext } from 'react';
+import UserProvider from '../../contexts/UserProvider';
 
 const useStyles = makeStyles(() => {
   return {
     sidePanel   : {
-      //backgroundColor : alpha('#000000', 0.17),
       display : 'flex'
     },
     drawerPaper : {
@@ -22,9 +22,14 @@ const useStyles = makeStyles(() => {
 });
 
 const GoogleButton = () => {
+  const { loggedIn } = useContext(UserProvider.context);
   const handleGoogle = async () => {
-    console.log('logging in with google');
-    window.location.href = '/auth/google';
+    console.log(loggedIn);
+    if (loggedIn) {
+      window.location.href = '/dashboard';
+    } else {
+      window.location.href = '/auth/google';
+    }
   };
 
   return (
@@ -59,7 +64,7 @@ const SidePanel = () => {
 
       <div align='center'>
         <Box sx={{ pb: '20px' }}>
-          <Button component={Link} to='/flow' variant='outlined'>
+          <Button component={Link} to='/flow/guest' variant='outlined'>
             Continue as Guest
           </Button>
         </Box>

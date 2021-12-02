@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 
 // server
-import { currentUser, getUserFlowNames } from '../utils.js';
+import { getUserFlowNames } from '../utils.js';
 
 // components
 import NavBar from '../components/NavBar/NavBar';
 import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
 import UserProvider from '../contexts/UserProvider';
 
-const TEST_ID = 'tempgenelee'; // TODO: connect backend to get actual userID
+// const TEST_ID = 'tempgenelee';
 
 const Dashboard = () => {
   const [ userFlows, setUserFlows ] = useState([]);
@@ -20,8 +20,16 @@ const Dashboard = () => {
     async () => {
       setUserFlows(await getUserFlowNames(user.googleId));
     },
-    [ refresh ]
+    [ userFlows ]
   );
+
+  // I think we don't need refresh???
+  // useEffect(
+  //   async () => {
+  //     setUserFlows(await getUserFlowNames(user.googleId));
+  //   },
+  //   [ refresh ]
+  // );
 
   return (
     <div>
