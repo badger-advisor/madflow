@@ -1,7 +1,13 @@
 import axios from 'axios';
 
 // Initialize axios
-const API = axios.create({ baseURL: 'http://localhost:8080' });
+let API;
+
+// Serve app if in production
+API =
+  process.env.NODE_ENV === 'production'
+    ? axios
+    : axios.create({ baseURL: 'http://localhost:8080' });
 
 /* ###################################### User ###################################### */
 // TODO: Remove all flows assiciated with the user
