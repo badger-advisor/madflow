@@ -24,7 +24,7 @@ const TempNav = () => {
           <Link to='/profile'>profile</Link>
         </li>
         <li>
-          <Link to='/flow'>flow</Link>
+          <Link to='/flow/guest'>flow</Link>
         </li>
         <li>
           <a href='/auth/google'>Login With Google</a>
@@ -43,13 +43,13 @@ const App = () => {
     <UserProvider>
       <Router>
         <Routes>
-          <Route path='/' element={<TempNav />} />
+          <Route path='/' element={<Landing />} />
           <Route path='landing' element={<Landing />} />
           <Route path='dashboard' element={<Dashboard />} />
           <Route path='profile' element={<Profile />} />
           <Route path='flow'>
             <Route path=':flowID' element={<Graph />} />
-            <Route index element={<GuestGraph />} />
+            <Route path='guest' element={<GuestGraph />} />
           </Route>
           <Route path='test' element={<ApiTests />} />
         </Routes>

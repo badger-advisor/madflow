@@ -21,16 +21,19 @@ describe('Testing course controller functions', () => {
   });
 
   test('GET /course/getCourse (cs506)', async () => {
-    await supertest(app).get('/course/getCourse?courseNumber=CS506').expect(200).then(response => {
-      // Check type and length
-      let temp = response.body.info;
-      expect(typeof temp.courseName).toEqual('string');
-      expect(typeof temp.description).toEqual('string');
-      expect(typeof temp.credits).toEqual('string');
-      expect(typeof temp.lastTaught).toEqual('string');
-      expect(typeof response.body.courseNumber).toEqual('string');
-      expect(Array.isArray(response.body.prerequisites)).toBeTruthy();
-      expect(response.body.prerequisites.length).toBeGreaterThanOrEqual(0);
-    });
+    await supertest(app)
+      .get('/course/getCourse?courseNumber=COMP%20SCI%20506')
+      .expect(200)
+      .then(response => {
+        // Check type and length
+        let temp = response.body.info;
+        expect(typeof temp.courseName).toEqual('string');
+        expect(typeof temp.description).toEqual('string');
+        expect(typeof temp.credits).toEqual('string');
+        expect(typeof temp.lastTaught).toEqual('string');
+        expect(typeof response.body.courseNumber).toEqual('string');
+        expect(Array.isArray(response.body.prerequisites)).toBeTruthy();
+        expect(response.body.prerequisites.length).toBeGreaterThanOrEqual(0);
+      });
   });
 });

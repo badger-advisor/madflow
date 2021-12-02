@@ -46,7 +46,7 @@ const SearchNavBar = ({ open, elements, undo, redo, saveForUndo }) => {
     <AppBar position='fixed' open={open} style={{ background: '#c5050c' }}>
       <Toolbar>
         {/* // TODO: To be replaced with logo */}
-        <Link to='/dashboard' style={{ textDecoration: 'none' }}>
+        <Link to='/' style={{ textDecoration: 'none' }}>
           <Typography variant='h6' noWrap sx={{ marginRight: 4 }} component='div'>
             MadFlow
           </Typography>

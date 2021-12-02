@@ -34,9 +34,8 @@ const ProfileMainView = () => {
             borderWidth  : '4px',
             borderStyle  : 'solid'
           }}
-        >
-          G
-        </Avatar>
+          src={user.profilePicture}
+        />
         <Typography sx={{ marginBottom: 2 }}>
           {loggedIn ? user.name : `Account Holder Name`}
         </Typography>
