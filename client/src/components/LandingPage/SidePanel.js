@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => {
 
 const GoogleButton = ({ to }) => {
   const handleLogIn = async () => {
-    await signIn();
+    window.location.href = '/auth/google';
   };
 
   return (
@@ -37,7 +37,7 @@ const GoogleButton = ({ to }) => {
 const DashButton = () => {
   return (
     <Button variant='outlined' component={Link} to={'/dashboard'}>
-      Continue to Dashboard
+      Continue to Dash
     </Button>
   );
 };
