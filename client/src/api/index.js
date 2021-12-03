@@ -18,6 +18,10 @@ const deleteUser = userGoogleID =>
     console.log(res);
   });
 
+const signIn = async () => {
+  await API.get('/auth/google');
+};
+
 /* ###################################### Flow ###################################### */
 const getAllUserFlows = googleId =>
   API.get('/flow/getUserFlows', { params: { googleId } }).then(res => {
@@ -80,6 +84,7 @@ const fetchAllCourses = () =>
     });
 
 export {
+  signIn,
   deleteUser,
   getAllUserFlows,
   getFlowInfo,

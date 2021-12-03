@@ -3,6 +3,7 @@ import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import UserProvider from '../../contexts/UserProvider';
+import { signIn } from '../../api';
 
 const useStyles = makeStyles(() => {
   return {
@@ -21,25 +22,28 @@ const useStyles = makeStyles(() => {
   };
 });
 
-const GoogleButton = () => {
-  const { loggedIn } = useContext(UserProvider.context);
-  const handleGoogle = async () => {
-    console.log(loggedIn);
-    if (loggedIn) {
-      window.location.href = '/dashboard';
-    } else {
-      window.location.href = '/auth/google';
-    }
+const GoogleButton = ({ to }) => {
+  const handleLogIn = async () => {
+    await signIn();
   };
 
   return (
-    <Button variant='outlined' onClick={handleGoogle}>
+    <Button variant='outlined' onClick={handleLogIn}>
       Log in with Google
     </Button>
   );
 };
 
+const DashButton = () => {
+  return (
+    <Button variant='outlined' component={Link} to={'/dashboard'}>
+      Continue to Dashboard
+    </Button>
+  );
+};
+
 const SidePanel = () => {
+  const { loggedIn } = useContext(UserProvider.context);
   const classes = useStyles();
 
   return (
@@ -57,9 +61,7 @@ const SidePanel = () => {
       </Typography>
 
       <div align='center'>
-        <Box sx={{ pt: '20px', pb: '20px' }}>
-          <GoogleButton />
-        </Box>
+        <Box sx={{ pt: '20px', pb: '20px' }}>{loggedIn ? <DashButton /> : <GoogleButton />}</Box>
       </div>
 
       <div align='center'>
