@@ -16,9 +16,12 @@ const Dashboard = () => {
   const { user, loggedIn } = useContext(UserProvider.context);
   const USER_ID = user.googleId;
 
+  // this will continusly fetch flows, not ideal
   useEffect(
     async () => {
-      setUserFlows(await getUserFlowNames(user.googleId));
+      const allFlows = await getUserFlowNames(user.googleId);
+      setUserFlows(allFlows);
+      console.log('fetching flows');
     },
     [ userFlows ]
   );
