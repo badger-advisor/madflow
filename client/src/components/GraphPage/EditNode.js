@@ -36,7 +36,6 @@ const useStyles = makeStyles({
   }
 });
 
-
 const EditNode = ({
   open,
   node,
@@ -64,7 +63,7 @@ const EditNode = ({
     defined && data['prerequisites'] !== undefined ? data['prerequisites'].join(', ') : 'None';
 
   return (
-    <Dialog maxWidth='xs' open={open}>
+    <Dialog maxWidth='xs' open={open} onClose={handleClose}>
       <DialogTitle margin='auto'>
         <div>{label}</div>
       </DialogTitle>

@@ -90,7 +90,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
     // console.log(`Add ${taken ? 'Taken' : 'Not Taken'}: ${currentCourse.label}`);
 
     // Removes spaces from current course
-    const courseNum = currentCourse.label.split(' ').join('');
+    const courseNum = currentCourse.label;
 
     // Determines what type of node to add
     const type = taken ? 'courseTaken' : 'courseCannotTake';
@@ -127,7 +127,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
       setDisplayPop(false);
     }
   };
-*/
+  */
 
   const id = open ? 'popper' : undefined;
 

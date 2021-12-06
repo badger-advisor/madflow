@@ -37,12 +37,12 @@ const Graph = () => {
   const [ redo, setRedo ] = useState([]); // the current state added to the redo stack before redo is called
 
   // for making sure the elements array update each time undo or redo is applied
-  // useEffect(
-  //   () => {
-  //     setElements(undo[undo.length - 1]);
-  //   },
-  //   [ undo ]
-  // );
+  useEffect(
+    () => {
+      setElements(undo[undo.length - 1]);
+    },
+    [ undo ]
+  );
 
   // Keyboard shortcuts for undo and redo
   useEffect(() => {

@@ -21,7 +21,7 @@ import '../GraphPage/dnd.css';
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-const Flow = ({ elements, setElements, saveForUndo }) => {
+const Flow = ({ elements, setElements, saveForUndo, getLayoutedElements }) => {
   // Flow library stuff
   const reactFlowWrapper = useRef(null);
   const [ reactFlowInstance, setReactFlowInstance ] = useState(null);
