@@ -35,14 +35,9 @@ const DashButton = () => {
 
 const SidePanel = ({ classes }) => {
   const { loggedIn } = useContext(UserProvider.context);
-  // const classes = useStyles();
 
   return (
     <Drawer
-      // className={classes.sidePanel}
-      // anchor='left'
-      // variant='permanent'
-      // classes={{ paper: classes.drawerPaper, root: classes.root }}
       className={classes.drawer}
       variant='permanent'
       classes={{ paper: classes.drawerPaper, root: classes.drawerRoot }}

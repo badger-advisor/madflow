@@ -14,7 +14,7 @@ const LandingFlow = () => {
   };
 
   return (
-    <div style={{ height: '100%' }}>
+    <div style={{ width: '100%', height: '100vh', padding: '0', margin: '0' }}>
       <ReactFlow
         elements={initialElements}
         nodeTypes={customNodes}
