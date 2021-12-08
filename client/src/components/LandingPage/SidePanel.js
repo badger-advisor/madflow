@@ -7,23 +7,32 @@ import { signIn } from '../../api';
 
 const useStyles = makeStyles(() => {
   return {
-    sidePanel   : {
+    root      : {
+      // idk how this works, but it targets the root of the drawer component
+      '& .MuiPaper-root' : {
+        backgroundColor : alpha('#FFE2A8', 0.8),
+        borderRadius    : '0 15px 15px 0',
+        boxShadow       : '2px 5px 5px 0px rgba(0,0,0,0.25);',
+        justifyContent  : 'center',
+        width           : '30vw'
+      }
+    },
+    sidePanel : {
       display : 'flex'
     },
-    drawerPaper : {
-      backgrounColor : alpha('#000000', 0.17), // color not working, change later
-      justifyContent : 'center',
-      width          : '30%' // potentially change later
-    },
-    button      : {
+    button    : {
       pb : '20px',
       pt : '20px'
     }
   };
 });
 
-const GoogleButton = ({ to }) => {
-  const handleLogIn = async () => {
+/**
+ * if there is no current user, the top button will direct the user
+ * to google OAuth
+ */
+const GoogleButton = () => {
+  const handleLogIn = () => {
     window.location.href = '/auth/google';
   };
 
@@ -34,6 +43,10 @@ const GoogleButton = ({ to }) => {
   );
 };
 
+/**
+ * If there is a logged in user, the user will be directed to their
+ * dashboard
+ */
 const DashButton = () => {
   return (
     <Button variant='outlined' component={Link} to={'/dashboard'}>
@@ -51,7 +64,7 @@ const SidePanel = () => {
       className={classes.sidePanel}
       anchor='left'
       variant='permanent'
-      classes={{ paper: classes.drawerPaper }}
+      classes={{ paper: classes.drawerPaper, root: classes.root }}
     >
       <Typography variant='h3' align='center'>
         Welcome to
