@@ -10,7 +10,7 @@ API =
     : axios.create({ baseURL: 'http://localhost:8080' });
 
 /* ###################################### User ###################################### */
-// TODO: Remove all flows assiciated with the user
+// TODO: Remove all flows associated with the user
 const deleteUser = userGoogleID =>
   API.delete('/user/deleteUser', {
     googleId : userGoogleID

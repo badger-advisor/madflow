@@ -8,7 +8,7 @@ import NavBar from '../components/NavBar/NavBar';
 import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
 import UserProvider from '../contexts/UserProvider';
 
-// const TEST_ID = 'tempgenelee';
+const TEST_ID = 'tempgenelee';
 
 const Dashboard = () => {
   const [ userFlows, setUserFlows ] = useState([]);
@@ -16,14 +16,18 @@ const Dashboard = () => {
   const { user, loggedIn } = useContext(UserProvider.context);
   const USER_ID = user.googleId;
 
-  // this will continusly fetch flows, not ideal
   useEffect(
-    async () => {
-      const allFlows = await getUserFlowNames(user.googleId);
-      setUserFlows(allFlows);
-      console.log('fetching flows');
+    () => {
+      const fetchFlows = async () => {
+        const allFlows = await getUserFlowNames(USER_ID);
+        setUserFlows(allFlows);
+      };
+
+      fetchFlows();
     },
-    [ userFlows ]
+    // User isn't set on first render, so no flows will be displayed
+    // Adding it as a dependency forces it to refresh twice, so we have the user
+    [ refresh, user ]
   );
 
   // I think we don't need refresh???
