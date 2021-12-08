@@ -3,51 +3,45 @@ import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import UserProvider from '../../contexts/UserProvider';
+import { signIn } from '../../api';
 
-const useStyles = makeStyles(() => {
-  return {
-    sidePanel   : {
-      display : 'flex'
-    },
-    drawerPaper : {
-      backgrounColor : alpha('#000000', 0.17), // color not working, change later
-      justifyContent : 'center',
-      width          : '30%' // potentially change later
-    },
-    button      : {
-      pb : '20px',
-      pt : '20px'
-    }
-  };
-});
-
+/**
+ * if there is no current user, the top button will direct the user
+ * to google OAuth
+ */
 const GoogleButton = () => {
-  const { loggedIn } = useContext(UserProvider.context);
-  const handleGoogle = async () => {
-    console.log(loggedIn);
-    if (loggedIn) {
-      window.location.href = '/dashboard';
-    } else {
-      window.location.href = '/auth/google';
-    }
+  const handleLogIn = () => {
+    window.location.href = '/auth/google';
   };
 
   return (
-    <Button variant='outlined' onClick={handleGoogle}>
+    <Button variant='outlined' onClick={handleLogIn}>
       Log in with Google
     </Button>
   );
 };
 
-const SidePanel = () => {
-  const classes = useStyles();
+/**
+ * If there is a logged in user, the user will be directed to their
+ * dashboard
+ */
+const DashButton = () => {
+  return (
+    <Button variant='outlined' component={Link} to={'/dashboard'}>
+      Continue to Dash
+    </Button>
+  );
+};
+
+const SidePanel = ({ classes }) => {
+  const { loggedIn } = useContext(UserProvider.context);
 
   return (
     <Drawer
-      className={classes.sidePanel}
-      anchor='left'
+      className={classes.drawer}
       variant='permanent'
-      classes={{ paper: classes.drawerPaper }}
+      classes={{ paper: classes.drawerPaper, root: classes.drawerRoot }}
+      anchor='left'
     >
       <Typography variant='h3' align='center'>
         Welcome to
@@ -57,9 +51,7 @@ const SidePanel = () => {
       </Typography>
 
       <div align='center'>
-        <Box sx={{ pt: '20px', pb: '20px' }}>
-          <GoogleButton />
-        </Box>
+        <Box sx={{ pt: '20px', pb: '20px' }}>{loggedIn ? <DashButton /> : <GoogleButton />}</Box>
       </div>
 
       <div align='center'>

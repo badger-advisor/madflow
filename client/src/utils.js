@@ -165,7 +165,6 @@ export const deleteFlow = async flowID => {
 // };
 
 export const getUserFlowNames = async userID => {
-  // TODO: need to check valid input
   return await getAllUserFlows(userID);
 };
 

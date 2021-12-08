@@ -6,7 +6,7 @@ export const initialElements = [
       courseName    : 'Welcome',
       credits       : '3',
       description   : 'Welcome to the site! Please enjoy your stay.',
-      label         : 'Welcome to MadFlow!',
+      label         : 'MadFlow!',
       lastTaught    : 'Forever',
       prerequisites : [ '' ]
     },

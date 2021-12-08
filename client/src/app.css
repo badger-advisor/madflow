@@ -5,3 +5,13 @@ a:active {
   text-decoration: none;
   color: inherit;
 }
+
+/* makes sure there's no default values messing with styling */
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+* {
+  box-sizing: border-box;
+}
