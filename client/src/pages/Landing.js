@@ -1,12 +1,11 @@
 import SidePanel from '../components/LandingPage/SidePanel';
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
 import LandingFlow from '../components/LandingPage/LandingFlow';
 
 // size of side bar
 const drawerWidth = '30vw';
 
 const useStyles = makeStyles({
-  paper       : {},
   page        : {
     background : '#f9f9f9',
     width      : '100%'
