@@ -11,7 +11,13 @@ import ReactFlow, {
   getOutgoers
 } from 'react-flow-renderer';
 
-import { determineType, getTargetNodes, changeOutgoerType, generatePrereq } from '../../utils';
+import {
+  determineType,
+  getTargetNodes,
+  changeOutgoerType,
+  generatePrereq,
+  traverseBFS
+} from '../../utils';
 
 // The 3 types of custom nodes that can appear in the Flow
 import customNodes from '../GraphPage/customNodes';
@@ -21,7 +27,7 @@ import '../GraphPage/dnd.css';
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-const Flow = ({ elements, setElements, saveForUndo, getLayoutedElements }) => {
+const Flow = ({ elements, setElements, saveForUndo }) => {
   // Flow library stuff
   const reactFlowWrapper = useRef(null);
   const [ reactFlowInstance, setReactFlowInstance ] = useState(null);
@@ -50,6 +56,7 @@ const Flow = ({ elements, setElements, saveForUndo, getLayoutedElements }) => {
     //From there we determine the type based on the node's prereqs
 
     let newType = 'courseTaken';
+    console.log(e.target.checked);
     if (!e.target.checked) {
       newType = determineType(currentNode, elements);
     }
@@ -74,12 +81,9 @@ const Flow = ({ elements, setElements, saveForUndo, getLayoutedElements }) => {
       }
     }
 
-    //Get a list of the outgoing nodes
-    let targetList = getOutgoers(modifiedNode, elements);
-
-    //This will modify the types of the current node's children based on the new type change
-    if (targetList.length !== 0) {
-      setElements(changeOutgoerType(modifiedNode, targetList, elements));
+    if (getOutgoers(modifiedNode, elements).length != 0) {
+      elements = traverseBFS(modifiedNode, elements);
+      setElements(elements);
     }
 
     //Close the EditNode component box

@@ -82,7 +82,6 @@ export const autosave = async (flowID, elements) => {
  * @param {[Object]} elements Elements array containing all nodes and edges
  */
 export const connectPrereqs = (node, elements) => {
-  //TODO: create different edge types depending on the status of the node
   //Get id and prereqs for the course that is being added
   const { id: targetId, type: targetType, data: { prerequisites: prereqs } } = node;
   console.log('new node');
@@ -259,6 +258,7 @@ export const addCourse = async (currentCourse, elements, saveForUndo, taken) => 
   //Connect the new course to its prereqs, save element state, and change layout
   let connectedElements = connectPrereqs(newCourse, newElements);
   connectedElements = getLayoutedElements(connectedElements);
+  connectedElements = traverseBFS(newCourse, connectedElements);
   saveForUndo(connectedElements);
   return connectedElements;
 };
@@ -392,4 +392,31 @@ export const getLayoutedElements = elements => {
 
     return el;
   });
+};
+
+export const traverseBFS = (root, elements) => {
+  //Initialize queue with root
+  let queue = [ root ];
+
+  //Set of elements that were visited
+  const visited = new Set();
+
+  //Run until queue is empty
+  while (queue.length) {
+    let curr = queue.shift(); //Add current node to queue
+    let children = getOutgoers(curr, elements); //Get current node's children
+
+    if (children.length) {
+      //Change children's type based on current and modify the elements list
+      elements = changeOutgoerType(curr, children, elements);
+      for (const child of children) {
+        if (!visited.has(child)) {
+          visited.add(child);
+          queue.push(child);
+        }
+      }
+    }
+  }
+
+  return elements;
 };
