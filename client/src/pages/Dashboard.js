@@ -30,14 +30,6 @@ const Dashboard = () => {
     [ refresh, user ]
   );
 
-  // I think we don't need refresh???
-  // useEffect(
-  //   async () => {
-  //     setUserFlows(await getUserFlowNames(user.googleId));
-  //   },
-  //   [ refresh ]
-  // );
-
   return (
     <div>
       <NavBar user={user} refresh={refresh} setRefresh={setRefresh} />

@@ -32,7 +32,7 @@ const updateFlowElements = async (req, res) => {
     })
     .catch(err => {
       res.status(404).json({ message: err.message });
-      console.log('updateFlowElements broke');
+      // console.log('updateFlowElements broke');
     });
 };
 
@@ -52,7 +52,7 @@ const createNewFlow = async (req, res) => {
     })
     .catch(error => {
       // console.log('cannot create flow', error);
-      res.json({ flow: '' });
+      res.status(404).send({ error: 'Creating new flow broke' });
     });
 };
 
@@ -65,8 +65,8 @@ const removeFlow = async (req, res) => {
       res.json(result);
     })
     .catch(err => {
-      res.status(404).json({ message: err.message });
-      console.log('removeflow broke');
+      res.status(404).send({ error: 'Removing flow broke!' });
+      // console.log('removeflow broke');
     });
 };
 
@@ -79,9 +79,9 @@ const updateFlow = async (req, res) => {
       // console.log(result);
     })
     .catch(err => {
-      res.json(err);
-      console.log(err);
-      console.log('updateFlow broke');
+      res.status(404).send({ error: 'Updating flow name broke' });
+      // console.log(err);
+      // console.log('updateFlow broke');
     });
 };
 
