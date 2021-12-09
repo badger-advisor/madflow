@@ -21,7 +21,7 @@ const LandingFlow = () => {
         onLoad={onLoad}
         style={style}
         // Don't want users to interact with this at all
-        nodesDraggable={false}
+        // nodesDraggable={false}
         paneMoveable={false}
         zoomOnDoubleClick={false}
         zoomOnScroll={false}
