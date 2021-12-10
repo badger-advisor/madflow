@@ -11,13 +11,7 @@ import ReactFlow, {
   getOutgoers
 } from 'react-flow-renderer';
 
-import {
-  determineType,
-  getTargetNodes,
-  changeOutgoerType,
-  generatePrereq,
-  traverseBFS
-} from '../../utils';
+import { determineType, generatePrereq, traverseBFS } from '../../utils';
 
 // The 3 types of custom nodes that can appear in the Flow
 import customNodes from '../GraphPage/customNodes';

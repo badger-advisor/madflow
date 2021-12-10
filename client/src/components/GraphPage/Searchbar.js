@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import ShowMoreText from 'react-show-more-text';
 
-import { connectPrereqs, determineType, generateNode, addCourse } from '../../utils';
+import { addCourse } from '../../utils';
 
 import './dnd.css';
 

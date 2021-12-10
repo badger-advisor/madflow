@@ -11,10 +11,12 @@ import CourseNodeStyles from './customNodes/CourseNodeStyles';
 import { makeStyles } from '@mui/styles';
 
 import './dnd.css';
-import { addCourse } from '../../utils';
 
 const useStyles = makeStyles({
   autobtn : {
+    marginTop       : 20,
+    width           : '100%',
+    height          : '100%',
     backgroundColor : '#484848',
     color           : '#ffffff',
     '&:hover'       : {
@@ -23,10 +25,9 @@ const useStyles = makeStyles({
     }
   },
   rmbtn   : {
-    marginLeft      : 130,
-    marginRight     : 130,
-    marginTop       : 1,
-    marginBottom    : 20,
+    marginTop       : 20,
+    width           : '100%',
+    height          : '100%',
     backgroundColor : '#a33d3d',
     color           : '#ffffff',
     '&:hover'       : {
@@ -36,16 +37,7 @@ const useStyles = makeStyles({
   }
 });
 
-const EditNode = ({
-  open,
-  node,
-  handleClose,
-  elements,
-  onElementsRemove,
-  onSwitch,
-  saveForUndo,
-  onGeneratePrereq
-}) => {
+const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, onGeneratePrereq }) => {
   const styles = useState(CourseNodeStyles);
   const classes = useStyles();
 
@@ -114,24 +106,26 @@ const EditNode = ({
             <Typography>{prereqs}</Typography>
           </Box>
         </Box>
-        <Button
-          className={classes.autobtn}
-          variant='contained'
-          size='small'
-          onClick={() => onGeneratePrereq(data)}
-        >
-          Autofill Prerequisites
-        </Button>
+        <div>
+          <Button
+            className={classes.autobtn}
+            variant='contained'
+            size='small'
+            onClick={() => onGeneratePrereq(data)}
+          >
+            Autofill
+          </Button>
+          <Button
+            id={'remove_btn'}
+            className={classes.rmbtn}
+            variant='contained'
+            size='small'
+            onClick={onElementsRemove}
+          >
+            Remove
+          </Button>
+        </div>
       </Stack>
-      <Button
-        id={'remove_btn'}
-        className={classes.rmbtn}
-        variant='contained'
-        size='small'
-        onClick={onElementsRemove}
-      >
-        Remove from Flow
-      </Button>
     </Dialog>
   );
 };

@@ -333,7 +333,7 @@ export const updateNodeEdges = (sourceNode, targetNode, targetType, elements) =>
  * @param {function} saveForUndo call with updated elements array
  * @param {Boolean} taken whether the given course has been taken or not
  */
-export const generatePrereq = async (data, elements, saveForUndo, taken) => {
+export const generatePrereq = async (data, elements, saveForUndo) => {
   console.log(data);
   console.log('generate req');
   if (!data.prerequisites) {
@@ -344,7 +344,7 @@ export const generatePrereq = async (data, elements, saveForUndo, taken) => {
   let prereqArray = data.prerequisites;
   for (let prereq of prereqArray) {
     try {
-      elements = await addCourse(prereq, elements, saveForUndo);
+      elements = await addCourse(prereq, elements, saveForUndo, false);
     } catch (e) {
       console.error(e);
     }
