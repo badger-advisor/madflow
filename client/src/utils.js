@@ -296,34 +296,6 @@ export const changeOutgoerType = (node, targetList, elements) => {
   return elements;
 };
 
-//WARNING: not working yet
-export const updateNodeEdges = (sourceNode, targetNode, targetType, elements) => {
-  let edgeId = sourceNode.id + '-' + targetNode.id;
-  elements = elements.map(el => {
-    if (el.id === edgeId) {
-      el = createEdge(el.source, sourceNode.type, el.target, targetType);
-    }
-    return el;
-  });
-  /*
-  let nodeList = [ node ];
-  let connectedEdges = getConnectedEdges(nodeList, elements);
-  connectedEdges.map(edge => {
-    if (edge.source == node.id) {
-      //console.log(node.type);
-      //console.log(targetType);
-      let newEdge = createEdge(edge.source, node.type, edge.target, targetType);
-      //console.log(edge)
-      console.log(newEdge);
-      console.log(edge.id);
-
-      updateEdge(edge, newEdge, elements);
-      //console.log(elements);
-    }
-  });
-*/
-};
-
 /**
  * Generates all prereqs of a given course
  * TODO: implement topological sort to include all prereqs
@@ -419,4 +391,23 @@ export const traverseBFS = (root, elements) => {
   }
 
   return elements;
+};
+
+export const changeType = (currentNode, newType) => {
+  return elements =>
+    elements.map(el => {
+      if (el.id === currentNode.id) {
+        el.type = newType;
+      }
+      return el;
+    });
+};
+
+export const getNode = (currentNode, elements) => {
+  for (const element of elements) {
+    if (element.id === currentNode.id) {
+      return element;
+    }
+  }
+  return null;
 };

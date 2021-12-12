@@ -11,7 +11,7 @@ import ReactFlow, {
   getOutgoers
 } from 'react-flow-renderer';
 
-import { determineType, generatePrereq, traverseBFS } from '../../utils';
+import { changeType, determineType, generatePrereq, getNode, traverseBFS } from '../../utils';
 
 // The 3 types of custom nodes that can appear in the Flow
 import customNodes from '../GraphPage/customNodes';
@@ -41,6 +41,18 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
     const edgesToRemove = getConnectedEdges([ currentNode ], edges);
     const elementsToRemove = edgesToRemove.concat([ currentNode ]);
     handleClose();
+    setElements(changeType(currentNode, 'courseTaken'));
+
+    //Now, we get the modified node (same id as current node, but with its type determined)
+    let modifiedNode = getNode(currentNode, elements);
+
+    //We modify the children now that the node doesn't exist, pretending that its type was 'courseTaken'
+    if (getOutgoers(modifiedNode, elements).length != 0) {
+      elements = traverseBFS(modifiedNode, elements);
+      setElements(elements);
+    }
+
+    //Finally, remove the elements and save the state
     saveForUndo(removeElements(elementsToRemove, elements));
   };
 
@@ -56,24 +68,10 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
     }
 
     //This part actually modifies the type in the elements list
-    setElements(els =>
-      els.map(el => {
-        if (el.id === currentNode.id) {
-          el.type = newType;
-        }
-        return el;
-      })
-    );
+    setElements(changeType(currentNode, newType));
 
-    //Now, we get the modified node (same id as current node, but with its type determined)
-    let numElements = elements.length;
-    let modifiedNode = null;
-    for (let i = 0; i < numElements; i++) {
-      if (elements[i].id == currentNode.id) {
-        modifiedNode = elements[i];
-        break;
-      }
-    }
+    //Now, we get the modified node (same id as current node, but with its type determined
+    let modifiedNode = getNode(currentNode, elements);
 
     if (getOutgoers(modifiedNode, elements).length != 0) {
       elements = traverseBFS(modifiedNode, elements);
