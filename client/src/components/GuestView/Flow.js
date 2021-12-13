@@ -62,7 +62,6 @@ const Flow = ({ elements, setElements, saveForUndo }) => {
     //From there we determine the type based on the node's prereqs
 
     let newType = 'courseTaken';
-    console.log(e.target.checked);
     if (!e.target.checked) {
       newType = determineType(currentNode, elements);
     }
