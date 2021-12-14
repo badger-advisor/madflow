@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
 import ShowMoreText from 'react-show-more-text';
 
-import { connectPrereqs, determineType, generateNode, addCourse } from '../../utils';
+import { addCourse } from '../../utils';
 
 import './dnd.css';
 
@@ -69,10 +69,7 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   //Handle adding a course to the flow
   const handleAddCourse = (currentCourse, elements, saveForUndo) => {
     try {
-      //Get course into the proper format
-      // let course = currentCourse.label.split(' ').join('');
-      let course = currentCourse.label;
-      addCourse(course, elements, saveForUndo);
+      addCourse(currentCourse.label, elements, saveForUndo, taken);
     } catch (e) {
       console.error(e);
     } finally {
@@ -81,52 +78,6 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
       setDisplayPop(false);
     }
   };
-  /**
-   * Able to add most as taken and not taken
-   * TODO: implement logic to determine if can take or cannot take
-
-  const addCourse = async () => {
-    // console.log(`Add ${taken ? 'Taken' : 'Not Taken'}: ${currentCourse.label}`);
-
-    // Removes spaces from current course
-    const courseNum = currentCourse.label.split(' ').join('');
-
-    // Determines what type of node to add
-    const type = taken ? 'courseTaken' : 'courseCannotTake';
-
-    try {
-      const newCourse = await generateNode(courseNum, { type });
-      //Check if course is already present in the flow
-      if (elements && elements.filter(el => el.id === newCourse.id).length !== 0) {
-        throw newCourse.id + ' already present in the flow, it cannot be added!';
-      }
-
-      //If the course is not taken, it is either courseCannotTake or courseCanTake
-      if (!taken) {
-        newCourse.type = determineType(newCourse, elements);
-      }
-
-      // Makes sure elements isn't empty
-      let newElements;
-      if (!elements) {
-        newElements = [ newCourse ];
-      } else {
-        newElements = [ ...elements, newCourse ];
-      }
-
-      //Connect the new course to its prereqs
-      const connectedElements = connectPrereqs(newCourse, newElements);
-      saveForUndo(connectedElements);
-    } catch (e) {
-      // TODO: Error pop up maybe
-      console.error(e);
-    } finally {
-      setInputValue('');
-      setDropDown(false);
-      setDisplayPop(false);
-    }
-  };
-*/
 
   const id = open ? 'popper' : undefined;
 

@@ -12,11 +12,11 @@ import ReactFlow, {
 
 import {
   autosave,
+  changeType,
   determineType,
-  debounce,
-  getTargetNodes,
-  changeOutgoerType,
-  generatePrereq
+  generatePrereq,
+  getNode,
+  traverseBFS
 } from '../../utils';
 import useDidUpdateEffect from '../../customhooks/useDidUpdateEffect';
 
@@ -48,6 +48,18 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
     const edgesToRemove = getConnectedEdges([ currentNode ], edges);
     const elementsToRemove = edgesToRemove.concat([ currentNode ]);
     handleClose();
+    setElements(changeType(currentNode, 'courseTaken'));
+
+    //Now, we get the modified node (same id as current node, but with its type determined)
+    let modifiedNode = getNode(currentNode, elements);
+
+    //We modify the children now that the node doesn't exist, pretending that its type was 'courseTaken'
+    if (getOutgoers(modifiedNode, elements).length != 0) {
+      elements = traverseBFS(modifiedNode, elements);
+      setElements(elements);
+    }
+
+    //Finally, remove the elements and save the state
     saveForUndo(removeElements(elementsToRemove, elements));
   };
 
@@ -62,31 +74,14 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
     }
 
     //This part actually modifies the type in the elements list
-    setElements(els =>
-      els.map(el => {
-        if (el.id === currentNode.id) {
-          el.type = newType;
-        }
-        return el;
-      })
-    );
+    setElements(changeType(currentNode, newType));
 
-    //Now, we get the modified node (same id as current node, but with its type determined)
-    let numElements = elements.length;
-    let modifiedNode = null;
-    for (let i = 0; i < numElements; i++) {
-      if (elements[i].id == currentNode.id) {
-        modifiedNode = elements[i];
-        break;
-      }
-    }
+    //Now, we get the modified node (same id as current node, but with its type determined
+    let modifiedNode = getNode(currentNode, elements);
 
-    //Get a list of the outgoing nodes
-    let targetList = getOutgoers(modifiedNode, elements);
-
-    //This will modify the types of the current node's children based on the new type change
-    if (targetList.length !== 0) {
-      setElements(changeOutgoerType(modifiedNode, targetList, elements));
+    if (getOutgoers(modifiedNode, elements).length != 0) {
+      elements = traverseBFS(modifiedNode, elements);
+      setElements(elements);
     }
 
     //Close the EditNode component box

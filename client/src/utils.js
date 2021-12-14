@@ -23,6 +23,7 @@ import {
 } from './api';
 
 import createEdge from './components/GraphPage/customEdges/createEdge';
+import dagre from 'dagre';
 
 class Exception {
   /**
@@ -81,7 +82,6 @@ export const autosave = async (flowID, elements) => {
  * @param {[Object]} elements Elements array containing all nodes and edges
  */
 export const connectPrereqs = (node, elements) => {
-  //TODO: create different edge types depending on the status of the node
   //Get id and prereqs for the course that is being added
   const { id: targetId, type: targetType, data: { prerequisites: prereqs } } = node;
   console.log('new node');
@@ -90,19 +90,20 @@ export const connectPrereqs = (node, elements) => {
   //Naive approach: Checks if incoming node's prereqs are already in the flow
   elements.map(sourceNode => {
     // checks if any existing node should point to the new node
-    // if (prereqs.includes(sourceNode.id)) {
-    //   const newEdge = createEdge(sourceNode.id, sourceNode.type, targetId, targetType);
-    //   elements.push(newEdge); //Add the new edge to the list
-    // }
+    if (prereqs.includes(sourceNode.id)) {
+      const newEdge = createEdge(sourceNode.id, sourceNode.type, targetId, targetType);
+      elements.push(newEdge); //Add the new edge to the list
+    }
+
     // checks if the new node should connect to the existing nodes
-    // if (
-    //   sourceNode.data &&
-    //   sourceNode.data.prerequisites &&
-    //   sourceNode.data.prerequisites.includes(targetId)
-    // ) {
-    //   const newEdge = createEdge(targetId, targetType, sourceNode.id, sourceNode.type);
-    //   elements.push(newEdge); //Add the new edge to the list
-    // }
+    if (
+      sourceNode.data &&
+      sourceNode.data.prerequisites &&
+      sourceNode.data.prerequisites.includes(targetId)
+    ) {
+      const newEdge = createEdge(targetId, targetType, sourceNode.id, sourceNode.type);
+      elements.push(newEdge); //Add the new edge to the list
+    }
   });
   return elements;
 };
@@ -124,11 +125,11 @@ export const determineType = (course, elements) => {
   //If a single prereq is not fulfilled, the course cannot be taken
   let type = 'courseCanTake';
   if (elements) {
-    // elements.map(el => {
-    //   if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
-    //     type = 'courseCannotTake';
-    //   }
-    // });
+    elements.map(el => {
+      if (prereqs.includes(el.id) && el.type !== 'courseTaken') {
+        type = 'courseCannotTake';
+      }
+    });
   }
   return type;
 };
@@ -228,7 +229,6 @@ export const debounce = (func, timeout = 300) => {
 };
 
 export const addCourse = async (currentCourse, elements, saveForUndo, taken) => {
-  // Removes spaces from current course
   const courseNum = currentCourse;
 
   // Determines what type of node to add
@@ -254,10 +254,12 @@ export const addCourse = async (currentCourse, elements, saveForUndo, taken) => 
     newElements = [ ...elements, newCourse ];
   }
 
-  //Connect the new course to its prereqs
-  const connectedElements = connectPrereqs(newCourse, newElements);
+  //Connect the new course to its prereqs, save element state, and change layout
+  let connectedElements = connectPrereqs(newCourse, newElements);
+  connectedElements = getLayoutedElements(connectedElements);
+  connectedElements = traverseBFS(newCourse, connectedElements);
   saveForUndo(connectedElements);
-  return newElements;
+  return connectedElements;
 };
 
 export const changeOutgoerType = (node, targetList, elements) => {
@@ -293,34 +295,6 @@ export const changeOutgoerType = (node, targetList, elements) => {
   return elements;
 };
 
-//WARNING: not working yet
-export const updateNodeEdges = (sourceNode, targetNode, targetType, elements) => {
-  let edgeId = sourceNode.id + '-' + targetNode.id;
-  elements = elements.map(el => {
-    if (el.id === edgeId) {
-      el = createEdge(el.source, sourceNode.type, el.target, targetType);
-    }
-    return el;
-  });
-  /*
-  let nodeList = [ node ];
-  let connectedEdges = getConnectedEdges(nodeList, elements);
-  connectedEdges.map(edge => {
-    if (edge.source == node.id) {
-      //console.log(node.type);
-      //console.log(targetType);
-      let newEdge = createEdge(edge.source, node.type, edge.target, targetType);
-      //console.log(edge)
-      console.log(newEdge);
-      console.log(edge.id);
-
-      updateEdge(edge, newEdge, elements);
-      //console.log(elements);
-    }
-  });
-*/
-};
-
 /**
  * Generates all prereqs of a given course
  * TODO: implement topological sort to include all prereqs
@@ -330,7 +304,7 @@ export const updateNodeEdges = (sourceNode, targetNode, targetType, elements) =>
  * @param {function} saveForUndo call with updated elements array
  * @param {Boolean} taken whether the given course has been taken or not
  */
-export const generatePrereq = async (data, elements, saveForUndo, taken) => {
+export const generatePrereq = async (data, elements, saveForUndo) => {
   console.log(data);
   console.log('generate req');
   if (!data.prerequisites) {
@@ -341,9 +315,98 @@ export const generatePrereq = async (data, elements, saveForUndo, taken) => {
   let prereqArray = data.prerequisites;
   for (let prereq of prereqArray) {
     try {
-      elements = await addCourse(prereq, elements, saveForUndo);
+      elements = await addCourse(prereq, elements, saveForUndo, false);
     } catch (e) {
       console.error(e);
     }
   }
+};
+
+/**
+ * Function to change the layout of the elements
+ * @param @param {[Object]} elements elements array
+ */
+export const getLayoutedElements = elements => {
+  const dagreGraph = new dagre.graphlib.Graph();
+  dagreGraph.setDefaultEdgeLabel(() => ({}));
+
+  const nodeWidth = 105;
+  const nodeHeight = 45;
+
+  const isHorizontal = false;
+  dagreGraph.setGraph({ rankdir: 'TB' });
+
+  elements.forEach(el => {
+    if (isNode(el)) {
+      dagreGraph.setNode(el.id, { width: nodeWidth, height: nodeHeight });
+    } else {
+      dagreGraph.setEdge(el.source, el.target);
+    }
+  });
+
+  dagre.layout(dagreGraph);
+
+  return elements.map(el => {
+    if (isNode(el)) {
+      const nodeWithPosition = dagreGraph.node(el.id);
+      el.targetPosition = isHorizontal ? 'left' : 'top';
+      el.sourcePosition = isHorizontal ? 'right' : 'bottom';
+
+      // Unfortunately we need this little hack to pass a slightly different position
+      // to notify react flow about the change. Moreover we are shifting the dagre node position
+      // (anchor=center center) to the top left so it matches the react flow node anchor point (top left).
+      el.position = {
+        x : nodeWithPosition.x - nodeWidth / 2 + Math.random() / 1000,
+        y : nodeWithPosition.y - nodeHeight / 2
+      };
+    }
+
+    return el;
+  });
+};
+
+export const traverseBFS = (root, elements) => {
+  //Initialize queue with root
+  let queue = [ root ];
+
+  //Set of elements that were visited
+  const visited = new Set();
+
+  //Run until queue is empty
+  while (queue.length) {
+    let curr = queue.shift(); //Add current node to queue
+    let children = getOutgoers(curr, elements); //Get current node's children
+
+    if (children.length) {
+      //Change children's type based on current and modify the elements list
+      elements = changeOutgoerType(curr, children, elements);
+      for (const child of children) {
+        if (!visited.has(child)) {
+          visited.add(child);
+          queue.push(child);
+        }
+      }
+    }
+  }
+
+  return elements;
+};
+
+export const changeType = (currentNode, newType) => {
+  return elements =>
+    elements.map(el => {
+      if (el.id === currentNode.id) {
+        el.type = newType;
+      }
+      return el;
+    });
+};
+
+export const getNode = (currentNode, elements) => {
+  for (const element of elements) {
+    if (element.id === currentNode.id) {
+      return element;
+    }
+  }
+  return null;
 };
