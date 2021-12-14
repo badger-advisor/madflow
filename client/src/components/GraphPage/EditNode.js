@@ -4,43 +4,12 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
 import { Stack, Box, Divider } from '@mui/material';
 import Switch from '@mui/material/Switch';
-import CourseNodeStyles from './customNodes/CourseNodeStyles';
-import { makeStyles } from '@mui/styles';
 
 import './dnd.css';
 
-const useStyles = makeStyles({
-  autobtn : {
-    marginTop       : 20,
-    width           : '100%',
-    height          : '100%',
-    backgroundColor : '#484848',
-    color           : '#ffffff',
-    '&:hover'       : {
-      backgroundColor : '#ffffff',
-      color           : '#484848'
-    }
-  },
-  rmbtn   : {
-    marginTop       : 20,
-    width           : '100%',
-    height          : '100%',
-    backgroundColor : '#a33d3d',
-    color           : '#ffffff',
-    '&:hover'       : {
-      backgroundColor : '#ffffff',
-      color           : '#a33d3d'
-    }
-  }
-});
-
 const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, onGeneratePrereq }) => {
-  const styles = useState(CourseNodeStyles);
-  const classes = useStyles();
-
   //Variables related to course data and its status
   const type = node.type;
   const data = node.data;
@@ -108,7 +77,17 @@ const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, onGener
         </Box>
         <div>
           <Button
-            className={classes.autobtn}
+            sx={{
+              marginTop       : 3,
+              width           : '100%',
+              height          : '100%',
+              backgroundColor : '#484848',
+              color           : '#ffffff',
+              '&:hover'       : {
+                backgroundColor : '#ffffff',
+                color           : '#484848'
+              }
+            }}
             variant='contained'
             size='small'
             onClick={() => onGeneratePrereq(data)}
@@ -117,7 +96,17 @@ const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, onGener
           </Button>
           <Button
             id={'remove_btn'}
-            className={classes.rmbtn}
+            sx={{
+              marginTop       : 3,
+              width           : '100%',
+              height          : '100%',
+              backgroundColor : '#a33d3d',
+              color           : '#ffffff',
+              '&:hover'       : {
+                backgroundColor : '#ffffff',
+                color           : '#a33d3d'
+              }
+            }}
             variant='contained'
             size='small'
             onClick={onElementsRemove}
