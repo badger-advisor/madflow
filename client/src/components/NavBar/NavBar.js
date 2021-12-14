@@ -27,7 +27,7 @@ const NavBar = ({ user, refresh, setRefresh }) => {
   };
 
   const openProfileMenu = e => {
-    console.log('profile clicked!');
+    // console.log('profile clicked!');
     setShowProfileMenu(e.currentTarget);
   };
 

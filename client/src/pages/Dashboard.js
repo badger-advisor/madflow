@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 // server
 import { getUserFlowNames } from '../utils.js';
@@ -8,7 +8,7 @@ import NavBar from '../components/NavBar/NavBar';
 import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
 import UserProvider from '../contexts/UserProvider';
 
-// const TEST_ID = 'tempgenelee';
+const TEST_ID = 'tempgenelee';
 
 const Dashboard = () => {
   const [ userFlows, setUserFlows ] = useState([]);
@@ -17,19 +17,18 @@ const Dashboard = () => {
   const USER_ID = user.googleId;
 
   useEffect(
-    async () => {
-      setUserFlows(await getUserFlowNames(user.googleId));
-    },
-    [ userFlows ]
-  );
+    () => {
+      const fetchFlows = async () => {
+        const allFlows = await getUserFlowNames(USER_ID);
+        setUserFlows(allFlows);
+      };
 
-  // I think we don't need refresh???
-  // useEffect(
-  //   async () => {
-  //     setUserFlows(await getUserFlowNames(user.googleId));
-  //   },
-  //   [ refresh ]
-  // );
+      fetchFlows();
+    },
+    // User isn't set on first render, so no flows will be displayed
+    // Adding it as a dependency forces it to refresh twice, so we have the user
+    [ refresh, user ]
+  );
 
   return (
     <div>
