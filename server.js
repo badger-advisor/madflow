@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const userRoute = require('./routes/userRoute');
 const profileRoutes = require('./routes/profileRoutes');
@@ -14,6 +15,7 @@ require('./controllers/passport-setup');
 // set up enviromental variables
 require('dotenv').config();
 
+// Create app
 const app = express();
 
 // Preventing cors error
@@ -60,15 +62,5 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
-
-// create home route mainly for testing
-app.get('/', (req, res) => {
-  if (req.user) {
-    res.json({ user: req.user });
-  } else {
-    const googleSignIn = "<a href='/auth/google'>Google</a>";
-    res.send(`Welcome to MadFlow, please sign in, or sign up: ${googleSignIn}`);
-  }
-});
 
 module.exports = app;
