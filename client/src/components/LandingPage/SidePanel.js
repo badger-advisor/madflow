@@ -15,7 +15,11 @@ const GoogleButton = () => {
   };
 
   return (
-    <Button variant='outlined' onClick={handleLogIn}>
+    <Button
+      variant='outlined'
+      onClick={handleLogIn}
+      style={{ backgroundColor: '#4F86EC', color: 'white' }}
+    >
       Log in with Google
     </Button>
   );
@@ -27,7 +31,12 @@ const GoogleButton = () => {
  */
 const DashButton = () => {
   return (
-    <Button variant='outlined' component={Link} to={'/dashboard'}>
+    <Button
+      variant='outlined'
+      component={Link}
+      to={'/dashboard'}
+      style={{ backgroundColor: '#F7F7F7' }}
+    >
       Continue to Dash
     </Button>
   );
@@ -56,7 +65,12 @@ const SidePanel = ({ classes }) => {
 
       <div align='center'>
         <Box sx={{ pb: '20px' }}>
-          <Button component={Link} to='/flow/guest' variant='outlined'>
+          <Button
+            component={Link}
+            to='/flow/guest'
+            variant='outlined'
+            style={{ backgroundColor: '#F7F7F7' }}
+          >
             Continue as Guest
           </Button>
         </Box>
