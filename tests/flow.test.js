@@ -28,7 +28,7 @@ describe('Testing flow controller functions', () => {
         .then(response => {
           // Check types and length
           flowID = response.body['flow']._id;
-          expect(Object.keys(response.body['flow']).length).toEqual(6);
+          expect(Object.keys(response.body['flow']).length).toEqual(8);
           expect(Array.isArray(response.body['flow'].elements)).toBeTruthy();
           expect(typeof response.body['flow'].name).toEqual('string');
           expect(typeof response.body['flow'].googleId).toEqual('string');
@@ -36,7 +36,26 @@ describe('Testing flow controller functions', () => {
         });
     });
 
-    test('Invalid ID for retriving flow', async () => {
+    test('Invalid ID for retrieving flow', async () => {
+      await supertest(app).get('/flow/getFlow?flowID=' + 'randomID').expect(404).then();
+    });
+  });
+
+  describe('Creating same flow name should fail', () => {
+    test('POST /flow/newFlow', async () => {
+      await supertest(app)
+        .post('/flow/newFlow')
+        .send({
+          name     : 'Flow-Elements-Test',
+          elements : [],
+          googleId : 'tkach940',
+          major    : 'Math'
+        })
+        .expect(400)
+        .then();
+    });
+
+    test('Invalid ID for retrieving flow', async () => {
       await supertest(app).get('/flow/getFlow?flowID=' + 'randomID').expect(404).then();
     });
   });
@@ -69,7 +88,7 @@ describe('Testing flow controller functions', () => {
 
     test('GET /flow/getFlow', async () => {
       await supertest(app).get('/flow/getFlow?flowID=' + flowID).expect(200).then(response => {
-        expect(Object.keys(response.body).length).toEqual(6);
+        expect(Object.keys(response.body).length).toEqual(8);
         expect(typeof response.body.name).toEqual('string');
         expect(Array.isArray(response.body.elements)).toBeTruthy();
         expect(typeof response.body.googleId).toEqual('string');
@@ -107,14 +126,14 @@ describe('Testing flow controller functions', () => {
         .send({
           id : 'abc'
         })
-        .expect(404)
+        .expect(400)
         .then();
     });
 
     test('GET /flow/getFlow', async () => {
       await supertest(app).get('/flow/getFlow?flowID=' + flowID).expect(200).then(response => {
         // Check types and length
-        expect(Object.keys(response.body).length).toEqual(6);
+        expect(Object.keys(response.body).length).toEqual(8);
         expect(typeof response.body.name).toEqual('string');
         expect(Array.isArray(response.body.elements)).toBeTruthy();
         expect(typeof response.body.googleId).toEqual('string');
@@ -131,7 +150,7 @@ describe('Testing flow controller functions', () => {
     // Removes test flow
     test('DELETE /flow/removeFlow', async () => {
       await supertest(app).delete('/flow/removeFlow?id=' + flowID).expect(200).then(response => {
-        expect(Object.keys(response.body).length).toEqual(6);
+        expect(Object.keys(response.body).length).toEqual(8);
         expect(typeof response.body.name).toEqual('string');
         expect(Array.isArray(response.body.elements)).toBeTruthy();
         expect(typeof response.body.googleId).toEqual('string');
