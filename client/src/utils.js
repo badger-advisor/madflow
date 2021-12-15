@@ -24,6 +24,7 @@ import {
 
 import createEdge from './components/GraphPage/customEdges/createEdge';
 import dagre from 'dagre';
+import { logicElements } from './pages/logicElements';
 
 class Exception {
   /**
@@ -120,7 +121,8 @@ export const connectPrereqs = (node, elements) => {
 export const determineType = (course, elements) => {
   //Todo: find a solution to accomodate optional prereqs.
   //This solution assumes that a course cannot be taken until all its prereqs are taken
-  const prereqs = course['data'].prerequisites;
+
+  /*const prereqs = course['data'].prerequisites;
 
   //If a single prereq is not fulfilled, the course cannot be taken
   let type = 'courseCanTake';
@@ -130,6 +132,18 @@ export const determineType = (course, elements) => {
         type = 'courseCannotTake';
       }
     });
+  }
+  return type;
+  */
+  const prereqs = course['data'].prerequisites.prerequisites;
+
+  let type = 'courseCanTake';
+  let logic = course['data'].prerequisites.logic;
+  if (elements && logic !== undefined) {
+    let typeBool = eval(logic);
+    console.log(typeBool);
+    type = typeBool ? 'courseCanTake' : 'courseCannotTake';
+    console.log(type);
   }
   return type;
 };
@@ -410,3 +424,54 @@ export const getNode = (currentNode, elements) => {
   }
   return null;
 };
+
+export const testBoolObject = (courseNum, type, prereqs) => {
+  const courseData = {
+    info          : 'For testing propositional logic',
+    courseNumber  : courseNum,
+    prerequisites : {
+      prerequisites : prereqs,
+      text          :
+        '(COMP SCI 367 or 400) and (COMP SCI 407, 536, 537, 545, 559, 564, 570, 679 or E C E/​COMP SCI  552) or graduate/professional standing, or declared in the Capstone Certificate in Computer Sciences for Professionals',
+      logic         :
+        '(convertToBool("COMP SCI 367", elements) || convertToBool("COMP SCI 400", elements)) && (convertToBool("COMP SCI 407", elements) || convertToBool("COMP SCI 552", elements)) '
+    }
+  };
+
+  const { info, courseNumber, prerequisites } = courseData;
+
+  return {
+    id       : courseNumber,
+    position : { x: 0, y: 0 },
+    type     : type,
+    data     : { label: courseNumber, prerequisites, info }
+  };
+};
+
+export const convertToBool = (currentNode, elements) => {
+  console.log(currentNode);
+  for (const element of elements) {
+    if (element.id === currentNode) {
+      console.log(element.type === 'courseTaken' ? true : false);
+      return element.type === 'courseTaken' ? true : false;
+    }
+  }
+  return true;
+};
+
+let currentNode = testBoolObject('COMP SCI 506', 'courseCanTake', [
+  'COMP SCI 400',
+  'COMP SCI 407',
+  'COMP SCI 552'
+]);
+
+//let elements = logicElements;
+//console.log(elements);
+//'(convertToBool("COMP SCI 367") || convertToBool("COMP SCI 400")) && (convertToBool("COMP SCI 407") || convertToBool("COMP SCI 536") || convertToBool("COMP SCI 537") || convertToBool("COMP SCI 545") || convertToBool("COMP SCI 559") || convertToBool("COMP SCI 564") || convertToBool("COMP SCI 570") || convertToBool("COMP SCI 679") || convertToBool("E C E 552") || ​convertToBool("COMP SCI 552"))'
+//let value = (convertToBool("COMP SCI 367", elements) || convertToBool("COMP SCI 400", elements)) && (convertToBool("COMP SCI 407", elements) || convertToBool("COMP SCI 536", elements) || convertToBool("COMP SCI 537", elements) || convertToBool("COMP SCI 545", elements) || convertToBool("COMP SCI 559", elements) || convertToBool("COMP SCI 564", elements) || convertToBool("COMP SCI 570", elements) || convertToBool("COMP SCI 679", elements) || convertToBool("E C E 552", elements) || ​convertToBool("COMP SCI 552", elements))
+//let value = convertToBool('COMP SCI 367', elements) || convertToBool('COMP SCI 400', elements);
+//console.log(value);
+//console.log(currentNode);
+
+let elements = logicElements;
+determineType(currentNode, elements);
