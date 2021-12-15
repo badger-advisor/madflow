@@ -16,7 +16,11 @@ const courseSchema = new mongoose.Schema({
     standing    : { type: String }
   },
 
-  prerequisites : Array
+  prerequisites : {
+    courseList : { type: Array },
+    text       : { type: String },
+    logic      : { type: String }
+  }
 });
 
 const Course = mongoose.model('Course', courseSchema);
