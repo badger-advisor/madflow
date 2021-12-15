@@ -15,7 +15,7 @@ const GoogleButton = () => {
   };
 
   return (
-    <Button variant='outlined' onClick={handleLogIn}>
+    <Button id={'google_btn'} variant='outlined' onClick={handleLogIn}>
       Log in with Google
     </Button>
   );
@@ -56,7 +56,7 @@ const SidePanel = ({ classes }) => {
 
       <div align='center'>
         <Box sx={{ pb: '20px' }}>
-          <Button component={Link} to='/flow/guest' variant='outlined'>
+          <Button id={'guest_btn'} component={Link} to='/flow/guest' variant='outlined'>
             Continue as Guest
           </Button>
         </Box>

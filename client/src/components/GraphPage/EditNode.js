@@ -77,6 +77,7 @@ const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, onGener
         </Box>
         <div>
           <Button
+            id={'gen_prereq'}
             sx={{
               marginTop       : 3,
               width           : '100%',
