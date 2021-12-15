@@ -15,7 +15,7 @@ const getAllUserFlows = async (req, res) => {
   const { googleId } = req.query;
 
   try {
-    const flows = await Flow.find({ googleId: googleId });
+    const flows = await Flow.find({ googleId });
     res.json({ flows });
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -38,22 +38,21 @@ const updateFlowElements = async (req, res) => {
 
 const createNewFlow = async (req, res) => {
   const { name, elements, googleId, major } = req.body;
+  // object to insert
+  const flow = new Flow({ name, elements, googleId, major });
 
-  const newFlow = new Flow({
-    name,
-    elements,
-    googleId,
-    major
-  })
-    .save()
-    .then(newFlow => {
-      // console.log('created new flow: ', newFlow);
-      res.json({ flow: newFlow });
-    })
-    .catch(err => {
-      res.status(400).send(new Error('Insert flow broke'));
-      console.log(err);
-    });
+  try {
+    const findDup = await Flow.find({ googleId, name });
+    // search for dups for the same person
+    if (findDup.length > 0) throw 'duplicate flow';
+
+    // Insert new flow
+    const newFlow = await flow.save();
+    res.json({ flow: newFlow });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(new Error('Insert flow broke'));
+  }
 };
 
 const removeFlow = async (req, res) => {
@@ -66,7 +65,6 @@ const removeFlow = async (req, res) => {
     })
     .catch(err => {
       res.status(404).send({ error: 'Removing flow broke!' });
-      // console.log('removeflow broke');
     });
 };
 
@@ -79,7 +77,7 @@ const updateFlow = async (req, res) => {
       // console.log(result);
     })
     .catch(err => {
-      res.status(404).send({ error: 'Updating flow name broke' });
+      res.status(400).send({ error: 'Updating flow name broke' });
       // console.log(err);
       // console.log('updateFlow broke');
     });
