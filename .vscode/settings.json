@@ -8,5 +8,5 @@
   "prettier.printWidth": 100,
   "prettier.useTabs": false,
   "prettier.arrowParens": false,
-  "workbench.colorTheme": "Ace Palenight",
+  "workbench.colorTheme": "One Dark Pro",
 }
