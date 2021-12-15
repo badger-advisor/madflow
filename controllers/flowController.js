@@ -50,9 +50,9 @@ const createNewFlow = async (req, res) => {
       // console.log('created new flow: ', newFlow);
       res.json({ flow: newFlow });
     })
-    .catch(error => {
-      // console.log('cannot create flow', error);
-      res.status(404).send({ error: 'Creating new flow broke' });
+    .catch(err => {
+      res.status(400).send(new Error('Insert flow broke'));
+      console.log(err);
     });
 };
 
