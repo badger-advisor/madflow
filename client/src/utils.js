@@ -166,7 +166,10 @@ export const deleteFlow = async flowID => {
 // };
 
 export const getUserFlowNames = async userID => {
-  return await getAllUserFlows(userID);
+  const flows = await getAllUserFlows(userID);
+  // console.log('get user flows');
+  // console.log(flows);
+  return flows;
 };
 
 /**

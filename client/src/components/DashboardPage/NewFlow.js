@@ -27,6 +27,15 @@ const NewFlow = ({ open, setOpen, userID, refresh, setRefresh, elements, setShow
     await createNewFlow(userID, flowName, flowMajor, elements);
   };
 
+  // Submit is async because creating a flow is async
+  const handleSubmit = async (values, { resetForm }) => {
+    await createNewFlow(userID, values.name, values.major, elements);
+    resetForm();
+    setOpen(false);
+    setRefresh(!refresh);
+    setShowMenu && setShowMenu(false);
+  };
+
   // use Formik to handle form validation and submission
   const formik = useFormik({
     enableReinitialize : true,
@@ -35,15 +44,7 @@ const NewFlow = ({ open, setOpen, userID, refresh, setRefresh, elements, setShow
       major : ''
     },
     validationSchema   : validationSchema,
-    onSubmit           : (values, { resetForm }) => {
-      // console.log(values);
-      // console.log(values.name);
-      makeFlow(userID, values.name, values.major, elements);
-      resetForm();
-      setOpen(false);
-      setRefresh(!refresh);
-      setShowMenu && setShowMenu(false);
-    },
+    onSubmit           : handleSubmit,
     onReset            : () => {
       setOpen(false);
     }

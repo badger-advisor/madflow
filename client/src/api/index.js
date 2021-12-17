@@ -43,7 +43,10 @@ const createUserFlow = (googleId, name, major, elements) =>
     name,
     major
   })
-    .then(res => console.log(res))
+    .then(res => {
+      console.log('insert success!');
+      console.log(res);
+    })
     .catch(error => console.log(error));
 
 /**
