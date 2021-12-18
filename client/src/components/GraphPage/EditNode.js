@@ -72,7 +72,7 @@ const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, onGener
             display='flex'
             p={2}
           >
-            <Typography>{prereqs}</Typography>
+            <Typography>{prereqs ? prereqs : 'None'}</Typography>
           </Box>
         </Box>
         <div>
