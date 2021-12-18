@@ -7,7 +7,7 @@ import DeleteConfirmation from './DeleteConfirmation.js';
 import NewFlow from './NewFlow.js';
 
 // material-ui
-import { Menu, MenuItem, Dialog, DialogTitle, Button } from '@mui/material';
+import { Menu, MenuItem } from '@mui/material';
 
 // icons and images
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
