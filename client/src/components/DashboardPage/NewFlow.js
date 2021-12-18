@@ -101,7 +101,9 @@ const NewFlow = ({ open, setOpen, userID, refresh, setRefresh, elements, setShow
               <div>
                 <Button onClick={formik.handleSubmit}>Create Blank</Button>
                 <Button onClick={formik.handleSubmit}>Create Pre-Filled</Button>
-                <Button onClick={formik.handleReset}>Cancel</Button>{' '}
+                <Button id={'cancel_btn'} onClick={formik.handleReset}>
+                  Cancel
+                </Button>{' '}
               </div>
             ) : (
               <div>
