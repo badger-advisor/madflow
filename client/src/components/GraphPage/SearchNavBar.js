@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
 
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import MenuIcon from '@mui/icons-material/Menu';

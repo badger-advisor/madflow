@@ -246,7 +246,7 @@ export const addCourse = async (currentCourse, elements, saveForUndo, taken) => 
 
   //Check if course is already present in the flow
   if (elements && elements.filter(el => el.id === newCourse.id).length !== 0) {
-    throw newCourse.id + ' already present in the flow, it cannot be added!';
+    throw newCourse.id + ' is already present in the flow, it cannot be added!';
   }
 
   //If the course is not taken, it is either courseCannotTake or courseCanTake
