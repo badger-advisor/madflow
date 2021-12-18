@@ -1,6 +1,8 @@
 import { TextField, Autocomplete, Popper, Box, Paper, Typography } from '@mui/material/';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import ShowMoreText from 'react-show-more-text';
 
 import { addCourse } from '../../utils';
@@ -29,6 +31,18 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   const [ displayPop, setDisplayPop ] = useState(false);
   const [ dropDown, setDropDown ] = useState(false);
   const [ inputValue, setInputValue ] = useState('');
+
+  // to handle showing error when duplicate course is not added
+  const [ openDuplicateError, setOpenDuplicateError ] = useState(false);
+  const [ duplicateError, setDuplicateError ] = useState('');
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenDuplicateError(false);
+  };
 
   useEffect(
     () => {
@@ -67,11 +81,13 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   };
 
   //Handle adding a course to the flow
-  const handleAddCourse = (currentCourse, elements, saveForUndo) => {
+  const handleAddCourse = async (currentCourse, elements, saveForUndo) => {
     try {
-      addCourse(currentCourse.label, elements, saveForUndo, taken);
+      await addCourse(currentCourse.label, elements, saveForUndo, taken);
     } catch (e) {
       console.error(e);
+      setDuplicateError(e);
+      setOpenDuplicateError(true);
     } finally {
       setInputValue('');
       setDropDown(false);
@@ -170,6 +186,23 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
           </Paper>
         </Popper>
       )}
+
+      <Snackbar
+        open={openDuplicateError}
+        autoHideDuration={6000}
+        onClose={handleAlertClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <MuiAlert
+          elevation={6}
+          variant='filled'
+          onClose={handleAlertClose}
+          severity='error'
+          sx={{ width: '100%' }}
+        >
+          {duplicateError}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };
