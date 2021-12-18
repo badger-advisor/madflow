@@ -1,16 +1,29 @@
 import axios from 'axios';
 
 // Initialize axios
-const API = axios.create({ baseURL: 'http://localhost:8080' });
+let API;
+
+// Serve app if in production
+API =
+  process.env.NODE_ENV === 'production'
+    ? axios
+    : axios.create({ baseURL: 'http://localhost:8080' });
 
 /* ###################################### User ###################################### */
-// TODO: Remove all flows assiciated with the user
+// TODO: Remove all flows associated with the user
 const deleteUser = userGoogleID =>
-  API.delete('/user/deleteUser', {
-    googleId : userGoogleID
-  }).then(res => {
-    console.log(res);
-  });
+  API.delete('/user/deleteUser/', { params: { googleId: userGoogleID } })
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => {
+      console.log('Error in index');
+      console.log(err);
+    });
+
+const signIn = async () => {
+  await API.get('/auth/google');
+};
 
 /* ###################################### Flow ###################################### */
 const getAllUserFlows = googleId =>
@@ -33,8 +46,14 @@ const createUserFlow = (googleId, name, major, elements) =>
     name,
     major
   })
-    .then(res => console.log(res))
-    .catch(error => console.log(error));
+    .then(res => {
+      console.log('insert success!');
+      console.log(res);
+    })
+    .catch(error => {
+      // console.log(error);
+      throw 'Looks like something went wrong. Please check the Flow name to make sure it does not already exist.';
+    });
 
 /**
  * Only for updating the elements array in the flow
@@ -74,6 +93,7 @@ const fetchAllCourses = () =>
     });
 
 export {
+  signIn,
   deleteUser,
   getAllUserFlows,
   getFlowInfo,

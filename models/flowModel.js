@@ -1,21 +1,39 @@
 const mongoose = require('mongoose');
 
 const flowSchema = new mongoose.Schema({
-  name     : {
+  name         : {
     type     : String,
     required : [ true, 'A flow must have a name' ],
-    unique   : true
+    unique   : false
   },
-  // Since elements will have a bunch of different things in it
-  // using type Array will initialize an array of [Mixed] types
-  elements : Array,
-  googleId : {
-    type     : String,
-    required : [ true, 'A flow must have a user associated with it' ]
+
+  elements     : {
+    type   : Array,
+    unique : false
   },
-  major    : {
+
+  googleId     : {
     type     : String,
-    required : [ true, 'Each flow must have a major specified' ]
+    required : [ true, 'A flow must have a user associated with it' ],
+    unique   : false
+  },
+
+  major        : {
+    type     : String,
+    required : [ true, 'Each flow must have a major specified' ],
+    unique   : false
+  },
+
+  createdAt    : {
+    type    : Date,
+    default : Date.now,
+    unique  : false
+  },
+
+  lastModified : {
+    type    : Date,
+    default : Date.now,
+    unique  : false
   }
 });
 

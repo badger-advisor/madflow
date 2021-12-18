@@ -4,52 +4,12 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
 import { Stack, Box, Divider } from '@mui/material';
 import Switch from '@mui/material/Switch';
-import CourseNodeStyles from './customNodes/CourseNodeStyles';
-import { makeStyles } from '@mui/styles';
 
 import './dnd.css';
-import { addCourse } from '../../utils';
 
-const useStyles = makeStyles({
-  autobtn : {
-    backgroundColor : '#484848',
-    color           : '#ffffff',
-    '&:hover'       : {
-      backgroundColor : '#ffffff',
-      color           : '#484848'
-    }
-  },
-  rmbtn   : {
-    marginLeft      : 130,
-    marginRight     : 130,
-    marginTop       : 1,
-    marginBottom    : 20,
-    backgroundColor : '#a33d3d',
-    color           : '#ffffff',
-    '&:hover'       : {
-      backgroundColor : '#ffffff',
-      color           : '#a33d3d'
-    }
-  }
-});
-
-
-const EditNode = ({
-  open,
-  node,
-  handleClose,
-  elements,
-  onElementsRemove,
-  onSwitch,
-  saveForUndo,
-  onGeneratePrereq
-}) => {
-  const styles = useState(CourseNodeStyles);
-  const classes = useStyles();
-
+const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, onGeneratePrereq }) => {
   //Variables related to course data and its status
   const type = node.type;
   const data = node.data;
@@ -64,7 +24,7 @@ const EditNode = ({
     defined && data['prerequisites'] !== undefined ? data['prerequisites'].join(', ') : 'None';
 
   return (
-    <Dialog maxWidth='xs' open={open}>
+    <Dialog id='edit_node' maxWidth='xs' open={open} onClose={handleClose}>
       <DialogTitle margin='auto'>
         <div>{label}</div>
       </DialogTitle>
@@ -112,27 +72,50 @@ const EditNode = ({
             display='flex'
             p={2}
           >
-            <Typography>{prereqs}</Typography>
+            <Typography>{prereqs ? prereqs : 'None'}</Typography>
           </Box>
         </Box>
-        <Button
-          className={classes.autobtn}
-          variant='contained'
-          size='small'
-          onClick={() => onGeneratePrereq(data)}
-        >
-          Autofill Prerequisites
-        </Button>
+        <div>
+          <Button
+            id={'gen_prereq'}
+            sx={{
+              marginTop       : 3,
+              width           : '100%',
+              height          : '100%',
+              backgroundColor : '#484848',
+              color           : '#ffffff',
+              '&:hover'       : {
+                backgroundColor : '#ffffff',
+                color           : '#484848'
+              }
+            }}
+            variant='contained'
+            size='small'
+            onClick={() => onGeneratePrereq(data)}
+          >
+            Autofill
+          </Button>
+          <Button
+            id={'remove_btn'}
+            sx={{
+              marginTop       : 3,
+              width           : '100%',
+              height          : '100%',
+              backgroundColor : '#a33d3d',
+              color           : '#ffffff',
+              '&:hover'       : {
+                backgroundColor : '#ffffff',
+                color           : '#a33d3d'
+              }
+            }}
+            variant='contained'
+            size='small'
+            onClick={onElementsRemove}
+          >
+            Remove
+          </Button>
+        </div>
       </Stack>
-      <Button
-        id={'remove_btn'}
-        className={classes.rmbtn}
-        variant='contained'
-        size='small'
-        onClick={onElementsRemove}
-      >
-        Remove from Flow
-      </Button>
     </Dialog>
   );
 };

@@ -16,9 +16,10 @@ import { Link } from 'react-router-dom';
 
 const NavBarOffset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
-const NavBar = ({ userID, refresh, setRefresh }) => {
+const NavBar = ({ user, refresh, setRefresh }) => {
   const [ showProfileMenu, setShowProfileMenu ] = useState(null);
   const [ showNewFlow, setShowNewFlow ] = useState(false);
+  const userID = user.googleId;
 
   const newFlow = e => {
     console.log('new flow clicked!');
@@ -26,7 +27,7 @@ const NavBar = ({ userID, refresh, setRefresh }) => {
   };
 
   const openProfileMenu = e => {
-    console.log('profile clicked!');
+    // console.log('profile clicked!');
     setShowProfileMenu(e.currentTarget);
   };
 
@@ -41,7 +42,7 @@ const NavBar = ({ userID, refresh, setRefresh }) => {
           }}
         >
           {/* logo button */}
-          <IconButton sx={{ mr: 2 }}>
+          <IconButton id={'logo'} sx={{ mr: 2 }}>
             <Link to='/'>
               <img src={tempIcon} height='45px' />
             </Link>
@@ -51,6 +52,7 @@ const NavBar = ({ userID, refresh, setRefresh }) => {
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             {/* add new flow button */}
             <Button
+              id={'new_flow'}
               variant='outlined'
               startIcon={<AddIcon />}
               sx={{ color: 'white', border: '1px solid white' }}
@@ -69,9 +71,12 @@ const NavBar = ({ userID, refresh, setRefresh }) => {
             />
 
             {/* profile icon and button */}
-            <Avatar sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }} onClick={openProfileMenu}>
-              G
-            </Avatar>
+            <Avatar
+              id={'avatar'}
+              sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }}
+              src={user.profilePicture}
+              onClick={openProfileMenu}
+            />
 
             {/* profile menu */}
             <ProfileMenu showMenu={showProfileMenu} setShowMenu={setShowProfileMenu} />

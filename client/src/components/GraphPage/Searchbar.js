@@ -1,10 +1,11 @@
-import React from 'react';
 import { TextField, Autocomplete, Popper, Box, Paper, Typography } from '@mui/material/';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import ShowMoreText from 'react-show-more-text';
 
-import { connectPrereqs, determineType, generateNode, addCourse } from '../../utils';
+import { addCourse } from '../../utils';
 
 import './dnd.css';
 
@@ -30,6 +31,20 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   const [ displayPop, setDisplayPop ] = useState(false);
   const [ dropDown, setDropDown ] = useState(false);
   const [ inputValue, setInputValue ] = useState('');
+
+  // to handle showing error when duplicate course is not added
+  const [ openDuplicateError, setOpenDuplicateError ] = useState(false);
+  const [ duplicateError, setDuplicateError ] = useState('');
+  const [ openAdd, setOpenAdd ] = useState(false);
+  const [ addMessage, setAddMessage ] = useState('');
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenDuplicateError(false);
+  };
 
   useEffect(
     () => {
@@ -68,67 +83,23 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   };
 
   //Handle adding a course to the flow
-  const handleAddCourse = (currentCourse, elements, saveForUndo) => {
+  const handleAddCourse = async (currentCourse, elements, saveForUndo) => {
     try {
-      //Get course into the proper format
-      let course = currentCourse.label.split(' ').join('');
-      addCourse(course, elements, saveForUndo);
+      await addCourse(currentCourse.label, elements, saveForUndo, taken);
+      setAddMessage(currentCourse.label + ' has been successfully added!');
+      setOpenAdd(true);
     } catch (e) {
       console.error(e);
+      setDuplicateError(e);
+      setOpenDuplicateError(true);
     } finally {
       setInputValue('');
       setDropDown(false);
       setDisplayPop(false);
     }
   };
-  /**
-   * Able to add most as taken and not taken
-   * TODO: implement logic to determine if can take or cannot take
 
-  const addCourse = async () => {
-    // console.log(`Add ${taken ? 'Taken' : 'Not Taken'}: ${currentCourse.label}`);
-
-    // Removes spaces from current course
-    const courseNum = currentCourse.label.split(' ').join('');
-
-    // Determines what type of node to add
-    const type = taken ? 'courseTaken' : 'courseCannotTake';
-
-    try {
-      const newCourse = await generateNode(courseNum, { type });
-      //Check if course is already present in the flow
-      if (elements && elements.filter(el => el.id === newCourse.id).length !== 0) {
-        throw newCourse.id + ' already present in the flow, it cannot be added!';
-      }
-
-      //If the course is not taken, it is either courseCannotTake or courseCanTake
-      if (!taken) {
-        newCourse.type = determineType(newCourse, elements);
-      }
-
-      // Makes sure elements isn't empty
-      let newElements;
-      if (!elements) {
-        newElements = [ newCourse ];
-      } else {
-        newElements = [ ...elements, newCourse ];
-      }
-
-      //Connect the new course to its prereqs
-      const connectedElements = connectPrereqs(newCourse, newElements);
-      saveForUndo(connectedElements);
-    } catch (e) {
-      // TODO: Error pop up maybe
-      console.error(e);
-    } finally {
-      setInputValue('');
-      setDropDown(false);
-      setDisplayPop(false);
-    }
-  };
-*/
-  
-  const id = open ? 'popper' : undefined; 
+  const id = open ? 'popper' : undefined;
 
   return (
     <div>
@@ -142,7 +113,6 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
         inputValue={inputValue}
         autoHighlight={true}
         open={dropDown}
-        // onClose={closePopupHandler}
         sx={{
           width : 300
         }}
@@ -169,9 +139,17 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
             >
               <div>{currentCourse.label}</div>
               <div>
-                <ShowMoreText className='mystyle' lines={4} width={270}>
-                  <Typography variant='mystyle'>{currentCourse.courseInfo}</Typography>
-                </ShowMoreText>
+                <Box
+                  sx={{ minHeight: 110 }}
+                  overflow='auto'
+                  flex={1}
+                  flexDirection='column'
+                  display='flex'
+                >
+                  <ShowMoreText className='mystyle' lines={6} width={270}>
+                    <Typography variant='mystyle'>{currentCourse.courseInfo}</Typography>
+                  </ShowMoreText>
+                </Box>
               </div>
               <Typography variant='mystyle'>Add Course as:</Typography>
               <div className='buttons'>
@@ -219,6 +197,40 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
           </Paper>
         </Popper>
       )}
+
+      <Snackbar
+        open={openAdd}
+        autoHideDuration={6000}
+        onClose={handleAlertClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <MuiAlert
+          elevation={6}
+          variant='filled'
+          onClose={handleAlertClose}
+          severity='info'
+          sx={{ width: '100%' }}
+        >
+          {addMessage}
+        </MuiAlert>
+      </Snackbar>
+
+      <Snackbar
+        open={openDuplicateError}
+        autoHideDuration={6000}
+        onClose={handleAlertClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <MuiAlert
+          elevation={6}
+          variant='filled'
+          onClose={handleAlertClose}
+          severity='error'
+          sx={{ width: '100%' }}
+        >
+          {duplicateError}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };

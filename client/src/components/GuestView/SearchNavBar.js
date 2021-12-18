@@ -1,4 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
+
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
 import IconButton from '@mui/material/IconButton';
@@ -6,15 +7,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MuiAppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 
-import Searchbar from './Searchbar';
+import Searchbar from '../GraphPage/Searchbar';
 import { getAllCourses } from '../../utils';
 import { Link } from 'react-router-dom';
-import UserProvider from '../../contexts/UserProvider';
-
-import ProfileMenu from '../NavBar/ProfileMenu';
 
 const DRAWER_WIDTH = 240;
 
@@ -39,24 +36,17 @@ export const AppBar = styled(MuiAppBar, {
 }));
 
 const SearchNavBar = ({ open, elements, undo, redo, saveForUndo }) => {
-  const [ showProfileMenu, setShowProfileMenu ] = useState(null);
   const [ courseOptions, setCourseOptions ] = useState([]);
-  const { user } = useContext(UserProvider.context);
-  const USER_ID = user.googleId;
 
   useEffect(async () => {
     setCourseOptions(await getAllCourses());
   }, []);
 
-  const openProfileMenu = e => {
-    setShowProfileMenu(e.currentTarget);
-  };
-
   return (
     <AppBar position='fixed' open={open} style={{ background: '#c5050c' }}>
       <Toolbar>
         {/* // TODO: To be replaced with logo */}
-        <Link to='/dashboard' style={{ textDecoration: 'none' }}>
+        <Link to='/' style={{ textDecoration: 'none' }}>
           <Typography variant='h6' noWrap sx={{ marginRight: 4 }} component='div'>
             MadFlow
           </Typography>
@@ -83,26 +73,6 @@ const SearchNavBar = ({ open, elements, undo, redo, saveForUndo }) => {
           >
             <RedoIcon fontSize='mid' />
           </IconButton>
-
-          {/* <AccountCircleRoundedIcon fontSize='large' /> */}
-          <Avatar
-            sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }}
-            src={user.profilePicture}
-            onClick={openProfileMenu}
-          />
-
-          {/* profile menu */}
-          <ProfileMenu showMenu={showProfileMenu} setShowMenu={setShowProfileMenu} />
-
-          {/*<IconButton
-            color='inherit'
-            aria-label='open drawer'
-            edge='end'
-            onClick={handleDrawer}
-            sx={{ ...(open && { display: 'none' }), marginLeft: 2 }}
-          >
-            <MenuIcon />
-          </IconButton> */}
         </Box>
       </Toolbar>
     </AppBar>

@@ -1,48 +1,56 @@
 import { Button, Typography, Box, alpha, Drawer } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import UserProvider from '../../contexts/UserProvider';
 import { signIn } from '../../api';
 
-const useStyles = makeStyles(() => {
-  return {
-    sidePanel   : {
-      //backgroundColor : alpha('#000000', 0.17),
-      display : 'flex'
-    },
-    drawerPaper : {
-      backgrounColor : alpha('#000000', 0.17), // color not working, change later
-      justifyContent : 'center',
-      width          : '30%' // potentially change later
-    },
-    button      : {
-      pb : '20px',
-      pt : '20px'
-    }
-  };
-});
-
+/**
+ * if there is no current user, the top button will direct the user
+ * to google OAuth
+ */
 const GoogleButton = () => {
-  const handleGoogle = async () => {
-    console.log('logging in with google');
+  const handleLogIn = () => {
     window.location.href = '/auth/google';
   };
 
   return (
-    <Button variant='outlined' onClick={handleGoogle}>
+    <Button
+      variant='outlined'
+      onClick={handleLogIn}
+      style={{ backgroundColor: '#4F86EC', color: 'white' }}
+    >
       Log in with Google
     </Button>
   );
 };
 
-const SidePanel = () => {
-  const classes = useStyles();
+/**
+ * If there is a logged in user, the user will be directed to their
+ * dashboard
+ */
+const DashButton = () => {
+  return (
+    <Button
+      variant='outlined'
+      component={Link}
+      to={'/dashboard'}
+      style={{ backgroundColor: '#F7F7F7' }}
+    >
+      Continue to Dash
+    </Button>
+  );
+};
+
+const SidePanel = ({ classes }) => {
+  const { loggedIn } = useContext(UserProvider.context);
 
   return (
     <Drawer
-      className={classes.sidePanel}
-      anchor='left'
+      className={classes.drawer}
       variant='permanent'
-      classes={{ paper: classes.drawerPaper }}
+      classes={{ paper: classes.drawerPaper, root: classes.drawerRoot }}
+      anchor='left'
     >
       <Typography variant='h3' align='center'>
         Welcome to
@@ -52,14 +60,17 @@ const SidePanel = () => {
       </Typography>
 
       <div align='center'>
-        <Box sx={{ pt: '20px', pb: '20px' }}>
-          <GoogleButton />
-        </Box>
+        <Box sx={{ pt: '20px', pb: '20px' }}>{loggedIn ? <DashButton /> : <GoogleButton />}</Box>
       </div>
 
       <div align='center'>
         <Box sx={{ pb: '20px' }}>
-          <Button component={Link} to='/flow/guest' variant='outlined'>
+          <Button
+            component={Link}
+            to='/flow/guest'
+            variant='outlined'
+            style={{ backgroundColor: '#F7F7F7' }}
+          >
             Continue as Guest
           </Button>
         </Box>

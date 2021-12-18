@@ -10,25 +10,17 @@ import ReactFlow, {
   getOutgoers
 } from 'react-flow-renderer';
 
-import {
-  autosave,
-  changeType,
-  determineType,
-  generatePrereq,
-  getNode,
-  traverseBFS
-} from '../../utils';
-import useDidUpdateEffect from '../../customhooks/useDidUpdateEffect';
+import { changeType, determineType, generatePrereq, getNode, traverseBFS } from '../../utils';
 
 // The 3 types of custom nodes that can appear in the Flow
-import customNodes from './customNodes';
-import EditNode from './EditNode';
-import './dnd.css';
+import customNodes from '../GraphPage/customNodes';
+import EditNode from '../GraphPage/EditNode';
+import '../GraphPage/dnd.css';
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
+const Flow = ({ elements, setElements, saveForUndo }) => {
   // Flow library stuff
   const reactFlowWrapper = useRef(null);
   const [ reactFlowInstance, setReactFlowInstance ] = useState(null);
@@ -87,21 +79,6 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
     //Close the EditNode component box
     handleClose();
   };
-
-  useDidUpdateEffect(
-    () => {
-      // Only want the view to center on the first load,
-      // and not subsequent element updates
-      const centerView = () => {
-        reactFlowInstance.fitView({ padding: 0.5 });
-        setInitialView(true);
-      };
-
-      autosave(flowID, elements);
-      reactFlowInstance && !initialView && centerView();
-    },
-    [ elements ]
-  );
 
   useEffect(() => {}, []);
 
@@ -172,7 +149,6 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
       <ReactFlowProvider>
         <div className='reactflow-wrapper' ref={reactFlowWrapper}>
           <ReactFlow
-            id={flowID}
             elements={elements}
             nodeTypes={customNodes}
             onConnect={onConnect}

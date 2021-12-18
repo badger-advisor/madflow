@@ -1,5 +1,3 @@
-import React from 'react';
-
 const EdgeCannotTake = (srcId, targetId) => {
   return {
     id            : `${srcId}-${targetId}`,

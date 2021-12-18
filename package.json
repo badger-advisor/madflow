@@ -1,16 +1,20 @@
 {
   "name": "madflow",
   "version": "1.0.0",
-  "description": "Helping students pick out the most optimal courses",
-  "main": "server.js",
+  "description": "Helping students pick the most optimal courses",
+  "main": "index.js",
+  "engines": {
+    "node": "16.13.0"
+  },
   "scripts": {
     "client-install": "cd client && npm install",
     "dev-install": "npm install && npm run client-install",
-    "start": "node server.js",
+    "start": "node index.js",
     "server": "nodemon index.js",
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "jest --coverage --verbose --testEnvironment=node --runInBand --rootDir=tests"
+    "test": "jest --coverage --verbose --testEnvironment=node --runInBand --rootDir=tests",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
     "type": "git",
@@ -23,19 +27,12 @@
   },
   "homepage": "https://github.com/badger-advisor/MadFlow#readme",
   "dependencies": {
-    "axios": "^0.24.0",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
     "concurrently": "^6.3.0",
-    "config": "^3.3.6",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "http-proxy-middleware": "^2.0.1",
-    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.11",
-    "node-mocks-http": "^1.11.0",
     "passport": "^0.5.0",
     "passport-google-oauth20": "^2.0.0",
     "supertest": "^6.1.6"
@@ -43,7 +40,6 @@
   "devDependencies": {
     "chokidar": "^3.5.2",
     "jest": "^27.3.1",
-    "morgan": "^1.10.0",
     "nodemon": "^2.0.14"
   }
 }

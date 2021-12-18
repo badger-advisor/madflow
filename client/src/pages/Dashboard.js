@@ -1,30 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 // server
-import { currentUser, getUserFlowNames } from '../utils.js';
+import { getUserFlowNames } from '../utils.js';
 
 // components
 import NavBar from '../components/NavBar/NavBar';
 import FlowCardGrid from '../components/DashboardPage/FlowCardGrid';
+import UserProvider from '../contexts/UserProvider';
 
-const TEST_ID = 'tempgenelee'; // TODO: connect backend to get actual userID
+const TEST_ID = 'tempgenelee';
 
 const Dashboard = () => {
   const [ userFlows, setUserFlows ] = useState([]);
   const [ refresh, setRefresh ] = useState(false);
+  const { user, loggedIn } = useContext(UserProvider.context);
+  const USER_ID = user.googleId;
 
   useEffect(
-    async () => {
-      setUserFlows(await getUserFlowNames(TEST_ID));
+    () => {
+      const fetchFlows = async () => {
+        const allFlows = await getUserFlowNames(USER_ID);
+        setUserFlows(allFlows);
+      };
+
+      fetchFlows();
     },
-    [ refresh ]
+    // User isn't set on first render, so no flows will be displayed
+    // Adding it as a dependency forces it to refresh twice, so we have the user
+    [ refresh, user ]
   );
 
   return (
     <div>
-      <NavBar userID={TEST_ID} refresh={refresh} setRefresh={setRefresh} />
+      <NavBar user={user} refresh={refresh} setRefresh={setRefresh} />
       <FlowCardGrid
-        userID={TEST_ID}
+        userID={USER_ID}
         userFlows={userFlows}
         refresh={refresh}
         setRefresh={setRefresh}
