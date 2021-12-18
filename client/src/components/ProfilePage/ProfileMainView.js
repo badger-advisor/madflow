@@ -11,7 +11,7 @@ const ProfileMainView = () => {
   const [ openDeleteAccount, setOpenDeleteAccount ] = useState(false);
   const { user, loggedIn } = useContext(UserProvider.context);
 
-  const handleDeactivate = () => {
+  const handleDeactivateAccount = () => {
     setOpenDeleteAccount(!openDeleteAccount);
   };
 
@@ -47,9 +47,9 @@ const ProfileMainView = () => {
             <ListItem button component={Link} to='/dashboard'>
               <Typography>Back to Dashboard</Typography>
             </ListItem>
-            <ListItem button onClick={handleDeactivate}>
+            <ListItem button onClick={handleDeactivateAccount}>
               <Typography>Deactivate Account</Typography>
-              <DeleteAccount open={openDeleteAccount} handleClose={handleClose} />
+              <DeleteAccount open={openDeleteAccount} handleClose={handleClose} user={user} />
             </ListItem>
           </List>
         </div>
