@@ -150,7 +150,12 @@ export const updateFlow = async (flowID, changes) => {
  * @param {String} major major of the flow
  */
 export const createNewFlow = async (googleId, name, major, elements = []) => {
-  await createUserFlow(googleId, name, major, elements);
+  try {
+    await createUserFlow(googleId, name, major, elements);
+  } catch (e) {
+    // console.log(e);
+    throw e;
+  }
 };
 
 export const deleteFlow = async flowID => {

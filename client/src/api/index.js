@@ -47,7 +47,10 @@ const createUserFlow = (googleId, name, major, elements) =>
       console.log('insert success!');
       console.log(res);
     })
-    .catch(error => console.log(error));
+    .catch(error => {
+      // console.log(error);
+      throw 'Looks like something went wrong. Please check the Flow name to make sure it does not already exist.';
+    });
 
 /**
  * Only for updating the elements array in the flow
