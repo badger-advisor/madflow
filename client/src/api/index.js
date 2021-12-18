@@ -12,11 +12,14 @@ API =
 /* ###################################### User ###################################### */
 // TODO: Remove all flows associated with the user
 const deleteUser = userGoogleID =>
-  API.delete('/user/deleteUser', {
-    googleId : userGoogleID
-  }).then(res => {
-    console.log(res);
-  });
+  API.delete('/user/deleteUser/', { params: { googleId: userGoogleID } })
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => {
+      console.log('Error in index');
+      console.log(err);
+    });
 
 const signIn = async () => {
   await API.get('/auth/google');

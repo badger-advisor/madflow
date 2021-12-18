@@ -64,7 +64,6 @@ export const generateNode = async (courseNum, options) => {
  * @param {String} userGoogleId The google id associated with a user
  */
 export const deleteUserObj = async userGoogleId => {
-  console.log(userGoogleId);
   await deleteUser(userGoogleId);
 };
 /**

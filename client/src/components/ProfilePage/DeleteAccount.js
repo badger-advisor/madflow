@@ -31,9 +31,8 @@ const useStyles = makeStyles({
   }
 });
 
-const handleDeactivate = user => {
-  console.log(user);
-  deleteUserObj(user.googleId);
+const handleDeactivate = async user => {
+  await deleteUserObj(user.googleId);
 };
 
 const DeleteAccount = ({ open, handleClose, user }) => {
