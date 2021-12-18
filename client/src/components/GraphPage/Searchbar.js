@@ -35,6 +35,8 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   // to handle showing error when duplicate course is not added
   const [ openDuplicateError, setOpenDuplicateError ] = useState(false);
   const [ duplicateError, setDuplicateError ] = useState('');
+  const [ openAdd, setOpenAdd ] = useState(false);
+  const [ addMessage, setAddMessage ] = useState('');
 
   const handleAlertClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -84,6 +86,8 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   const handleAddCourse = async (currentCourse, elements, saveForUndo) => {
     try {
       await addCourse(currentCourse.label, elements, saveForUndo, taken);
+      setAddMessage(currentCourse.label + ' has been successfully added!');
+      setOpenAdd(true);
     } catch (e) {
       console.error(e);
       setDuplicateError(e);
@@ -186,6 +190,23 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
           </Paper>
         </Popper>
       )}
+
+      <Snackbar
+        open={openAdd}
+        autoHideDuration={6000}
+        onClose={handleAlertClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <MuiAlert
+          elevation={6}
+          variant='filled'
+          onClose={handleAlertClose}
+          severity='info'
+          sx={{ width: '100%' }}
+        >
+          {addMessage}
+        </MuiAlert>
+      </Snackbar>
 
       <Snackbar
         open={openDuplicateError}
