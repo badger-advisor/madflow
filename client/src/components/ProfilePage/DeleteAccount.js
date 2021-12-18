@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -6,6 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import { Stack, Divider } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import { deleteUserObj } from '../../utils';
 
 import '../GraphPage/dnd.css';
 
@@ -30,8 +30,14 @@ const useStyles = makeStyles({
   }
 });
 
-const DeleteAccount = ({ open, handleClose }) => {
+const handleDeactivate = async user => {
+  await deleteUserObj(user.googleId);
+  window.location.reload(false);
+};
+
+const DeleteAccount = ({ open, handleClose, user }) => {
   const classes = useStyles();
+
   return (
     <Dialog maxWidth='xs' onClose={handleClose} open={open}>
       <DialogTitle margin='auto'>
@@ -59,7 +65,14 @@ const DeleteAccount = ({ open, handleClose }) => {
         <Button className={classes.autobtn} variant='contained' size='small'>
           Cancel
         </Button>
-        <Button className={classes.rmbtn} variant='contained' size='small'>
+        <Button
+          className={classes.rmbtn}
+          variant='contained'
+          size='small'
+          onClick={async () => {
+            await handleDeactivate(user);
+          }}
+        >
           Deactivate
         </Button>
       </Stack>

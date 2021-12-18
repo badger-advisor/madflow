@@ -1,6 +1,7 @@
 import SidePanel from '../components/LandingPage/SidePanel';
 import { makeStyles } from '@mui/styles';
 import LandingFlow from '../components/LandingPage/LandingFlow';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // size of side bar
 const drawerWidth = '30vw';
@@ -32,6 +33,13 @@ const useStyles = makeStyles({
 
 const Landing = () => {
   const classes = useStyles();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  let from = location.state?.from?.pathname || "/";
+  if (from) {
+    navigate(from, { replace: true });
+  }
 
   return (
     <div className={classes.root}>
