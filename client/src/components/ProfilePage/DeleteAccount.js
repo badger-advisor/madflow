@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -33,6 +32,7 @@ const useStyles = makeStyles({
 
 const handleDeactivate = async user => {
   await deleteUserObj(user.googleId);
+  window.location.reload(false);
 };
 
 const DeleteAccount = ({ open, handleClose, user }) => {
@@ -69,7 +69,9 @@ const DeleteAccount = ({ open, handleClose, user }) => {
           className={classes.rmbtn}
           variant='contained'
           size='small'
-          onClick={() => handleDeactivate(user)}
+          onClick={async () => {
+            await handleDeactivate(user);
+          }}
         >
           Deactivate
         </Button>
