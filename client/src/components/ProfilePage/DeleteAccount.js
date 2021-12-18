@@ -38,7 +38,7 @@ const DeleteAccount = ({ open, handleClose }) => {
         <div>Deactivate Account</div>
       </DialogTitle>
       <Divider />
-      <DialogContent style={{ height: '50px' }}>
+      <DialogContent style={{ minHeight: '70px' }}>
         <Typography>
           WARNING: All data associated with your account, including saved Flows, will be permanently
           deleted.

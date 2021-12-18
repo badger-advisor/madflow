@@ -93,7 +93,6 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
         inputValue={inputValue}
         autoHighlight={true}
         open={dropDown}
-        // onClose={closePopupHandler}
         sx={{
           width : 300
         }}
@@ -120,9 +119,17 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
             >
               <div>{currentCourse.label}</div>
               <div>
-                <ShowMoreText className='mystyle' lines={4} width={270}>
-                  <Typography variant='mystyle'>{currentCourse.courseInfo}</Typography>
-                </ShowMoreText>
+                <Box
+                  sx={{ minHeight: 110 }}
+                  overflow='auto'
+                  flex={1}
+                  flexDirection='column'
+                  display='flex'
+                >
+                  <ShowMoreText className='mystyle' lines={6} width={270}>
+                    <Typography variant='mystyle'>{currentCourse.courseInfo}</Typography>
+                  </ShowMoreText>
+                </Box>
               </div>
               <Typography variant='mystyle'>Add Course as:</Typography>
               <div className='buttons'>

@@ -1,21 +1,20 @@
 import { useState, useEffect, useContext } from 'react';
-
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import UndoIcon from '@mui/icons-material/Undo';
 import RedoIcon from '@mui/icons-material/Redo';
-import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MuiAppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 import Searchbar from './Searchbar';
 import { getAllCourses } from '../../utils';
 import { Link } from 'react-router-dom';
 import UserProvider from '../../contexts/UserProvider';
+
+import ProfileMenu from '../NavBar/ProfileMenu';
 
 const DRAWER_WIDTH = 240;
 
@@ -39,7 +38,8 @@ export const AppBar = styled(MuiAppBar, {
   })
 }));
 
-const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo }) => {
+const SearchNavBar = ({ open, elements, undo, redo, saveForUndo }) => {
+  const [ showProfileMenu, setShowProfileMenu ] = useState(null);
   const [ courseOptions, setCourseOptions ] = useState([]);
   const { user } = useContext(UserProvider.context);
   const USER_ID = user.googleId;
@@ -47,6 +47,10 @@ const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo })
   useEffect(async () => {
     setCourseOptions(await getAllCourses());
   }, []);
+
+  const openProfileMenu = e => {
+    setShowProfileMenu(e.currentTarget);
+  };
 
   return (
     <AppBar position='fixed' open={open} style={{ background: '#c5050c' }}>
@@ -80,14 +84,17 @@ const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo })
             <RedoIcon fontSize='mid' />
           </IconButton>
 
-          <IconButton sx={{ marginRight: 2, marginLeft: 2 }} color='inherit' edge='end'>
-            {/* <AccountCircleRoundedIcon fontSize='large' /> */}
-            <Avatar
-              sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }}
-              src={user.profilePicture}
-            />
-          </IconButton>
-          <IconButton
+          {/* <AccountCircleRoundedIcon fontSize='large' /> */}
+          <Avatar
+            sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }}
+            src={user.profilePicture}
+            onClick={openProfileMenu}
+          />
+
+          {/* profile menu */}
+          <ProfileMenu showMenu={showProfileMenu} setShowMenu={setShowProfileMenu} />
+
+          {/*<IconButton
             color='inherit'
             aria-label='open drawer'
             edge='end'
@@ -95,7 +102,7 @@ const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo })
             sx={{ ...(open && { display: 'none' }), marginLeft: 2 }}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
         </Box>
       </Toolbar>
     </AppBar>
