@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import UndoIcon from '@mui/icons-material/Undo';
@@ -9,11 +9,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MuiAppBar from '@mui/material/AppBar';
+import Avatar from '@mui/material/Avatar';
 import { styled, useTheme } from '@mui/material/styles';
 
 import Searchbar from './Searchbar';
 import { getAllCourses } from '../../utils';
 import { Link } from 'react-router-dom';
+import UserProvider from '../../contexts/UserProvider';
 
 const DRAWER_WIDTH = 240;
 
@@ -39,6 +41,8 @@ export const AppBar = styled(MuiAppBar, {
 
 const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo }) => {
   const [ courseOptions, setCourseOptions ] = useState([]);
+  const { user } = useContext(UserProvider.context);
+  const USER_ID = user.googleId;
 
   useEffect(async () => {
     setCourseOptions(await getAllCourses());
@@ -77,7 +81,11 @@ const SearchNavBar = ({ handleDrawer, open, elements, undo, redo, saveForUndo })
           </IconButton>
 
           <IconButton sx={{ marginRight: 2, marginLeft: 2 }} color='inherit' edge='end'>
-            <AccountCircleRoundedIcon fontSize='large' />
+            {/* <AccountCircleRoundedIcon fontSize='large' /> */}
+            <Avatar
+              sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }}
+              src={user.profilePicture}
+            />
           </IconButton>
           <IconButton
             color='inherit'

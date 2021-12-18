@@ -63,4 +63,14 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
+// create home route mainly for testing
+app.get('/', (req, res) => {
+  if (req.user) {
+    res.json({ user: req.user });
+  } else {
+    const googleSignIn = "<a href='/auth/google'>Google</a>";
+    res.send(`Welcome to MadFlow, please sign in, or sign up: ${googleSignIn}`);
+  }
+});
+
 module.exports = app;
