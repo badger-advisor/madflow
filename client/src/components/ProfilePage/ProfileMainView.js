@@ -3,6 +3,7 @@ import { Avatar, Divider, List, ListItem } from '@mui/material';
 import { Typography } from '@mui/material';
 import DeleteAccount from './DeleteAccount';
 import UserProvider from '../../contexts/UserProvider';
+import { Link } from 'react-router-dom';
 
 import './profile.css';
 
@@ -43,6 +44,9 @@ const ProfileMainView = () => {
           <Typography sx={{ padding: 2 }}>Options</Typography>
           <Divider />
           <List>
+            <ListItem button component={Link} to='/dashboard'>
+              <Typography>Back to Dashboard</Typography>
+            </ListItem>
             <ListItem button onClick={handleDeactivate}>
               <Typography>Deactivate Account</Typography>
               <DeleteAccount open={openDeleteAccount} handleClose={handleClose} />
