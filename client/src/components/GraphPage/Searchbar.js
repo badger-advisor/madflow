@@ -5,6 +5,8 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import ShowMoreText from 'react-show-more-text';
 
+import { Alert } from '../Alert';
+
 import { addCourse } from '../../utils';
 
 import './dnd.css';
@@ -98,8 +100,6 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
       setDisplayPop(false);
     }
   };
-
-  const id = open ? 'popper' : undefined;
 
   return (
     <div>
@@ -198,39 +198,23 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
         </Popper>
       )}
 
-      <Snackbar
-        open={openAdd}
-        autoHideDuration={6000}
-        onClose={handleAlertClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <MuiAlert
-          elevation={6}
-          variant='filled'
-          onClose={handleAlertClose}
-          severity='info'
-          sx={{ width: '100%' }}
-        >
-          {addMessage}
-        </MuiAlert>
-      </Snackbar>
+      {/* course added message */}
+      <Alert
+        handleOpen={openAdd}
+        handleClose={handleAlertClose}
+        variant='filled'
+        severity='info'
+        message={addMessage}
+      />
 
-      <Snackbar
-        open={openDuplicateError}
-        autoHideDuration={6000}
-        onClose={handleAlertClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <MuiAlert
-          elevation={6}
-          variant='filled'
-          onClose={handleAlertClose}
-          severity='error'
-          sx={{ width: '100%' }}
-        >
-          {duplicateError}
-        </MuiAlert>
-      </Snackbar>
+      {/* duplicate course error message */}
+      <Alert
+        handleOpen={openDuplicateError}
+        handleClose={handleAlertClose}
+        variant='filled'
+        severity='error'
+        message={duplicateError}
+      />
     </div>
   );
 };
