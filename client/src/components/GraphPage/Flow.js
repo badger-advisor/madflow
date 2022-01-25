@@ -103,8 +103,6 @@ const Flow = ({ elements, setElements, saveForUndo, flowID }) => {
     [ elements ]
   );
 
-  useEffect(() => {}, []);
-
   //Handle dragging a node from the Sidebar
   const onDragOver = e => {
     e.preventDefault();
