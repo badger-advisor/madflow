@@ -164,7 +164,12 @@ export const updateFlow = async (flowID, changes) => {
  * @param {String} major major of the flow
  */
 export const createNewFlow = async (googleId, name, major, elements = []) => {
-  await createUserFlow(googleId, name, major, elements);
+  try {
+    await createUserFlow(googleId, name, major, elements);
+  } catch (e) {
+    // console.log(e);
+    throw e;
+  }
 };
 
 export const deleteFlow = async flowID => {
@@ -180,7 +185,10 @@ export const deleteFlow = async flowID => {
 // };
 
 export const getUserFlowNames = async userID => {
-  return await getAllUserFlows(userID);
+  const flows = await getAllUserFlows(userID);
+  // console.log('get user flows');
+  // console.log(flows);
+  return flows;
 };
 
 /**
@@ -252,7 +260,7 @@ export const addCourse = async (currentCourse, elements, saveForUndo, taken) => 
 
   //Check if course is already present in the flow
   if (elements && elements.filter(el => el.id === newCourse.id).length !== 0) {
-    throw newCourse.id + ' already present in the flow, it cannot be added!';
+    throw newCourse.id + ' is already present in the flow, it cannot be added!';
   }
 
   //If the course is not taken, it is either courseCannotTake or courseCanTake

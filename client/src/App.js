@@ -2,41 +2,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Landing, Dashboard, Profile, Graph, GuestGraph } from './pages';
 import ApiTests from './components/ApiTests';
 import './app.css';
-import { useState, useEffect, useContext } from 'react';
 import UserProvider from './contexts/UserProvider';
-
-const TempNav = () => {
-  const { user, loggedIn } = useContext(UserProvider.context);
-
-  return (
-    <div>
-      <ul>
-        <li>
-          <Link to='/'>Home</Link>
-        </li>
-        <li>
-          <Link to='/landing'>landing</Link>
-        </li>
-        <li>
-          <Link to='/dashboard'>dashboard</Link>
-        </li>
-        <li>
-          <Link to='/profile'>profile</Link>
-        </li>
-        <li>
-          <Link to='/flow/guest'>flow</Link>
-        </li>
-        <li>
-          <a href='/auth/google'>Login With Google</a>
-        </li>
-        <li>
-          <a href='/auth/logout'>Logout</a>
-        </li>
-      </ul>
-      {loggedIn ? <p>Currently logged in as {user.name}</p> : <p>Go log in</p>}
-    </div>
-  );
-};
+import RequireAuth from './contexts/RequireAuth';
 
 const App = () => {
   return (
@@ -45,8 +12,23 @@ const App = () => {
         <Routes>
           <Route path='/' element={<Landing />} />
           <Route path='landing' element={<Landing />} />
-          <Route path='dashboard' element={<Dashboard />} />
-          <Route path='profile' element={<Profile />} />
+
+          <Route
+            path='dashboard'
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path='profile'
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
+          />
           <Route path='flow'>
             <Route path=':flowID' element={<Graph />} />
             <Route path='guest' element={<GuestGraph />} />

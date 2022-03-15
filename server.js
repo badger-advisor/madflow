@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const userRoute = require('./routes/userRoute');
 const profileRoutes = require('./routes/profileRoutes');
@@ -14,6 +15,7 @@ require('./controllers/passport-setup');
 // set up enviromental variables
 require('dotenv').config();
 
+// Create app
 const app = express();
 
 // Preventing cors error
@@ -57,7 +59,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.resolv(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
 

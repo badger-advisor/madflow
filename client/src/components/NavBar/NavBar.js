@@ -42,7 +42,7 @@ const NavBar = ({ user, refresh, setRefresh }) => {
           }}
         >
           {/* logo button */}
-          <IconButton sx={{ mr: 2 }}>
+          <IconButton id={'logo'} sx={{ mr: 2 }}>
             <Link to='/'>
               <img src={tempIcon} height='45px' />
             </Link>
@@ -52,6 +52,7 @@ const NavBar = ({ user, refresh, setRefresh }) => {
           <div style={{ display: 'flex', flexDirection: 'row' }}>
             {/* add new flow button */}
             <Button
+              id={'new_flow'}
               variant='outlined'
               startIcon={<AddIcon />}
               sx={{ color: 'white', border: '1px solid white' }}
@@ -71,6 +72,7 @@ const NavBar = ({ user, refresh, setRefresh }) => {
 
             {/* profile icon and button */}
             <Avatar
+              id={'avatar'}
               sx={{ ml: 2, bgcolor: '#AE2012', cursor: 'pointer' }}
               src={user.profilePicture}
               onClick={openProfileMenu}

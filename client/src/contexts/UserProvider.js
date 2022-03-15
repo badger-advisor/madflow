@@ -9,9 +9,16 @@ const UserProvider = ({ children }) => {
     const fetchUser = async () => {
       try {
         const currentUser = await (await fetch('/user/current')).json();
+
+        // if no user signed in
+        if (!currentUser) {
+          throw 'no user logged in';
+        }
+
         setUser(currentUser);
         setLoggedIn(true);
       } catch (e) {
+        console.log('no user');
         console.error(e);
       }
     };

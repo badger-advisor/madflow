@@ -1,6 +1,8 @@
 import { TextField, Autocomplete, Popper, Box, Paper, Typography } from '@mui/material/';
 import { useState, useEffect } from 'react';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import ShowMoreText from 'react-show-more-text';
 
 import { addCourse } from '../../utils';
@@ -29,6 +31,20 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   const [ displayPop, setDisplayPop ] = useState(false);
   const [ dropDown, setDropDown ] = useState(false);
   const [ inputValue, setInputValue ] = useState('');
+
+  // to handle showing error when duplicate course is not added
+  const [ openDuplicateError, setOpenDuplicateError ] = useState(false);
+  const [ duplicateError, setDuplicateError ] = useState('');
+  const [ openAdd, setOpenAdd ] = useState(false);
+  const [ addMessage, setAddMessage ] = useState('');
+
+  const handleAlertClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenDuplicateError(false);
+  };
 
   useEffect(
     () => {
@@ -67,11 +83,15 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
   };
 
   //Handle adding a course to the flow
-  const handleAddCourse = (currentCourse, elements, saveForUndo) => {
+  const handleAddCourse = async (currentCourse, elements, saveForUndo) => {
     try {
-      addCourse(currentCourse.label, elements, saveForUndo, taken);
+      await addCourse(currentCourse.label, elements, saveForUndo, taken);
+      setAddMessage(currentCourse.label + ' has been successfully added!');
+      setOpenAdd(true);
     } catch (e) {
       console.error(e);
+      setDuplicateError(e);
+      setOpenDuplicateError(true);
     } finally {
       setInputValue('');
       setDropDown(false);
@@ -93,7 +113,6 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
         inputValue={inputValue}
         autoHighlight={true}
         open={dropDown}
-        // onClose={closePopupHandler}
         sx={{
           width : 300
         }}
@@ -120,9 +139,17 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
             >
               <div>{currentCourse.label}</div>
               <div>
-                <ShowMoreText className='mystyle' lines={4} width={270}>
-                  <Typography variant='mystyle'>{currentCourse.courseInfo}</Typography>
-                </ShowMoreText>
+                <Box
+                  sx={{ minHeight: 110 }}
+                  overflow='auto'
+                  flex={1}
+                  flexDirection='column'
+                  display='flex'
+                >
+                  <ShowMoreText className='mystyle' lines={6} width={270}>
+                    <Typography variant='mystyle'>{currentCourse.courseInfo}</Typography>
+                  </ShowMoreText>
+                </Box>
               </div>
               <Typography variant='mystyle'>Add Course as:</Typography>
               <div className='buttons'>
@@ -170,6 +197,40 @@ const SearchBar = ({ elements, courseOptions, saveForUndo }) => {
           </Paper>
         </Popper>
       )}
+
+      <Snackbar
+        open={openAdd}
+        autoHideDuration={6000}
+        onClose={handleAlertClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <MuiAlert
+          elevation={6}
+          variant='filled'
+          onClose={handleAlertClose}
+          severity='info'
+          sx={{ width: '100%' }}
+        >
+          {addMessage}
+        </MuiAlert>
+      </Snackbar>
+
+      <Snackbar
+        open={openDuplicateError}
+        autoHideDuration={6000}
+        onClose={handleAlertClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      >
+        <MuiAlert
+          elevation={6}
+          variant='filled'
+          onClose={handleAlertClose}
+          severity='error'
+          sx={{ width: '100%' }}
+        >
+          {duplicateError}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };

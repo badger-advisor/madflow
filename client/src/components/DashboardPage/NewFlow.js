@@ -1,10 +1,13 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { createNewFlow } from '../../utils.js';
+import { useState } from 'react';
 
 // material-ui
 import { Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { Button, TextField } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 const validationSchema = Yup.object().shape({
   name  : Yup.string()
@@ -22,9 +25,30 @@ const NewFlow = ({ open, setOpen, userID, refresh, setRefresh, elements, setShow
     e.stopPropagation();
   };
 
-  // function to use utility function to create new FLow for current user
-  const makeFlow = async (userID, flowName, flowMajor, elements) => {
-    await createNewFlow(userID, flowName, flowMajor, elements);
+  const [ openError, setOpenError ] = useState(false);
+  const [ errorMessage, setErrorMessage ] = useState('');
+
+  const handleErrorClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenError(false);
+  };
+
+  // Submit is async because creating a flow is async
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      await createNewFlow(userID, values.name, values.major, elements);
+    } catch (e) {
+      setErrorMessage(e);
+      setOpenError(true);
+    } finally {
+      resetForm();
+      setOpen(false);
+      setRefresh(!refresh);
+      setShowMenu && setShowMenu(false);
+    }
   };
 
   // use Formik to handle form validation and submission
@@ -35,15 +59,7 @@ const NewFlow = ({ open, setOpen, userID, refresh, setRefresh, elements, setShow
       major : ''
     },
     validationSchema   : validationSchema,
-    onSubmit           : (values, { resetForm }) => {
-      // console.log(values);
-      // console.log(values.name);
-      makeFlow(userID, values.name, values.major, elements);
-      resetForm();
-      setOpen(false);
-      setRefresh(!refresh);
-      setShowMenu && setShowMenu(false);
-    },
+    onSubmit           : handleSubmit,
     onReset            : () => {
       setOpen(false);
     }
@@ -100,7 +116,9 @@ const NewFlow = ({ open, setOpen, userID, refresh, setRefresh, elements, setShow
               <div>
                 <Button onClick={formik.handleSubmit}>Create Blank</Button>
                 <Button onClick={formik.handleSubmit}>Create Pre-Filled</Button>
-                <Button onClick={formik.handleReset}>Cancel</Button>{' '}
+                <Button id={'cancel_btn'} onClick={formik.handleReset}>
+                  Cancel
+                </Button>{' '}
               </div>
             ) : (
               <div>
@@ -111,6 +129,18 @@ const NewFlow = ({ open, setOpen, userID, refresh, setRefresh, elements, setShow
           </DialogActions>
         </div>
       </Dialog>
+
+      <Snackbar open={openError} autoHideDuration={6000} onClose={handleErrorClose}>
+        <MuiAlert
+          elevation={6}
+          variant='filled'
+          onClose={handleErrorClose}
+          severity='error'
+          sx={{ width: '100%' }}
+        >
+          {errorMessage}
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 };

@@ -3,7 +3,7 @@ const router = express.Router();
 
 const { deleteUser, currentUser } = require('../controllers/userController');
 
-router.post('/deleteUser', deleteUser);
+router.delete('/deleteUser', deleteUser);
 router.get('/current', currentUser);
 
 module.exports = router;

@@ -41,7 +41,9 @@ const FlowCard = ({ userID, flowID, flowName, flowMajor, refresh, setRefresh }) 
         backgroundColor : '#0A9396',
         boxShadow       : '0 8px 40px -12px rgba(0,0,0,0.3)',
         cursor          : 'pointer',
-        position        : 'relative'
+        position        : 'relative',
+        maxHeight       : '220px',
+        maxWidth        : '220px'
       }}
       variant='outlined'
       onClick={openFlow}

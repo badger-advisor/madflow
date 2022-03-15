@@ -72,11 +72,12 @@ const EditNode = ({ open, node, handleClose, onElementsRemove, onSwitch, onGener
             display='flex'
             p={2}
           >
-            <Typography>{prereqs}</Typography>
+            <Typography>{prereqs ? prereqs : 'None'}</Typography>
           </Box>
         </Box>
         <div>
           <Button
+            id={'gen_prereq'}
             sx={{
               marginTop       : 3,
               width           : '100%',
